@@ -1,0 +1,2 @@
+# morax
+A financial manager 
