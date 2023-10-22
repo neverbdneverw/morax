@@ -7,8 +7,23 @@ def main():
     account = input("What email do you use to login? ")
     password = input("Enter a password: ")
     
-    if singleton.is_account_found(singleton, account, password):
+    account_found = singleton.is_account_found(singleton, account, password)
+    
+    if account_found == "Found":
         print("Login successful!")
+    elif account_found == "Wrong password":
+        forgot_password = input("Password might be incorrect. Forgot it? y/n ")
+        if forgot_password.lower() == "y":
+            new_password = input("Enter a new password: ")
+            confirm_password = input("Confirm your new password: ")
+            
+            if confirm_password != new_password:
+                print("Make sure the passwords are the same!")
+                return
+            
+            singleton.forgot_password(singleton, account, new_password)
+        else:
+            print("Exiting...")
     else:
         print("Account doesn't exist.")
         

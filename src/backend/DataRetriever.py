@@ -18,7 +18,7 @@ class DataRetriever(object):
         return cls
     
     def __init__(self):
-        scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive", 'https://mail.google.com/']
+        scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 
         credentials = ServiceAccountCredentials.from_json_keyfile_name("./src/backend/credentials.json", scope)
         client = gspread.authorize(credentials)
@@ -30,21 +30,18 @@ class DataRetriever(object):
         
         for account in accounts:
             if email.strip() == account[0] and password.strip() == account[2]:
-                return True
+                return "Found"
             elif email.strip() == account[0] and password.strip() != account[2]:
-                forgot_password = input("Password might be incorrect. Forgot it? y/n ")
-                if forgot_password.lower() == "y":
-                    self.forgot_password(self, email)
-                    return True
+                return "Wrong password"
             
         print("\nEmail/Username/Password might be incorrect.\n")
-        return False
+        return "Not found"
     
     def create_account(self, email, username, password):
         new_line = len(self.secrets_sheet.get_all_values()) + 1
         self.secrets_sheet.update(f"A{new_line}:C{new_line}", [[email, username, password]])
     
-    def forgot_password(self, email: str):
+    def forgot_password(self, email: str, new_password: str):
         code = random.randrange(100000, 999999)
         subject = "Do you want to reset your password with Morax? "
         body = f"""
@@ -74,13 +71,6 @@ Ignore this message if not.
         received_code = input("What is the code you received in your email? ")
         
         if int(received_code) == code:
-            new_password = input("Enter a new password: ")
-            confirm = input("Confirm your new password: ")
-            
-            if confirm != new_password:
-                print("Make sure the passwords are the same!")
-                return
-            
             for index, account in enumerate(self.secrets_sheet.get_all_values()):
                  if email.strip() == account[0]:
                      final_index = index + 1
