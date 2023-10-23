@@ -31,22 +31,27 @@ class DataRetriever():
         self.secrets_sheet = client.open("Secrets").sheet1
         
     def is_account_found(self, email: str, password: str):
-        accounts = self.secrets_sheet.get_all_values()
-        
-        for account in accounts:
-            if email.strip() == account[0] and password.strip() == account[2]:
+        if self.is_email_existing(email):
+            if password.strip() == account[2]:
                 return "Found"
-            elif email.strip() == account[0] and password.strip() != account[2]:
+            elif password.strip() != account[2]:
                 return "Wrong password"
             
         print("\nEmail/Username/Password might be incorrect.\n")
         return "Not found"
     
-    def create_account(self, email, username, password):
+    def is_email_existing(self, email: str):
         accounts = self.secrets_sheet.get_all_values()
+        
         for account in accounts:
             if email.strip() == account[0]:
-                return "Account already exists."
+                return True
+        
+        return False
+    
+    def create_account(self, email, username, password):
+        if self.is_email_existing(email):
+            return "Account already exists."
 
         new_line = len(self.secrets_sheet.get_all_values()) + 1
         self.secrets_sheet.update(f"A{new_line}:C{new_line}", [[email, username, password]])
