@@ -34,11 +34,10 @@ class DataRetriever():
         accounts = self.secrets_sheet.get_all_values()
         
         for account in accounts:
-            if self.is_email_existing(email):
-                if password.strip() == account[2]:
-                    return "Found"
-                elif password.strip() != account[2]:
-                    return "Wrong password"
+            if email.strip() == account[0] and password.strip() == account[2]:
+                return "Found"
+            elif email.strip() == account[0] and password.strip() != account[2]:
+                return "Wrong password"
             
         print("\nEmail/Username/Password might be incorrect.\n")
         return "Not found"
