@@ -26,9 +26,8 @@ def main():
                     print("Make sure the passwords are the same!")
                     return
                 
-                data_retriever.forgot_password(account, new_password)
-                
-                print("Account created.")
+                result = data_retriever.forgot_password(account, new_password)
+                print(result)
         else:
             print("Exiting...")
     else:
