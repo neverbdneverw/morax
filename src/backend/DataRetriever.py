@@ -1,5 +1,6 @@
 from google.oauth2 import service_account
 from email.message import EmailMessage
+from encryption import encrypt, decrypt
 import gspread
 import random
 import ssl
@@ -31,22 +32,22 @@ class DataRetriever():
         self.secrets_sheet = client.open("Secrets").sheet1
         
     def is_account_found(self, email: str, password: str):
-        accounts = self.secrets_sheet.get_all_values()
+        accounts = self.secrets_sheet.get_all_values()[1:]
         
         for account in accounts:
-            if email.strip() == account[0] and password.strip() == account[2]:
+            if email.strip() == decrypt(account[0]) and password.strip() == decrypt(account[2]):
                 return "Found"
-            elif email.strip() == account[0] and password.strip() != account[2]:
+            elif email.strip() == decrypt(account[0]) and password.strip() != decrypt(account[2]):
                 return "Wrong password"
             
         print("\nEmail/Username/Password might be incorrect.\n")
         return "Not found"
     
     def is_email_existing(self, email: str):
-        accounts = self.secrets_sheet.get_all_values()
+        accounts = self.secrets_sheet.get_all_values()[1:]
         
         for account in accounts:
-            if email.strip() == account[0]:
+            if email.strip() == decrypt(account[0]):
                 return True
         
         return False
@@ -56,7 +57,7 @@ class DataRetriever():
             return "Account already exists."
 
         new_line = len(self.secrets_sheet.get_all_values()) + 1
-        self.secrets_sheet.update(f"A{new_line}:C{new_line}", [[email, username, password]])
+        self.secrets_sheet.update(f"A{new_line}:C{new_line}", [[encrypt(email), encrypt(username), encrypt(password)]])
         return "Account created."
 
     def confirm_email_ownership(self, email):
@@ -87,7 +88,7 @@ Ignore this message if not.
         return code
     
     def forgot_password(self, email: str, new_password: str):
-        for index, account in enumerate(self.secrets_sheet.get_all_values()):
+        for index, account in enumerate(self.secrets_sheet.get_all_values()[1:]):
              if email.strip() == account[0]:
                  final_index = index + 1
-                 self.secrets_sheet.update(f"C{final_index}", new_password)
+                 self.secrets_sheet.update(f"C{final_index}", encrypt(new_password))
