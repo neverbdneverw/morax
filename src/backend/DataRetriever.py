@@ -88,7 +88,11 @@ Ignore this message if not.
         return code
     
     def forgot_password(self, email: str, new_password: str):
-        for index, account in enumerate(self.secrets_sheet.get_all_values()[1:]):
-             if email.strip() == account[0]:
-                 final_index = index + 1
+        accounts = self.secrets_sheet.get_all_values()[1:]
+        for index, account in enumerate(accounts):
+             if email.strip() == decrypt(account[0]):
+                 final_index = index + 2
                  self.secrets_sheet.update(f"C{final_index}", encrypt(new_password))
+                 return "Password Changed."
+
+        return "Account doesn't exist."
