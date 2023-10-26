@@ -224,6 +224,19 @@ class LoginPage():
             padding = 0,
             controls = [main_container]
         )
+        
+        ###### DIALOGS ######
+        self.dialog_text = ft.Text(
+            size=12
+        )
+        
+        self.warning_dialog = ft.AlertDialog(
+            title=ft.Text(
+                value="Can't Log in.",
+                size=20
+            ),
+            content=self.dialog_text
+        )
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
@@ -237,4 +250,10 @@ class LoginPage():
     
     def allow_login(self, allow: bool):
         self.login_btn.disabled = (allow == False)
+        self.page.update()
+    
+    def display_on_dialog(self, message: str):
+        self.dialog_text.value = message
+        self.page.dialog = self.warning_dialog
+        self.warning_dialog.open = True
         self.page.update()

@@ -23,11 +23,11 @@ class LoginController:
     def login(self, event):
         verdict = self.database.query_login(self.login_page.get_email_entry(), self.login_page.get_password_entry())
         if verdict == "Found":
-            print("Logged in ka na!")
+            self.page.go("/home")
         elif verdict == "Not found":
-            print("Gawa ka Account")
+            self.login_page.display_on_dialog("Username or Password might be wrong. Please Try Again.")
         else:
-            print("Mali password mo!")
+            self.login_page.display_on_dialog("Password is wrong. Please Try Again.")
     
     def go_to_signup(self, event):
         self.page.go("/signup")

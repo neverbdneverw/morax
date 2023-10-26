@@ -43,10 +43,10 @@ class Database:
         
         return "Account doesn't exist."
     
-    def create_account(self, email: str, username: str, password: str, gcash_no: str):
+    def create_account(self, email: str, username: str, password: str):
         email = email.replace('.', ',')
         if email not in self.dictionary["Users"]:
-            db.reference(f"/Users/").update({email : { "Username" : username, "Password": password, "GCash": gcash_no}})
+            db.reference(f"/Users/").update({email : { "Username" : username, "Password": password}})
             return "Successful"
         
         return "Account already exists."

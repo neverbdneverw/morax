@@ -32,10 +32,17 @@ class SignupController:
             self.signup_page.allow_register(False)
     
     def register(self, event):
+        code = self.database.confirm_email_ownership(self.signup_page.get_email_entry())
+        command = [
+            "COMMAND_REGISTER",
+            self.database.create_account,
+            code,
+            self.signup_page.get_email_entry(),
+            self.signup_page.get_username_entry(),
+            self.signup_page.get_password_entry(),
+        ]
+        self.signup_page.basket.command = command
         self.page.go("/confirm_email")
     
     def go_to_login(self, event):
         self.page.go("/login")
-    
-    def forgot_password(self, event):
-        self.page.go("/forgot_password")
