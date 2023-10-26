@@ -1,6 +1,6 @@
 <div>
     <h1 align="center">Morax</h1>
-    <h3 align="center">A shared financial manager application</h3>
+    <h3 align="center">A Shared Financial Manager</h3>
 </div>
 
 ![screenshot](resources/app_screenshot.png)
