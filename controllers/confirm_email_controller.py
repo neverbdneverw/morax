@@ -22,4 +22,31 @@ class ConfirmEmailController:
         self.page.go("/login")
     
     def confirm_email(self, event):
-        print("Confirm")
+        argument_list = list(self.confirm_email_page.basket.command)
+        command_type = argument_list[0]
+        code = argument_list[2]
+        command = argument_list[1]
+        if code == int(self.confirm_email_page.code_sent_textfield.value):
+            if command_type == "COMMAND_REGISTER":
+                verdict = command(argument_list[3], argument_list[4], argument_list[5])
+                
+                if verdict == "Successful":
+                    self.confirm_email_page.display_on_dialog("Success!", "Your account has been created. You may now log in.")
+                    self.database.update_refs()
+                else:
+                    self.confirm_email_page.display_on_dialog("Can't Register", "An account is already linked to the credentials given.")
+            elif command_type == "COMMAND_CHANGE_PASSWORD":
+                verdict = command(argument_list[3], argument_list[4])
+                
+                if verdict == "Password Changed":
+                    self.confirm_email_page.display_on_dialog("Success!", "Your password has been updated. You may now log in again.")
+                    self.database.update_refs()
+                else:
+                    self.confirm_email_page.display_on_dialog("Can't Change Password", "An account bound to the email doesn't exist.")
+            else:
+                self.confirm_email_page.display_on_dialog("Can't Do operation", "The process to be done is not expected.")
+        else:
+            if command_type == "COMMAND_REGISTER":
+                self.confirm_email_page.display_on_dialog("Can't Register", "The code sent must match the entered code.")
+            elif command_type == "COMMAND_CHANGE_PASSWORD":
+                self.confirm_email_page.display_on_dialog("Can't Change Password", "The code sent must match the entered code.")

@@ -174,8 +174,21 @@ class ConfirmEmailPage():
             padding = 0,
             controls = [main_container]
         )
+        
+        self.dialog_text = ft.Text(
+            size=12
+        )
+        
+        self.warning_dialog = ft.AlertDialog(
+            title=ft.Text(
+                value="Can't Register",
+                size=20
+            ),
+            content=self.dialog_text
+        )
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
+        self.basket = basket
         self.page = page
         return self.view
     
@@ -184,4 +197,11 @@ class ConfirmEmailPage():
     
     def allow_confirm(self, allow: bool):
         self.confirm_email_button.disabled = (allow == False)
+        self.page.update()
+    
+    def display_on_dialog(self, title: str, message: str):
+        self.warning_dialog.title.value = title
+        self.dialog_text.value = message
+        self.page.dialog = self.warning_dialog
+        self.warning_dialog.open = True
         self.page.update()
