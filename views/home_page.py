@@ -5,7 +5,7 @@ from views.group_listview import GroupListView
 from views.settings_view import SettingsView
 from views.feedback_view import FeedbackView
 
-class HomePage(dict):
+class HomePage():
     def __init__(self):
         self.group_listview = GroupListView(self)
         self.settings_view = SettingsView()
@@ -139,14 +139,10 @@ class HomePage(dict):
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
-        self["basket"] = basket
+        self.basket = basket
+        self.on_basket_set(basket)
         
         return self.view
-    
-    def __setitem__(self, key: any, value: any) -> None:
-        if key == "basket":
-            self.on_basket_set(value)
-        super().__setitem__(key, value)
     
     def on_basket_set(self, basket: Basket):
         pass
