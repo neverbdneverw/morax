@@ -239,6 +239,7 @@ class LoginPage():
         )
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
+        self.basket = basket
         self.page = page
         return self.view
     
