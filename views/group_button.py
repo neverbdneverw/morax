@@ -3,6 +3,7 @@ import flet as ft
 class GroupButton(ft.ElevatedButton):
     def __init__(self, group_name):
         super().__init__()
+        self.group_name = group_name
         
         text = ft.Container(
             content=ft.Text(
@@ -21,7 +22,7 @@ class GroupButton(ft.ElevatedButton):
         
         self.image = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
-            controls=[ft.Image("resources/logo_filled.png", width=150, height=150)]
+            controls=[ft.Image("resources/default_image.png", width=150, height=150)]
         )
         
         column = ft.Column(
@@ -31,7 +32,7 @@ class GroupButton(ft.ElevatedButton):
         )
         
         self.content = column
-        self.on_click = self.activate
+        self.on_click = lambda event: self.activate(event)
         self.style=ft.ButtonStyle(
             shape=ft.RoundedRectangleBorder(radius=10)
         )
@@ -44,7 +45,4 @@ class AddGroupButton(GroupButton):
         super().__init__("Add")
         self.image.controls[0].src = "resources/add_icon.svg"
         self.text_row.visible = False
-        
-    def activate(self, event):
-        pass
         

@@ -7,6 +7,7 @@ from views.forgot_password_page import ForgotPasswordPage
 from views.confirm_email_page import ConfirmEmailPage
 from views.home_page import HomePage
 
+from controllers.opening_controller import OpeningController
 from controllers.login_controller import LoginController
 from controllers.signup_controller import SignupController
 from controllers.forgot_controller import ForgotController
@@ -32,7 +33,7 @@ def main(page: ft.Page):
     app_routes = [
         path(url="/", clear=True, view=opening_page.get_view),
         path(url="/login", clear=True, view=login_page.get_view),
-        path(url="/signup", clear=True, view=signup_page.get_view),
+        path(url="/signup", clear=True, view=signup_page.get_view), 
         path(url="/forgot_password", clear=True, view=forgot_password_page.get_view),
         path(url="/confirm_email", clear=True, view=confirm_email_page.get_view),
         path(url="/home", clear=True, view=home_page.get_view)
@@ -43,11 +44,12 @@ def main(page: ft.Page):
     
     database = Database()
 
+    HomeController(page, database, home_page)
+    OpeningController(page, database, opening_page)
     LoginController(page, database, login_page)
     SignupController(page, database, signup_page)
     ForgotController(page, database, forgot_password_page)
     ConfirmEmailController(page, database, confirm_email_page)
-    HomeController(page, database, home_page)
 
 if __name__ == "__main__":
     ft.app(target=main)

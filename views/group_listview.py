@@ -9,7 +9,7 @@ class GroupListView(ft.Column):
         )
         self.homepage = homepage
         
-        top_text = ft.Text(
+        self.top_text = ft.Text(
             expand=True,
             value="Hello User",
             color = ft.colors.BLACK,
@@ -19,7 +19,7 @@ class GroupListView(ft.Column):
         
         top_text_row = ft.Row(
             expand=True,
-            controls=[top_text]
+            controls=[self.top_text]
         )
         
         self.top_text_container = ft.Container(
@@ -70,7 +70,6 @@ class GroupListView(ft.Column):
 
         for group_name in groups.keys():
             group_button = GroupButton(group_name)
-            
             self.grid.controls.append(group_button)
         
         add_button = AddGroupButton()

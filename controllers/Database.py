@@ -18,21 +18,23 @@ class Database:
         ref = db.reference("/")
         self.dictionary = dict(ref.get())
     
-    def query_login(self, account: str, password: str):
+    def query_login(self, email: str, password: str):
         users = self.dictionary["Users"]
-        account = account.replace('.', ',')
-        if '@' in account and account in users and users[account]['Password'] == password:
+        email = email.replace('.', ',')
+        if email in users and users[email]['Password'] == password:
             return "Found"
-        elif '@' in account and account in users and users[account]['Password'] != password:
+        elif email in users and users[email]['Password'] != password:
             return "Wrong Password"
-        else:
-            for user in users:
-                if users[user]['Username'] == account and users[user]['Password'] == password:
-                    return "Found"
-                elif users[user]['Username'] == account and users[user]['Password'] != password:
-                    return "Wrong Password"
         
         return "Not found"
+    
+    def get_username_of_email(self, email: str):
+        users = self.dictionary["Users"]
+        email = email.replace('.', ',')
+        if email in users:
+            return users[email]["Username"]
+        
+        return "No username exists for this email."
     
     def change_password(self, email: str, new_password: str):
         users = self.dictionary["Users"]
@@ -78,7 +80,7 @@ Ignore this message if not.
 
         return code
     
-    def get_groups(self, email: str):
+    def get_groups_for_email(self, email: str):
         groups = dict()
         for group in self.dictionary["Groups"]:
             for member in self.dictionary['Groups'][group]["Members"]:
@@ -86,6 +88,13 @@ Ignore this message if not.
                     groups[group] = self.dictionary['Groups'][group]
         
         return groups
+    
+    def is_group_existing(self, group_code: str):
+        for group in self.dictionary['Groups']:
+            if self.dictionary['Groups'][group]['Unique code'] == group_code:
+                return True
+            
+        return False
     
     def get_members(self, group: str):
         if not group in self.dictionary['Groups']:

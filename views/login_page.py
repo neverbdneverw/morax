@@ -79,7 +79,7 @@ class LoginPage():
         )
         password_textfield_row.controls.append(self.password_textfield)
         
-        keep_logged_check = ft.Checkbox(
+        self.keep_logged_check = ft.Checkbox(
             value=False,
             fill_color="#d6d6d6",
             check_color="#ae8948"
@@ -102,7 +102,7 @@ class LoginPage():
         keep_logged_check_row = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            controls=[keep_logged_check, keep_logged_indicator_text, self.forgot_password_btn]
+            controls=[self.keep_logged_check, keep_logged_indicator_text, self.forgot_password_btn]
         )
         
         self.login_btn = ft.ElevatedButton(
@@ -242,6 +242,9 @@ class LoginPage():
         self.basket = basket
         self.page = page
         return self.view
+    
+    def get_keep_signed_in(self):
+        return self.keep_logged_check.value
     
     def get_email_entry(self):
         return self.email_textfield.value
