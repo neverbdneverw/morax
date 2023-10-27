@@ -11,6 +11,8 @@ from controllers.login_controller import LoginController
 from controllers.signup_controller import SignupController
 from controllers.forgot_controller import ForgotController
 from controllers.confirm_email_controller import ConfirmEmailController
+from controllers.home_controller import HomeController
+
 from controllers.Database import Database
 
 def main(page: ft.Page):
@@ -45,6 +47,7 @@ def main(page: ft.Page):
     SignupController(page, database, signup_page)
     ForgotController(page, database, forgot_password_page)
     ConfirmEmailController(page, database, confirm_email_page)
+    HomeController(page, database, home_page)
 
 if __name__ == "__main__":
     ft.app(target=main)

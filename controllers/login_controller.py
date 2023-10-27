@@ -23,6 +23,7 @@ class LoginController:
     def login(self, event):
         verdict = self.database.query_login(self.login_page.get_email_entry(), self.login_page.get_password_entry())
         if verdict == "Found":
+            self.login_page.basket.email = self.login_page.get_email_entry()
             self.page.go("/home")
         elif verdict == "Not found":
             self.login_page.display_on_dialog("Username or Password might be wrong. Please Try Again.")
