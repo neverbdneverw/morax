@@ -1,4 +1,5 @@
 import flet as ft
+from views.group_button import GroupButton
 
 class FeedbackView(ft.Column):
     def __init__(self):
@@ -39,36 +40,8 @@ class FeedbackView(ft.Column):
         self.controls.append(self.grid)
         
         for i in range(25):
-            text = ft.Container(
-                content=ft.Text(
-                    f"Column {i}",
-                    color="green",
-                    weight=ft.FontWeight.W_500,
-                ),
-                padding=10
-            )
-            
-            text_row = ft.Row(
-                controls=[text],
-                alignment=ft.MainAxisAlignment.CENTER
-            )
-            
-            image = ft.Row(
-                alignment=ft.MainAxisAlignment.CENTER,
-                controls=[ft.Image("resources/logo_filled.png", width=150, height=150)]
-            )
-            
-            column = ft.Column(
-                controls=[text_row, ft.Container(content=image)],
-                alignment=ft.MainAxisAlignment.CENTER
-            )
-            
-            aim = ft.Card(
-                content=column,
-                color="white"
-            )
-            
-            self.grid.controls.append(aim)
+            group_button = GroupButton(str(i))
+            self.grid.controls.append(group_button)
     
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)

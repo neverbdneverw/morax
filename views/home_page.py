@@ -4,16 +4,20 @@ from flet_route import Params, Basket
 from views.group_listview import GroupListView
 from views.settings_view import SettingsView
 from views.feedback_view import FeedbackView
+from views.account_view import AccountView
+
+from views.add_dialog import AddDialog
 
 class HomePage():
     def __init__(self):
         self.group_listview = GroupListView(self)
         self.settings_view = SettingsView()
         self.feedback_view = FeedbackView()
+        self.account_view = AccountView()
         
         self.slider_stack = ft.Stack(
             expand=True,
-            controls=[self.group_listview, self.settings_view, self.feedback_view]
+            controls=[self.group_listview, self.settings_view, self.feedback_view, self.account_view]
         )
         
         content_area_row = ft.Row(
@@ -83,20 +87,23 @@ class HomePage():
             alignment=ft.MainAxisAlignment.CENTER
         )
         
-        logod = ft.Image(
-            src = "resources/logo_filled.png",
-            width=50,
-            height=50,
-            expand=True
+        self.profile_button = ft.IconButton(
+            selected=False,
+            icon=ft.icons.ACCOUNT_CIRCLE_OUTLINED,
+            selected_icon=ft.icons.ACCOUNT_CIRCLE,
+            width = 50,
+            height = 50,
+            icon_size=36,
+            style=ft.ButtonStyle(color={"selected": "black", "": "#d6d6d6"})
         )
         
-        logod_row = ft.Row(
-            controls=[logod],
+        profile_button_row = ft.Row(
+            controls=[self.profile_button],
             alignment=ft.MainAxisAlignment.CENTER
         )
         
-        logod_container = ft.Container(
-            content=logod_row,
+        profile_button_container = ft.Container(
+            content=profile_button_row,
             padding=12.5
         )
         
@@ -112,7 +119,7 @@ class HomePage():
             width = 75,
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             horizontal_alignment=ft.MainAxisAlignment.CENTER,
-            controls=[sidebar_top_column, logod_container]
+            controls=[sidebar_top_column, profile_button_container]
         )
         
         sidebar_container = ft.Container(
@@ -136,13 +143,22 @@ class HomePage():
             padding=0,
             controls = [main_row]
         )
+        
+        self.add_dialog = AddDialog()
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
         self.basket = basket
-        self.on_basket_set(basket)
-        
+        self.on_email_retrieved(self.basket.email)
         return self.view
     
-    def on_basket_set(self, basket: Basket):
+    def on_email_retrieved(self, email: str):
         pass
+    
+    def check_if_autologin(self):
+        pass
+    
+    def show_add_dialog(self):
+        self.page.dialog = self.add_dialog
+        self.add_dialog.open = True
+        self.page.update()

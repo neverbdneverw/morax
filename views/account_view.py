@@ -1,16 +1,16 @@
 import flet as ft
 from views.group_button import GroupButton
 
-class SettingsView(ft.Column):
+class AccountView(ft.Column):
     def __init__(self):
         super().__init__(
-            offset=ft.transform.Offset(0, 1.5),
+            offset=ft.transform.Offset(0, 4.5),
             animate_offset=ft.animation.Animation(300)
         )
         
         top_text = ft.Text(
             expand=True,
-            value="SETTINGS",
+            value="ACCOUNT",
             color = ft.colors.BLACK,
             weight=ft.FontWeight.W_600,
             size=54

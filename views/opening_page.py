@@ -14,11 +14,10 @@ class OpeningPage():
             controls=[logo]
         )
         
-        login_button = ft.ElevatedButton(
+        self.login_button = ft.ElevatedButton(
             bgcolor = "#d6d6d6",
             width = 250,
             height = 48,
-            on_click = self.login_clicked,
             content = ft.Text(
                 value = "Log in",
                 color = "#ae8948",
@@ -28,7 +27,7 @@ class OpeningPage():
         
         login_btn_row = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
-            controls = [login_button]
+            controls = [self.login_button]
         )
         
         account_none_indicator = ft.Text(
@@ -42,11 +41,10 @@ class OpeningPage():
             controls = [account_none_indicator]
         )
         
-        signup_button = ft.ElevatedButton(
+        self.signup_button = ft.ElevatedButton(
             bgcolor = "#d6d6d6",
             width = 250,
             height = 48,
-            on_click = self.signup_clicked,
             content = ft.Text(
                 value = "Sign up",
                 color = "#ae8948",
@@ -56,7 +54,7 @@ class OpeningPage():
         
         signup_btn_row = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
-            controls = [signup_button]
+            controls = [self.signup_button]
         )
         
         main_column = ft.Column(
@@ -70,11 +68,6 @@ class OpeningPage():
         )
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
+        self.basket = basket
         self.page = page
         return self.view
-    
-    def login_clicked(self, event):
-        self.page.go("/login")
-    
-    def signup_clicked(self, event):
-        self.page.go("/signup")
