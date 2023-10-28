@@ -60,7 +60,7 @@ class GroupListView(ft.Column):
         self.controls.append(self.empty_warning_text_container)
         self.controls.append(self.grid)
     
-    def setup_gui(self, groups: dict):
+    def setup_gui(self, groups: dict, images: dict):
         if len(groups.keys()) == 0:
             self.empty_warning_text_container.visible = True
             self.empty_warning_text_container.offset = ft.transform.Offset(0, 0)
@@ -69,11 +69,16 @@ class GroupListView(ft.Column):
             self.empty_warning_text_container.visible = False
 
         for group_name in groups.keys():
-            group_button = GroupButton(group_name)
+            group_button = GroupButton(group_name, images[group_name])
             self.grid.controls.append(group_button)
         
         add_button = AddGroupButton()
         self.grid.controls.append(add_button)
+    
+    def add_new_item(self, group_name: str, new_image_string: str):
+        group_button = GroupButton(group_name, new_image_string)
+        length = len(self.grid.controls)
+        self.grid.controls.insert(length - 1, group_button)
 
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)

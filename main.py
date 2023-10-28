@@ -42,6 +42,8 @@ def main(page: ft.Page):
     Routing(page = page, app_routes = app_routes)
     page.go(page.route)
     
+    # page.client_storage.clear()
+    
     database = Database()
 
     HomeController(page, database, home_page)
