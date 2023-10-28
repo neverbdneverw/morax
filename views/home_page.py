@@ -162,3 +162,7 @@ class HomePage():
         self.page.dialog = self.add_dialog
         self.add_dialog.open = True
         self.page.update()
+    
+    def close_dialog(self, event: ft.ControlEvent):
+        self.add_dialog.open = False
+        self.page.update()

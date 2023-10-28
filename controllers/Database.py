@@ -1,9 +1,19 @@
 import firebase_admin
 import random
+import string
 import smtplib
 import ssl
 from email.message import EmailMessage
 from firebase_admin import db, credentials
+import pandas as pd
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseDownload
+from googleapiclient.http import MediaIoBaseUpload
+import io
+from googleapiclient.errors import HttpError
+import base64
+from PIL import Image
 
 app_password = "iktq ghqx nzhv tyar"
 email_sender = "neverbackdownneverwhatteyvat@gmail.com"
@@ -12,11 +22,16 @@ class Database:
     def __init__(self):
         cred = credentials.Certificate("resources/credentials.json")
         firebase_admin.initialize_app(cred, {"databaseURL" : "https://morax-shared-financial-manager-default-rtdb.asia-southeast1.firebasedatabase.app/"})
+        scope = ['https://www.googleapis.com/auth/drive']
+        drive_credentials = service_account.Credentials.from_service_account_file(filename="resources/credentials.json", scopes=scope)
+        self.service = build('drive', 'v3', credentials=drive_credentials)
         self.update_refs()
     
     def update_refs(self):
         ref = db.reference("/")
         self.dictionary = dict(ref.get())
+        results = self.service.files().list(pageSize=1000, fields="nextPageToken, files(id, name, mimeType)", q='name contains "de"').execute()
+        self.drive_files = results.get('files', [])
     
     def query_login(self, email: str, password: str):
         users = self.dictionary["Users"]
@@ -52,6 +67,30 @@ class Database:
             return "Successful"
         
         return "Account already exists."
+    
+    def create_group_with_email(self, group_name: str, email: str):
+        username = self.get_username_of_email(email)
+        unique_code = self.generate_unique_code()
+        email = email.replace('.', ',')
+        if email in self.dictionary["Users"]:
+            db.reference(f"/Groups/").update({group_name : {"Members" : {username : email}, "Transactions": "", "Unique code" : unique_code}})
+            
+            return "Successful"
+        
+        return "Cannot create group."
+    
+    def join_group_with_email(self, unique_code: str, email: str):
+        username = self.get_username_of_email(email)
+        email = email.replace('.', ',')
+        
+        group_name = self.get_group_by_code(unique_code)
+        
+        if email in self.dictionary["Users"]:
+            db.reference(f"/Groups/{group_name}/Members").update({username: email})
+            
+            return "Successful"
+        
+        return "Cannot create group."
     
     def confirm_email_ownership(self, email):
         code = random.randrange(100000, 999999)
@@ -89,6 +128,14 @@ Ignore this message if not.
         
         return groups
     
+    def get_group_by_code(self, code: str):
+        groups = self.dictionary["Groups"]
+        for group in groups:
+            if self.dictionary['Groups'][group]['Unique code'] == code:
+                return str(group)
+            
+        return "Unsuccessful"
+    
     def is_group_existing(self, group_code: str):
         for group in self.dictionary['Groups']:
             if self.dictionary['Groups'][group]['Unique code'] == group_code:
@@ -108,3 +155,76 @@ Ignore this message if not.
         
         transactions = self.dictionary['Groups'][group]["Transactions"]
         return transactions
+    
+    def generate_unique_code(self):
+        res = ''.join(random.choices(
+            string.ascii_letters +
+            string.digits
+            , k=8))
+        
+        return str(res)
+    
+    def get_code_by_group_name(self, group_name: str):
+        groups = self.dictionary["Groups"]
+        for group in groups:
+            if self.dictionary['Groups'][group] == group_name:
+                return self.dictionary['Groups'][group]['Unique code']
+            
+        return "Unsuccessful"
+    
+    def get_picture_id_by_group_name(self, group_name: str):
+        groups = self.dictionary["Groups"]
+        for group in groups:
+            if group == group_name:
+                return self.dictionary['Groups'][group]['Picture id']
+            
+        return "Unsuccessful"
+    
+    def get_group_image(self, group_name: str):
+        picture_id = self.get_picture_id_by_group_name(group_name)
+        base64_content = ""
+        try:
+            request_file = self.service.files().get_media(fileId = picture_id)
+            file = io.BytesIO()
+            downloader = MediaIoBaseDownload(file, request_file)
+            done = False
+            while done is False:
+                status, done = downloader.next_chunk()
+            
+            base64_content = base64.b64encode(file.getvalue()).decode('utf-8')
+        except HttpError as error:
+            print(F'An error occurred: {error}')
+            return ""
+        
+        return base64_content
+
+    def get_group_images_for_email(self, email: str):
+        images = dict()
+        groups = self.get_groups_for_email(email)
+        for group in groups:
+            image = self.get_group_image(group)
+            images[group] = image
+        
+        return images
+    
+    def upload_group_image(self, group_name: str, file: str):
+        image_bytes = io.BytesIO()
+        image = Image.open(file).convert("RGBA")
+        image = image.resize((200, 200))
+        image.save(image_bytes, format="PNG")
+        
+        try:
+            media = MediaIoBaseUpload(image_bytes, mimetype='image/png')
+            uploaded_file = self.service.files().create(body={'name': f"{group_name}.png"}, media_body=media, fields='id').execute()
+            id = uploaded_file.get('id')
+            db.reference(f"/Groups/{group_name}").update({"Picture id": id})
+
+            permission = {
+                'type': 'user',
+                'role': 'writer',
+                'emailAddress': email_sender
+            }
+            self.service.permissions().create(fileId=id, body=permission).execute()
+            
+        except HttpError as error:
+            print(f'An error occurred: {error}')

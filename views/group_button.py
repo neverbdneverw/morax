@@ -1,7 +1,7 @@
 import flet as ft
 
 class GroupButton(ft.ElevatedButton):
-    def __init__(self, group_name):
+    def __init__(self, group_name: str, image_string: str):
         super().__init__()
         self.group_name = group_name
         
@@ -19,10 +19,20 @@ class GroupButton(ft.ElevatedButton):
             controls=[text],
             alignment=ft.MainAxisAlignment.CENTER
         )
+            
+        group_image = ft.Image(
+            "resources/default_image.png",
+            width=150,
+            height=150
+        )
+        
+        if image_string != "":
+            group_image.src_base64 = image_string
+            
         
         self.image = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
-            controls=[ft.Image("resources/default_image.png", width=150, height=150)]
+            controls=[group_image]
         )
         
         column = ft.Column(
@@ -42,7 +52,7 @@ class GroupButton(ft.ElevatedButton):
 
 class AddGroupButton(GroupButton):
     def __init__(self):
-        super().__init__("Add")
+        super().__init__("Add", "")
         self.image.controls[0].src = "resources/add_icon.svg"
         self.text_row.visible = False
         

@@ -40,7 +40,7 @@ class FeedbackView(ft.Column):
         self.controls.append(self.grid)
         
         for i in range(25):
-            group_button = GroupButton(str(i))
+            group_button = GroupButton(str(i), "")
             self.grid.controls.append(group_button)
     
     def show(self, delta):

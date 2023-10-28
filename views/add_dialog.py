@@ -3,7 +3,6 @@ import flet as ft
 class AddDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
-        self.modal = True
         self.title = ft.Text("Join a group")
         self.col
         
@@ -51,18 +50,18 @@ class AddDialog(ft.AlertDialog):
             alignment=ft.MainAxisAlignment.CENTER
         )
         
-        image_preview = ft.Image(
+        self.image_preview = ft.Image(
             "resources/default_image.png",
             width=160,
             height=160
         )
         
         image_preview_row = ft.Row(
-            controls=[image_preview],
+            controls=[self.image_preview],
             alignment=ft.MainAxisAlignment.CENTER
         )
         
-        image_upload_button = ft.ElevatedButton(
+        self.image_upload_button = ft.ElevatedButton(
             height=30,
             width=160,
             bgcolor = "#d6d6d6",
@@ -73,7 +72,7 @@ class AddDialog(ft.AlertDialog):
         )
         
         image_upload_button_row = ft.Row(
-            controls=[image_upload_button],
+            controls=[self.image_upload_button],
             alignment=ft.MainAxisAlignment.CENTER
         )
         
@@ -175,7 +174,3 @@ class AddDialog(ft.AlertDialog):
     def switch_to_joining(self):
         self.switcher.content = self.join_column
         self.title.value = "Join a group"
-
-    def close_dialog(self, event: ft.ControlEvent):
-        self.open = False
-        self.page.update()
