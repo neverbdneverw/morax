@@ -25,7 +25,7 @@ class LoginController:
         verdict = self.database.query_login(self.login_page.get_email_entry(), self.login_page.get_password_entry())
         if verdict == "Found":
             email = self.login_page.get_email_entry()
-            self.login_page.basket.email = email
+            # self.login_page.basket.email = email
             self.page.client_storage.set("email", email)
             self.page.go("/home")
         elif verdict == "Not found":

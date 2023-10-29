@@ -24,5 +24,5 @@ class OpeningController:
         email = self.page.client_storage.get("email")
         
         if automatic_login is True and email is not None and email != "":
-            self.opening_page.basket.email = email
+            # self.opening_page.basket.email = email
             self.page.go("/home")
