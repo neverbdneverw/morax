@@ -1,12 +1,19 @@
 import flet as ft
 from views.group_button import GroupButton, AddGroupButton
+from views.items_view import ItemsView
 
-class GroupListView(ft.Column):
+class GroupListView(ft.AnimatedSwitcher):
     def __init__(self, homepage):
         super().__init__(
             offset=ft.transform.Offset(0, 0),
-            animate_offset=ft.animation.Animation(300)
+            animate_offset = ft.animation.Animation(300),
+            transition = ft.AnimatedSwitcherTransition.SCALE,
+            duration = 300,
+            reverse_duration = 300,
+            switch_in_curve = ft.AnimationCurve.EASE_OUT,
+            switch_out_curve = ft.AnimationCurve.EASE_IN
         )
+
         self.homepage = homepage
         
         self.top_text = ft.Text(
@@ -56,9 +63,13 @@ class GroupListView(ft.Column):
             padding = 30
         )
         
-        self.controls.append(self.top_text_container)
-        self.controls.append(self.empty_warning_text_container)
-        self.controls.append(self.grid)
+        self.items_view = ItemsView()
+        
+        self.grid_view = ft.Column(
+            controls=[self.top_text_container, self.empty_warning_text_container, self.grid]
+        )
+        
+        self.content = self.grid_view
     
     def setup_gui(self, groups: dict, images: dict):
         if len(groups.keys()) == 0:
