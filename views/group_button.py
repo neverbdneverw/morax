@@ -4,6 +4,7 @@ class GroupButton(ft.ElevatedButton):
     def __init__(self, group_name: str, image_string: str):
         super().__init__()
         self.group_name = group_name
+        self.image_string = image_string
         
         text = ft.Container(
             content=ft.Text(
@@ -27,7 +28,7 @@ class GroupButton(ft.ElevatedButton):
         )
         
         if image_string != "":
-            group_image.src_base64 = image_string
+            group_image.src_base64 = self.image_string
             
         
         self.image = ft.Row(
@@ -42,7 +43,7 @@ class GroupButton(ft.ElevatedButton):
         )
         
         self.content = column
-        self.on_click = lambda event: self.activate(event)
+        self.on_click = lambda event: self.activate(event, self.image_string)
         self.style=ft.ButtonStyle(
             shape=ft.RoundedRectangleBorder(radius=10)
         )

@@ -1,21 +1,22 @@
 import flet as ft
 
 class ItemButton(ft.ElevatedButton):
-    def __init__(self):
+    def __init__(self, transaction_name: str, transactions: dict, item_image_string: str):
         super().__init__(
             expand=True,
             style=ft.ButtonStyle(shape = ft.ContinuousRectangleBorder(radius = 0))
         )
+
         account_image = ft.Image(
-            "resources/default_image.png",
+            "resources/empty_user_image.svg",
             width = 100,
             height = 100
         )
         
         user_name = ft.Text(
-            f"Saito",
+            transactions[transaction_name]["Posted by"]["Username"],
             color="#ae8948",
-            weight=ft.FontWeight.W_400,
+            weight=ft.FontWeight.W_600,
             size=16,
         )
         
@@ -36,7 +37,7 @@ class ItemButton(ft.ElevatedButton):
         )
         
         item_name = ft.Text(
-            "Item 1",
+            transaction_name,
             color="#ae8948",
             weight=ft.FontWeight.W_700,
             size=20
@@ -46,14 +47,18 @@ class ItemButton(ft.ElevatedButton):
             max_lines=3,
             color=ft.colors.BLACK,
             size = 12,
-            value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            value = transactions[transaction_name]["Description"]
         )
         
         item_post_time = ft.Text(
-            "Date Posted: ",
+            value = "Date Posted: ",
+            spans = [ft.TextSpan(
+                f"{transactions[transaction_name]['Time created']}",
+                style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300)
+            )],
             color="#ae8948",
-            weight=ft.FontWeight.W_200,
-            italic=True
+            weight=ft.FontWeight.W_500,
+            italic=True,
         )
         
         item_info_column = ft.Column(
@@ -72,8 +77,11 @@ class ItemButton(ft.ElevatedButton):
             height = 100
         )
         
+        if item_image_string != "":
+            item_image.src_base64 = item_image_string
+        
         amount = ft.Text(
-            f"Amount",
+            f"₱ {transactions[transaction_name]['Price']}",
             color="#ae8948",
             weight=ft.FontWeight.W_700,
             size=20
@@ -87,7 +95,7 @@ class ItemButton(ft.ElevatedButton):
         
         payment_container = ft.Container(
             content=payment_column,
-            padding=ft.padding.only(10, 10, 10, 0)
+            padding=ft.padding.only(20, 20, 20, 20)
         )
         
         payment_row = ft.Row(
@@ -102,3 +110,7 @@ class ItemButton(ft.ElevatedButton):
         )
         
         self.content = column
+        self.on_click = lambda event: self.activate(event, transaction_name, transactions[transaction_name])
+    
+    def activate(self, event: ft.ControlEvent, item_name: str,  item_informations: dict):
+        pass

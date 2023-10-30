@@ -22,6 +22,9 @@ class HomeController:
             self.home_page.feedback_button,
             self.home_page.profile_button
         ]
+        
+        self.home_page.item_infos_dialog.cancel_button.on_click = self.home_page.close_dialog
+        self.home_page.item_infos_dialog.pay_button.on_click = self.show_payment_details
 
     def fill_groups(self, email: str):
         self.database.update_refs()
@@ -44,19 +47,28 @@ class HomeController:
         for button in group_buttons:
             button.activate = self.open_group
     
-    def open_group(self, event: ft.ControlEvent):
+    def open_group(self, event: ft.ControlEvent, image_string: str):
         group = event.control.group_name
         
         if group == "Add":
             self.home_page.show_add_dialog()
         else:
             transactions = self.database.get_transactions(group)
+            item_images = self.database.get_item_images_for_group(group)
             self.home_page.group_listview.content = self.home_page.group_listview.items_view
+            self.home_page.group_listview.items_view.display_transactions(group, image_string, transactions, item_images)
             self.home_page.group_listview.update()
+            
+            for item_button in self.home_page.group_listview.items_view.grid.controls:
+                item_button.activate = self.show_item_informations
     
     def return_to_grid(self, event: ft.ControlEvent):
+        self.home_page.group_listview.items_view.grid.clean()
         self.home_page.group_listview.content = self.home_page.group_listview.grid_view
         self.home_page.group_listview.update()
+    
+    def show_item_informations(self, event: ft.ControlEvent, item_name: str, item_informations: dict):
+        self.home_page.show_info_dialog()
     
     def buttons_change(self, event: ft.ControlEvent):
         new_button = event.control
@@ -72,3 +84,10 @@ class HomeController:
             view.show(iter - new_index)
         
         self.page.update()
+    
+    def show_payment_details(self, event: ft.ControlEvent):
+        self.home_page.item_infos_dialog.show_payment_details()
+        self.home_page.item_infos_dialog.title.visible = False
+        self.home_page.item_infos_dialog.pay_button.text = "Mark as paid"
+        self.home_page.item_infos_dialog.title.update()
+        self.home_page.item_infos_dialog.pay_button.update()

@@ -4,7 +4,6 @@ class AddDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
         self.title = ft.Text("Join a group")
-        self.col
         
         self.group_code_textfield = ft.TextField(
             label = "Enter 8 digit group code",

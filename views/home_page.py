@@ -7,6 +7,7 @@ from views.feedback_view import FeedbackView
 from views.account_view import AccountView
 
 from views.add_dialog import AddDialog
+from views.item_info_dialog import ItemInfoDialog
 
 class HomePage():
     def __init__(self):
@@ -145,6 +146,7 @@ class HomePage():
         )
         
         self.add_dialog = AddDialog()
+        self.item_infos_dialog = ItemInfoDialog()
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
@@ -165,5 +167,10 @@ class HomePage():
         self.page.update()
     
     def close_dialog(self, event: ft.ControlEvent):
-        self.add_dialog.open = False
+        self.page.dialog.open = False
+        self.page.update()
+    
+    def show_info_dialog(self):
+        self.page.dialog = self.item_infos_dialog
+        self.item_infos_dialog.open = True
         self.page.update()
