@@ -149,7 +149,7 @@ Ignore this message if not.
         
         return self.dictionary['Groups'][group]["Members"]
     
-    def get_transactions(self, group: str):
+    def get_transactions(self, group: str) -> dict:
         if not group in self.dictionary['Groups']:
             return "Group doesn't exist."
         
@@ -197,6 +197,27 @@ Ignore this message if not.
             return ""
         
         return base64_content
+    
+    def get_item_picture_by_item_name(self, item_name, group_name):
+        return self.dictionary['Groups'][group_name]["Transactions"][item_name]["Image id"]
+
+    def get_item_image(self, item_name: str, group_name: str):
+        picture_id = self.get_item_picture_by_item_name(item_name, group_name)
+        base64_content = ""
+        try:
+            request_file = self.service.files().get_media(fileId = picture_id)
+            file = io.BytesIO()
+            downloader = MediaIoBaseDownload(file, request_file)
+            done = False
+            while done is False:
+                status, done = downloader.next_chunk()
+            
+            base64_content = base64.b64encode(file.getvalue()).decode('utf-8')
+        except HttpError as error:
+            print(F'An error occurred: {error}')
+            return ""
+        
+        return base64_content
 
     def get_group_images_for_email(self, email: str):
         images = dict()
@@ -204,6 +225,15 @@ Ignore this message if not.
         for group in groups:
             image = self.get_group_image(group)
             images[group] = image
+        
+        return images
+    
+    def get_item_images_for_group(self, group_name: str):
+        images = dict()
+        items = self.get_transactions(group_name)
+        for item in items:
+            image = self.get_item_image(item, group_name)
+            images[item] = image
         
         return images
     

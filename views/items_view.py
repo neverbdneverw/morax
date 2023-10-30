@@ -8,7 +8,7 @@ class ItemsView(ft.Column):
             spacing=0
         )
         
-        group_image = ft.Image(
+        self.group_image = ft.Image(
             "resources/default_image.png",
             height=80,
             width=80
@@ -25,7 +25,7 @@ class ItemsView(ft.Column):
         header_left = ft.Row(
             expand=True,
             vertical_alignment=ft.MainAxisAlignment.CENTER,
-            controls=[group_image, self.group_name],
+            controls=[self.group_image, self.group_name],
             spacing=20
         )
         
@@ -66,7 +66,10 @@ class ItemsView(ft.Column):
         )
         
         self.controls = [self.header_container, cont]
-        
-        for i in range(10):
-            item  = ItemButton()
+    
+    def display_transactions(self, group_name: str, image_string: str, transactions: dict, item_images: dict):
+        self.group_name.value = group_name
+        self.group_image.src_base64 = image_string
+        for transaction in dict(transactions).keys():
+            item  = ItemButton(transaction, transactions, item_images[transaction])
             self.grid.controls.append(item)
