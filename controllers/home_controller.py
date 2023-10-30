@@ -13,6 +13,7 @@ class HomeController:
         self.home_page.settings_button.on_click = self.buttons_change
         self.home_page.feedback_button.on_click = self.buttons_change
         self.home_page.profile_button.on_click = self.buttons_change
+        self.home_page.group_listview.items_view.return_button.on_click = self.return_to_grid
         self.home_page.on_email_retrieved = self.fill_groups
         
         self.sidebar_buttons = [
@@ -50,7 +51,12 @@ class HomeController:
             self.home_page.show_add_dialog()
         else:
             transactions = self.database.get_transactions(group)
-            print(transactions)
+            self.home_page.group_listview.content = self.home_page.group_listview.items_view
+            self.home_page.group_listview.update()
+    
+    def return_to_grid(self, event: ft.ControlEvent):
+        self.home_page.group_listview.content = self.home_page.group_listview.grid_view
+        self.home_page.group_listview.update()
     
     def buttons_change(self, event: ft.ControlEvent):
         new_button = event.control
