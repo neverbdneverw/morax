@@ -23,8 +23,8 @@ class GroupButton(ft.ElevatedButton):
             
         group_image = ft.Image(
             "resources/default_image.png",
-            width=150,
-            height=150
+            width=130,
+            height=130
         )
         
         if image_string != "":
@@ -37,18 +37,18 @@ class GroupButton(ft.ElevatedButton):
         )
         
         column = ft.Column(
-            controls=[self.text_row, ft.Container(content=self.image)],
+            controls=[self.text_row, ft.Container(content=self.image, padding=10)],
             alignment=ft.MainAxisAlignment.CENTER,
             spacing=0
         )
         
         self.content = column
-        self.on_click = lambda event: self.activate(event, self.image_string)
+        self.on_click = lambda event: self.activate(group_name, self.image_string)
         self.style=ft.ButtonStyle(
             shape=ft.RoundedRectangleBorder(radius=10)
         )
         
-    def activate(self, event):
+    def activate(self, group_name: str, image_string: str):
         pass
 
 class AddGroupButton(GroupButton):

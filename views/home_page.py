@@ -8,6 +8,7 @@ from views.account_view import AccountView
 
 from views.add_dialog import AddDialog
 from views.item_info_dialog import ItemInfoDialog
+from views.add_receivable_dialog import AddReceivableDialog
 
 class HomePage():
     def __init__(self):
@@ -145,12 +146,12 @@ class HomePage():
             controls = [main_row]
         )
         
-        self.add_dialog = AddDialog()
+        self.add_group_dialog = AddDialog()
         self.item_infos_dialog = ItemInfoDialog()
+        self.add_receivable_dialog = AddReceivableDialog()
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
-        # self.basket = basket
         email = self.page.client_storage.get("email")
         self.on_email_retrieved(email)
         return self.view
@@ -161,9 +162,9 @@ class HomePage():
     def check_if_autologin(self):
         pass
     
-    def show_add_dialog(self):
-        self.page.dialog = self.add_dialog
-        self.add_dialog.open = True
+    def show_add_group_dialog(self):
+        self.page.dialog = self.add_group_dialog
+        self.add_group_dialog.open = True
         self.page.update()
     
     def close_dialog(self, event: ft.ControlEvent):
@@ -173,4 +174,9 @@ class HomePage():
     def show_info_dialog(self):
         self.page.dialog = self.item_infos_dialog
         self.item_infos_dialog.open = True
+        self.page.update()
+        
+    def show_add_receivable_dialog(self):
+        self.page.dialog = self.add_receivable_dialog
+        self.add_receivable_dialog.open = True
         self.page.update()

@@ -24,5 +24,7 @@ class OpeningController:
         email = self.page.client_storage.get("email")
         
         if automatic_login is True and email is not None and email != "":
-            # self.opening_page.basket.email = email
+            self.page.snack_bar = ft.SnackBar(ft.Text(f"You will be automatically logged in."), duration=1000)
+            self.page.snack_bar.open = True
+            self.page.update()
             self.page.go("/home")

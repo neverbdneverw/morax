@@ -25,7 +25,6 @@ class LoginController:
         verdict = self.database.query_login(self.login_page.get_email_entry(), self.login_page.get_password_entry())
         if verdict == "Found":
             email = self.login_page.get_email_entry()
-            # self.login_page.basket.email = email
             self.page.client_storage.set("email", email)
             self.page.go("/home")
         elif verdict == "Not found":
@@ -36,6 +35,7 @@ class LoginController:
     def handle_automatic_login(self, event):
         setting = self.login_page.get_keep_signed_in()
         self.page.client_storage.set("keep_signed_in", setting)
+        self.page.client_storage.set("recent_set_keep_signed_in", setting)
     
     def go_to_signup(self, event):
         self.page.go("/signup")

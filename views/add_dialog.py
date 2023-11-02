@@ -66,7 +66,7 @@ class AddDialog(ft.AlertDialog):
             bgcolor = "#d6d6d6",
             content=ft.Text(
                 value="Upload image",
-                color = "#ae8948"
+                color="black"
             )
         )
         
