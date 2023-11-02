@@ -151,10 +151,8 @@ class HomeController:
         self.open_group(group_name, image_string)
     
     def return_to_grid(self, event: ft.ControlEvent):
-        if self.home_page.group_listview.items_view.list_switcher.content == self.home_page.group_listview.items_view.payable_column:
-            self.home_page.group_listview.items_view.payable_list.clean()
-        else:
-            self.home_page.group_listview.items_view.receivable_list.clean()
+        self.home_page.group_listview.items_view.payable_list.controls = []
+        self.home_page.group_listview.items_view.receivable_list.controls = []
     
         self.home_page.group_listview.content = self.home_page.group_listview.grid_view
         self.home_page.group_listview.update()
