@@ -1,9 +1,6 @@
 from controllers.Database import Database
 from views.home_page import HomePage
 import flet as ft
-from PIL import Image
-import io
-import base64
 
 class HomeController:
     code_validated = False
@@ -32,8 +29,8 @@ class HomeController:
             self.home_page.profile_button
         ]
         
-        self.home_page.item_infos_dialog.cancel_button.on_click = self.home_page.close_dialog
-        self.home_page.item_infos_dialog.pay_button.on_click = self.show_payment_details
+        # self.home_page.item_infos_dialog.cancel_button.on_click = self.home_page.close_dialog
+        # self.home_page.item_infos_dialog.pay_button.on_click = self.show_payment_details
 
     def fill_groups(self, email: str):
         self.database.update_refs()
@@ -117,12 +114,12 @@ class HomeController:
         
         self.page.update()
     
-    def show_payment_details(self, event: ft.ControlEvent):
-        self.home_page.item_infos_dialog.show_payment_details()
-        self.home_page.item_infos_dialog.title.visible = False
-        self.home_page.item_infos_dialog.pay_button.text = "Mark as paid"
-        self.home_page.item_infos_dialog.title.update()
-        self.home_page.item_infos_dialog.pay_button.update()
+    # def show_payment_details(self, event: ft.ControlEvent):
+    #     self.home_page.item_infos_dialog.show_payment_details()
+    #     self.home_page.item_infos_dialog.title.visible = False
+    #     self.home_page.item_infos_dialog.pay_button.text = "Mark as paid"
+    #     self.home_page.item_infos_dialog.title.update()
+    #     self.home_page.item_infos_dialog.pay_button.update()
     
     def show_receivables(self, event: ft.ControlEvent):
         if self.home_page.group_listview.items_view.list_switcher.content == self.home_page.group_listview.items_view.payable_column:
