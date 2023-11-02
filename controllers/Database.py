@@ -68,12 +68,12 @@ class Database:
         
         return "Account already exists."
     
-    def create_group_with_email(self, group_name: str, email: str):
+    def create_group_with_email(self, group_name: str, group_description: str, email: str):
         username = self.get_username_of_email(email)
         unique_code = self.generate_unique_code()
         email = email.replace('.', ',')
         if email in self.dictionary["Users"]:
-            db.reference(f"/Groups/").update({group_name : {"Members" : {username : email}, "Transactions": "", "Unique code" : unique_code}})
+            db.reference(f"/Groups/").update({group_name : {"Members" : {username : email}, "Transactions": "", "Unique code" : unique_code, "Description": group_description, "Created by": username}})
             
             return "Successful"
         
@@ -198,6 +198,41 @@ Ignore this message if not.
         
         return base64_content
     
+    def get_group_description(self, group_name: str):
+        groups = self.dictionary["Groups"]
+        for group in groups:
+            if group == group_name:
+                return self.dictionary['Groups'][group]['Description']
+        
+        return "Unsuccessful"
+    
+    def get_group_creator(self, group_name: str):
+        groups = self.dictionary["Groups"]
+        for group in groups:
+            if group == group_name:
+                return self.dictionary['Groups'][group]['Created by']
+        
+        return "Unsuccessful"
+    
+    def get_user_image(self, email: str):
+        email = email.replace('.', ',')
+        picture_id = self.dictionary['Users'][email]['Picture Link']
+        base64_content = ""
+        try:
+            request_file = self.service.files().get_media(fileId = picture_id)
+            file = io.BytesIO()
+            downloader = MediaIoBaseDownload(file, request_file)
+            done = False
+            while done is False:
+                status, done = downloader.next_chunk()
+            
+            base64_content = base64.b64encode(file.getvalue()).decode('utf-8')
+        except HttpError as error:
+            print(F'An error occurred: {error}')
+            return ""
+        
+        return base64_content
+    
     def get_item_picture_by_item_name(self, item_name, group_name):
         return self.dictionary['Groups'][group_name]["Transactions"][item_name]["Image id"]
 
@@ -258,3 +293,34 @@ Ignore this message if not.
             
         except HttpError as error:
             print(f'An error occurred: {error}')
+    
+    def upload_item_image(self, group_name: str, item_name: str, file: str):
+        image_bytes = io.BytesIO()
+        image = Image.open(file).convert("RGBA")
+        image = image.resize((200, 200))
+        image.save(image_bytes, format="PNG")
+        
+        try:
+            media = MediaIoBaseUpload(image_bytes, mimetype='image/png')
+            uploaded_file = self.service.files().create(body={'name': f"{group_name}|{item_name}.png"}, media_body=media, fields='id').execute()
+            id = uploaded_file.get('id')
+            db.reference(f"/Groups/{group_name}/Transactions/{item_name}").update({"Image id": id})
+
+            permission = {
+                'type': 'user',
+                'role': 'writer',
+                'emailAddress': email_sender
+            }
+            self.service.permissions().create(fileId=id, body=permission).execute()
+            
+        except HttpError as error:
+            print(f'An error occurred: {error}')
+    
+    def create_receivable(self, email: str, group_name: str, item_name: str, item_date: str, item_amount: str, item_description: str):
+        username = self.get_username_of_email(email)
+        email = email.replace('.', ',')
+        if group_name in self.dictionary["Groups"]:
+            db.reference(f"/Groups/{group_name}/Transactions").update({item_name : { "Description" : item_description, "Price": item_amount, "Posted by": {"Email": email, "Username": username}, "Time created": item_date, "Image id": ""}})
+            return "Successful"
+        
+        return "Cannot add item"

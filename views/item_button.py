@@ -1,7 +1,7 @@
 import flet as ft
 
 class ItemButton(ft.ElevatedButton):
-    def __init__(self, transaction_name: str, transactions: dict, item_image_string: str):
+    def __init__(self, transaction_name: str, transactions: dict, item_image_string: str, has_amount_received: bool):
         super().__init__(
             expand=True,
             style=ft.ButtonStyle(shape = ft.ContinuousRectangleBorder(radius = 0))
@@ -61,10 +61,24 @@ class ItemButton(ft.ElevatedButton):
             italic=True,
         )
         
+        amount_received = ft.Text(
+            value = "Amount Received: ",
+            spans = [ft.TextSpan(
+                f"₱ 100",
+                style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300)
+            )],
+            color="#ae8948",
+            weight=ft.FontWeight.W_500,
+            italic=True,
+        )
+        
         item_info_column = ft.Column(
             controls=[item_name, item_description, item_post_time],
             expand=True
         )
+        
+        if has_amount_received:
+            item_info_column.controls.append(amount_received)
         
         item_info_row = ft.Row(
             controls=[item_info_column],
