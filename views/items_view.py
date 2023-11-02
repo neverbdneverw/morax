@@ -304,3 +304,6 @@ class ItemsView(ft.Column):
     def set_user_image(self, user_image: str):
         if user_image != "":
             self.user_image.src_base64 = user_image
+    
+    def on_trigger_reload(self, event: ft.ControlEvent):
+        pass

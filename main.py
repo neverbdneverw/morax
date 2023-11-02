@@ -14,6 +14,7 @@ from controllers.forgot_controller import ForgotController
 from controllers.confirm_email_controller import ConfirmEmailController
 from controllers.home_controller import HomeController
 from controllers.add_dialog_controller import AddDialogController
+from controllers.add_receivable_dialog_controller import AddReceivableDialogController
 
 from controllers.Database import Database
 
@@ -49,6 +50,7 @@ def main(page: ft.Page):
 
     HomeController(page, database, home_page)
     AddDialogController(page, database, home_page)
+    AddReceivableDialogController(page, database, home_page)
     OpeningController(page, database, opening_page)
     LoginController(page, database, login_page)
     SignupController(page, database, signup_page)
