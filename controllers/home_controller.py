@@ -28,9 +28,6 @@ class HomeController:
             self.home_page.feedback_button,
             self.home_page.profile_button
         ]
-        
-        # self.home_page.item_infos_dialog.cancel_button.on_click = self.home_page.close_dialog
-        # self.home_page.item_infos_dialog.pay_button.on_click = self.show_payment_details
 
     def fill_groups(self, email: str):
         self.database.update_refs()
@@ -114,13 +111,6 @@ class HomeController:
         
         self.page.update()
     
-    # def show_payment_details(self, event: ft.ControlEvent):
-    #     self.home_page.item_infos_dialog.show_payment_details()
-    #     self.home_page.item_infos_dialog.title.visible = False
-    #     self.home_page.item_infos_dialog.pay_button.text = "Mark as paid"
-    #     self.home_page.item_infos_dialog.title.update()
-    #     self.home_page.item_infos_dialog.pay_button.update()
-    
     def show_receivables(self, event: ft.ControlEvent):
         if self.home_page.group_listview.items_view.list_switcher.content == self.home_page.group_listview.items_view.payable_column:
             self.home_page.group_listview.items_view.receivables_button.text = "My Payables"
@@ -128,6 +118,9 @@ class HomeController:
         else:
             self.home_page.group_listview.items_view.receivables_button.text = "My Receivables"
             self.home_page.group_listview.items_view.list_switcher.content = self.home_page.group_listview.items_view.payable_column
+        
+        if self.home_page.group_listview.items_view.add_receivable_button not in self.home_page.group_listview.items_view.receivable_list.controls:
+            self.home_page.group_listview.items_view.receivable_list.controls.append(self.home_page.group_listview.items_view.add_receivable_button)
         
         self.home_page.group_listview.items_view.receivables_button.update()
         self.home_page.group_listview.items_view.list_switcher.update()
