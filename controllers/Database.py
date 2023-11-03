@@ -331,11 +331,34 @@ Ignore this message if not.
         except HttpError as error:
             print(f'An error occurred: {error}')
     
+    def mark_paid_with_proof(self, group_name: str, item_name: str, email: str, image_path: str):
+        email = email.replace('.', ',')
+        image_bytes = io.BytesIO()
+        image = Image.open(image_path).convert("RGBA")
+        image = image.resize((200, 200))
+        image.save(image_bytes, format="PNG")
+        
+        try:
+            media = MediaIoBaseUpload(image_bytes, mimetype='image/png')
+            uploaded_file = self.service.files().create(body={'name': f"{group_name}|{item_name}.png"}, media_body=media, fields='id').execute()
+            id = uploaded_file.get('id')
+            db.reference(f"/Groups/{group_name}/Transactions/{item_name}/Paid by").update({ email : id})
+
+            permission = {
+                'type': 'user',
+                'role': 'writer',
+                'emailAddress': email_sender
+            }
+            self.service.permissions().create(fileId=id, body=permission).execute()
+        
+        except HttpError as error:
+            print(f'An error occurred: {error}')
+    
     def create_receivable(self, email: str, group_name: str, item_name: str, item_date: str, item_amount: str, item_description: str):
         username = self.get_username_of_email(email)
         email = email.replace('.', ',')
         if group_name in self.dictionary["Groups"]:
-            db.reference(f"/Groups/{group_name}/Transactions").update({item_name : { "Description" : item_description, "Price": item_amount, "Posted by": {"Email": email, "Username": username}, "Time created": item_date, "Image id": ""}})
+            db.reference(f"/Groups/{group_name}/Transactions").update({item_name : { "Description" : item_description, "Price": item_amount, "Posted by": {"Email": email, "Username": username}, "Time created": item_date, "Image id": "", "Paid by": ""}})
             return "Successful"
         
         return "Cannot add item"

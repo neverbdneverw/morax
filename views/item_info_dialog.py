@@ -152,6 +152,27 @@ class ItemInfoDialog(ft.AlertDialog):
             width = 480,
             height = 150
         )
+        
+        self.payment_preview_image = ft.Image(
+            src="resources/default_image.png",
+            width=120,
+            height=120
+        )
+        
+        self.upload_proof_button = ft.ElevatedButton(
+            bgcolor = "#d6d6d6",
+            content=ft.Text(
+                value="Upload proof of payment",
+                color="black"
+            )
+        )
+        
+        self.proof_column = ft.Column(
+            width = 480,
+            height = 150,
+            controls=[self.payment_preview_image, self.upload_proof_button],
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER
+        )
 
         self.switcher = ft.AnimatedSwitcher(
             content = self.main_row,
@@ -181,10 +202,10 @@ class ItemInfoDialog(ft.AlertDialog):
         self.title.visible = True
         self.pay_button.text = "Pay now"
 
-        informations = dict(item_informations)
+        self.informations = dict(item_informations)
         self.item_name.value = self.payment_item_name.spans[0].text = item_name
-        self.price.value = self.item_price.spans[0].text = f"₱ {informations['Price']}"
+        self.price.value = self.item_price.spans[0].text = f"₱ {self.informations['Price']}"
         self.item_image.src_base64 = control.item_image.src_base64
-        self.item_post_time.spans[0].text = informations['Time created']
-        self.account_name_info.value = self.account_name_payment.value = informations["Posted by"]['Username']
-        self.description.value = informations['Description']
+        self.item_post_time.spans[0].text = self.informations['Time created']
+        self.account_name_info.value = self.account_name_payment.value = self.informations["Posted by"]['Username']
+        self.description.value = self.informations['Description']

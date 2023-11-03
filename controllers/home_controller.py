@@ -70,7 +70,7 @@ class HomeController:
             self.home_page.group_listview.items_view.set_creator(self.database.get_group_creator(group))
             self.home_page.group_listview.items_view.set_user_image(user_image)
             self.home_page.group_listview.content = self.home_page.group_listview.items_view
-            self.home_page.group_listview.items_view.display_transactions(group, image_string, transactions, item_images)
+            self.home_page.group_listview.items_view.display_transactions(email, group, image_string, transactions, item_images)
             self.home_page.group_listview.update()
             
             for item_button in self.home_page.group_listview.items_view.payable_list.controls:
