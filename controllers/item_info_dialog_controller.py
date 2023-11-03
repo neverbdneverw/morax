@@ -43,9 +43,14 @@ class ItemInfoDialogController:
             
             verdict = self.database.mark_paid_with_proof(group_name, item_name, current_email, self.image_path)
             if verdict == "Successful":
-                print("Marked as paid")
+                self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable is marked as paid."), duration=1000)
+                self.page.snack_bar.open = True
             else:
-                print("Cannot mark as paid")
+                self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable cannot be marked as paid."), duration=1000)
+                self.page.snack_bar.open = True
+
+            self.item_info_dialog.open = False
+            self.page.update()
     
     def set_proof_image(self, event: ft.FilePickerResultEvent):
         if event.files is not None:
