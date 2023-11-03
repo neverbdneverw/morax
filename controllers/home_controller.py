@@ -96,6 +96,7 @@ class HomeController:
         self.home_page.group_listview.update()
     
     def show_item_informations(self, event: ft.ControlEvent, item_name: str, item_informations: dict):
+        self.home_page.item_infos_dialog.load_infos(event.control, item_name, item_informations)
         self.home_page.show_info_dialog()
     
     def buttons_change(self, event: ft.ControlEvent):
