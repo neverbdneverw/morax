@@ -103,33 +103,6 @@ class ItemsView(ft.Column):
             padding = 20
         )
         
-        receivable_empty_warning_text = ft.Text(
-            expand=True,
-            value="Your group has no receivables yet.",
-            color = ft.colors.BLACK,
-            weight=ft.FontWeight.W_400,
-            size=20
-        )
-        
-        receivable_empty_warning_text_row = ft.Row(
-            controls=[receivable_empty_warning_text]
-        )
-        
-        self.receivable_empty_warning_text_container = ft.Container(
-            content = receivable_empty_warning_text_row,
-            padding = ft.padding.only(30, 10, 30, 0)
-        )
-        
-        self.receivable_cont = ft.AnimatedSwitcher(
-            transition = ft.AnimatedSwitcherTransition.FADE,
-            duration = 300,
-            reverse_duration = 300,
-            switch_in_curve = ft.AnimationCurve.EASE_OUT,
-            switch_out_curve = ft.AnimationCurve.EASE_IN,
-            expand=True,
-            content = self.receivable_list
-        )
-        
         self.payable_column = ft.Column(
             expand=True,
             spacing=0,
@@ -139,7 +112,7 @@ class ItemsView(ft.Column):
         self.receivable_column =ft.Column(
             expand=True,
             spacing=0,
-            controls=[self.receivable_cont]
+            controls=[self.receivable_list]
         )
         
         self.add_receivable_button = AddGroupButton()
@@ -201,13 +174,13 @@ class ItemsView(ft.Column):
             weight=ft.FontWeight.W_400
         )
         
-        total_payable_text = ft.Text(
+        self.total_payable_text = ft.Text(
             "Total Payable: ",
             color="#ae8948",
             weight=ft.FontWeight.W_600
         )
         
-        total_receivable_text = ft.Text(
+        self.total_receivable_text = ft.Text(
             "Total Receivable: ",
             color="#ae8948",
             weight=ft.FontWeight.W_600
@@ -219,7 +192,7 @@ class ItemsView(ft.Column):
         )
         
         recap_column = ft.Column(
-            controls=[financial_recap_text, total_payable_text, total_receivable_text],
+            controls=[financial_recap_text, self.total_payable_text, self.total_receivable_text],
             horizontal_alignment=ft.CrossAxisAlignment.STRETCH,
         )
         
@@ -274,29 +247,30 @@ class ItemsView(ft.Column):
         payables = 0
         receivables = 0
         
+        total_payable = 0
+        total_receivable = 0
+        
         transactions = dict(transactions)
         for transaction_name in transactions.keys():
             if transactions[transaction_name]['Posted by']['Username'] == self.username.value:
                 receivables += 1
+                total_receivable += float(transactions[transaction_name]['Price'])
                 item  = ItemButton(transaction_name, transactions, item_images[transaction_name], True)
                 self.receivable_list.controls.append(item)
             else:
                 payables += 1
+                total_payable += float(transactions[transaction_name]['Price'])
                 item  = ItemButton(transaction_name, transactions, item_images[transaction_name], False)
                 self.payable_list.controls.append(item)
+        
+        self.total_payable_text.value = f"Total Payable: {total_payable}"
+        self.total_receivable_text.value = f"Total Receivable: {total_receivable}"
         
         if payables == 0:
             self.cont.content = self.empty_warning_text_container
             return
         else:
             self.cont.content = self.payable_list
-        
-        if receivables == 0:
-            self.receivable_cont.content = self.receivable_empty_warning_text_container
-            return
-        else:
-            self.receivable_cont.content = self.receivable_list
-            self.receivable_list.controls.append(self.add_receivable_button)
     
     def set_creator(self, creator):
         self.created_by_text.spans[0].text = creator

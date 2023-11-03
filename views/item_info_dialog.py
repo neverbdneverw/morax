@@ -1,22 +1,23 @@
 import flet as ft
+from views.item_button import ItemButton
 
 class ItemInfoDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
-        item_name = ft.Text(
+        self.item_name = ft.Text(
             "Gatas",
             color="#ae8948",
             weight=ft.FontWeight.W_700,
         )
         
-        price = ft.Text(
+        self.price = ft.Text(
             "₱ 450",
             color="#ae8948",
             weight=ft.FontWeight.W_700,
         )
         
         self.title = ft.Row(
-            controls = [item_name, price],
+            controls = [self.item_name, self.price],
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
         )
         
@@ -44,8 +45,13 @@ class ItemInfoDialog(ft.AlertDialog):
         
         self.description = ft.Text(
             "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.",
-            max_lines=3,
             weight=ft.FontWeight.W_400
+        )
+        
+        description_column = ft.Column(
+            controls=[self.description],
+            height=100,
+            scroll=ft.ScrollMode.ALWAYS
         )
         
         self.item_post_time = ft.Text(
@@ -60,7 +66,7 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         info_column = ft.Column(
-            controls=[account_row, self.description, self.item_post_time],
+            controls=[account_row, description_column, self.item_post_time],
             width = 350,
             height = 150
         )
@@ -73,14 +79,14 @@ class ItemInfoDialog(ft.AlertDialog):
             "Pay with QR Code"
         )
         
-        qr_code = ft.Image(
+        self.qr_code = ft.Image(
             "resources/sample_qr.png",
             width = 120,
             height = 120
         )
         
         qr_column = ft.Column(
-            controls=[qr_indicator, qr_code],
+            controls=[qr_indicator, self.qr_code],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER
         )
         
@@ -101,7 +107,7 @@ class ItemInfoDialog(ft.AlertDialog):
             spacing=0
         )
         
-        gcash_number = ft.Text(
+        self.gcash_number = ft.Text(
             value = "Gcash number: ",
             size=14,
             spans = [ft.TextSpan(
@@ -110,18 +116,18 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         gcash_info_row = ft.Row(
-            controls=[gcash_acct_user, gcash_number],
+            controls=[gcash_acct_user, self.gcash_number],
             spacing=0
         )
         
-        payment_item_name = ft.Text(
+        self.payment_item_name = ft.Text(
             value = "Item: ",
             spans = [ft.TextSpan(
                 f"Gatas",
             )],
         )
         
-        item_price = ft.Text(
+        self.item_price = ft.Text(
             value = "Amount to be paid: ",
             spans = [ft.TextSpan(
                 "₱ 450",
@@ -129,7 +135,7 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         gcash_info_column = ft.Column(
-            controls=[gcash_info_row, payment_item_name, item_price],
+            controls=[gcash_info_row, self.payment_item_name, self.item_price],
             spacing=30
         )
         
@@ -141,7 +147,7 @@ class ItemInfoDialog(ft.AlertDialog):
         
         self.payment_row = ft.Row(
             controls=[qr_column, gcash_container],
-            width = 350,
+            width = 480,
             height = 150
         )
 
@@ -167,3 +173,16 @@ class ItemInfoDialog(ft.AlertDialog):
     def show_payment_details(self):
         self.switcher.content = self.payment_row
         self.switcher.update()
+    
+    def load_infos(self, control: ItemButton, item_name: str, item_informations: dict):
+        self.switcher.content = self.main_row
+        self.title.visible = True
+        self.pay_button.text = "Pay now"
+
+        informations = dict(item_informations)
+        self.item_name.value = self.payment_item_name.spans[0].text = item_name
+        self.price.value = self.item_price.spans[0].text = f"₱ {informations['Price']}"
+        self.item_image.src_base64 = control.item_image.src_base64
+        self.item_post_time.spans[0].text = informations['Time created']
+        self.account_name.value = informations["Posted by"]['Username']
+        self.description.value = informations['Description']

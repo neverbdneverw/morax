@@ -249,6 +249,10 @@ Ignore this message if not.
 
     def get_item_image(self, item_name: str, group_name: str):
         picture_id = self.get_item_picture_by_item_name(item_name, group_name)
+        
+        if picture_id == "":
+            return ""
+        
         base64_content = ""
         try:
             request_file = self.service.files().get_media(fileId = picture_id)

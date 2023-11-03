@@ -18,6 +18,8 @@ class ItemButton(ft.ElevatedButton):
             color="#ae8948",
             weight=ft.FontWeight.W_600,
             size=16,
+            width=100,
+            text_align=ft.TextAlign.CENTER
         )
         
         account_column = ft.Column(
@@ -85,14 +87,14 @@ class ItemButton(ft.ElevatedButton):
             expand=True
         )
         
-        item_image = ft.Image(
+        self.item_image = ft.Image(
             "resources/default_image.png",
             width = 100,
             height = 100
         )
         
         if item_image_string != "":
-            item_image.src_base64 = item_image_string
+            self.item_image.src_base64 = item_image_string
         
         amount = ft.Text(
             f"₱ {transactions[transaction_name]['Price']}",
@@ -102,7 +104,7 @@ class ItemButton(ft.ElevatedButton):
         )
         
         payment_column = ft.Column(
-            controls=[amount, item_image,],
+            controls=[amount, self.item_image],
             spacing=0,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER
         )
