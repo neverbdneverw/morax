@@ -1,11 +1,13 @@
 import flet as ft
 
 class ItemButton(ft.ElevatedButton):
-    def __init__(self, transaction_name: str, transactions: dict, item_image_string: str, has_amount_received: bool):
+    def __init__(self, group_name: str, transaction_name: str, transactions: dict, item_image_string: str, has_amount_received: bool):
         super().__init__(
             expand=True,
             style=ft.ButtonStyle(shape = ft.ContinuousRectangleBorder(radius = 0))
         )
+        
+        self.group_name = group_name
 
         account_image = ft.Image(
             "resources/empty_user_image.svg",

@@ -152,8 +152,8 @@ class HomePage():
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
-        email = self.page.client_storage.get("email")
-        self.on_email_retrieved(email)
+        self.email = self.page.client_storage.get("email")
+        self.on_email_retrieved(self.email)
         return self.view
     
     def on_email_retrieved(self, email: str):
