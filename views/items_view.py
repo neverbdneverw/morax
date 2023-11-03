@@ -263,8 +263,8 @@ class ItemsView(ft.Column):
                 item  = ItemButton(transaction_name, transactions, item_images[transaction_name], False)
                 self.payable_list.controls.append(item)
         
-        self.total_payable_text.value = f"Total Payable: {total_payable}"
-        self.total_receivable_text.value = f"Total Receivable: {total_receivable}"
+        self.total_payable_text.value = f"Total Payable: ₱ {total_payable}"
+        self.total_receivable_text.value = f"Total Receivable: ₱ {total_receivable}"
         
         if payables == 0:
             self.cont.content = self.empty_warning_text_container

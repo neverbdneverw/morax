@@ -33,13 +33,13 @@ class ItemInfoDialog(ft.AlertDialog):
             height = 36
         )
         
-        self.account_name = ft.Text(
+        self.account_name_info = ft.Text(
             "Owen David",
             color="#ae8948",
         )
         
         account_row = ft.Row(
-            controls=[self.account_image, self.account_name],
+            controls=[self.account_image, self.account_name_info],
             vertical_alignment=ft.CrossAxisAlignment.CENTER
         )
         
@@ -92,17 +92,17 @@ class ItemInfoDialog(ft.AlertDialog):
         
         self.account_image = ft.Image(
             "resources/empty_user_image.svg",
-            width = 24,
-            height = 24
+            width = 30,
+            height = 30
         )
         
-        self.account_name = ft.Text(
+        self.account_name_payment = ft.Text(
             "Owen David",
-            size=8
+            size=12
         )
         
         gcash_acct_user = ft.Column(
-            controls=[self.account_image, self.account_name],
+            controls=[self.account_image, self.account_name_payment],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             spacing=0
         )
@@ -117,7 +117,7 @@ class ItemInfoDialog(ft.AlertDialog):
         
         gcash_info_row = ft.Row(
             controls=[gcash_acct_user, self.gcash_number],
-            spacing=0
+            spacing=10
         )
         
         self.payment_item_name = ft.Text(
@@ -136,6 +136,7 @@ class ItemInfoDialog(ft.AlertDialog):
         
         gcash_info_column = ft.Column(
             controls=[gcash_info_row, self.payment_item_name, self.item_price],
+            width = 300,
             spacing=30
         )
         
@@ -147,6 +148,7 @@ class ItemInfoDialog(ft.AlertDialog):
         
         self.payment_row = ft.Row(
             controls=[qr_column, gcash_container],
+            spacing = 50,
             width = 480,
             height = 150
         )
@@ -184,5 +186,5 @@ class ItemInfoDialog(ft.AlertDialog):
         self.price.value = self.item_price.spans[0].text = f"₱ {informations['Price']}"
         self.item_image.src_base64 = control.item_image.src_base64
         self.item_post_time.spans[0].text = informations['Time created']
-        self.account_name.value = informations["Posted by"]['Username']
+        self.account_name_info.value = self.account_name_payment.value = informations["Posted by"]['Username']
         self.description.value = informations['Description']
