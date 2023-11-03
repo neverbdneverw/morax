@@ -56,6 +56,7 @@ class HomeController:
         if group == "Add":
             self.home_page.show_add_group_dialog()
         else:
+            self.database.update_refs()
             transactions = self.database.get_transactions(group)
             item_images = self.database.get_item_images_for_group(group)
             
@@ -76,6 +77,7 @@ class HomeController:
                 item_button.activate = self.show_item_informations
     
     def reload_listview(self, event: ft.ControlEvent):
+        self.database.update_refs()
         group_name = self.group_listview.items_view.group_name.value
         image_string = self.group_listview.items_view.group_image.src_base64
         
