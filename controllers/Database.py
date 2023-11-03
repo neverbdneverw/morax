@@ -33,7 +33,6 @@ class Database:
         self.drive_files = results.get('files', [])
     
     def query_login(self, email: str, password: str):
-        self.update_refs()
         users = self.dictionary["Users"]
         email = email.replace('.', ',')
         if email in users and users[email]['Password'] == password:
@@ -53,7 +52,6 @@ class Database:
         return "No username exists for this email."
     
     def change_password(self, email: str, new_password: str):
-        self.update_refs()
         users = self.dictionary["Users"]
         email = email.replace('.', ',')
         if email in users:
@@ -63,7 +61,6 @@ class Database:
         return "Account doesn't exist."
     
     def create_account(self, email: str, username: str, password: str):
-        self.update_refs()
         email = email.replace('.', ',')
         if email not in self.dictionary["Users"]:
             db.reference(f"/Users/").update({email : { "Username" : username, "Password": password, "Picture Link": ""}})
@@ -72,7 +69,6 @@ class Database:
         return "Account already exists."
     
     def create_group_with_email(self, group_name: str, group_description: str, email: str):
-        self.update_refs()
         username = self.get_username_of_email(email)
         unique_code = self.generate_unique_code()
         email = email.replace('.', ',')
@@ -84,7 +80,6 @@ class Database:
         return "Cannot create group."
     
     def join_group_with_email(self, unique_code: str, email: str):
-        self.update_refs()
         username = self.get_username_of_email(email)
         email = email.replace('.', ',')
         
@@ -253,7 +248,6 @@ Ignore this message if not.
         return self.dictionary['Groups'][group_name]["Transactions"][item_name]["Image id"]
 
     def get_item_image(self, item_name: str, group_name: str):
-        self.update_refs()
         picture_id = self.get_item_picture_by_item_name(item_name, group_name)
         base64_content = ""
         try:
@@ -272,7 +266,6 @@ Ignore this message if not.
         return base64_content
 
     def get_group_images_for_email(self, email: str):
-        self.update_refs()
         images = dict()
         groups = self.get_groups_for_email(email)
         for group in groups:
@@ -282,7 +275,6 @@ Ignore this message if not.
         return images
     
     def get_item_images_for_group(self, group_name: str):
-        self.update_refs()
         images = dict()
         items = self.get_transactions(group_name)
         for item in items:
@@ -292,7 +284,6 @@ Ignore this message if not.
         return images
     
     def upload_group_image(self, group_name: str, file: str):
-        self.update_refs()
         image_bytes = io.BytesIO()
         image = Image.open(file).convert("RGBA")
         image = image.resize((200, 200))
@@ -315,7 +306,6 @@ Ignore this message if not.
             print(f'An error occurred: {error}')
     
     def upload_item_image(self, group_name: str, item_name: str, file: str):
-        self.update_refs()
         image_bytes = io.BytesIO()
         image = Image.open(file).convert("RGBA")
         image = image.resize((200, 200))
@@ -338,7 +328,6 @@ Ignore this message if not.
             print(f'An error occurred: {error}')
     
     def create_receivable(self, email: str, group_name: str, item_name: str, item_date: str, item_amount: str, item_description: str):
-        self.update_refs()
         username = self.get_username_of_email(email)
         email = email.replace('.', ',')
         if group_name in self.dictionary["Groups"]:
