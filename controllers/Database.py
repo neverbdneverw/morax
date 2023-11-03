@@ -332,6 +332,9 @@ Ignore this message if not.
             print(f'An error occurred: {error}')
     
     def mark_paid_with_proof(self, group_name: str, item_name: str, email: str, image_path: str):
+        if image_path == "":
+            return ""
+        
         email = email.replace('.', ',')
         image_bytes = io.BytesIO()
         image = Image.open(image_path).convert("RGBA")
@@ -350,9 +353,12 @@ Ignore this message if not.
                 'emailAddress': email_sender
             }
             self.service.permissions().create(fileId=id, body=permission).execute()
+            
+            return "Successful"
         
         except HttpError as error:
             print(f'An error occurred: {error}')
+            return ""
     
     def create_receivable(self, email: str, group_name: str, item_name: str, item_date: str, item_amount: str, item_description: str):
         username = self.get_username_of_email(email)
