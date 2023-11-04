@@ -48,8 +48,8 @@ class AddDialogController:
             if self.add_group_dialog.get_created_group_name() != "" and self.add_group_dialog.get_created_group_desc() != "":
                 email = self.page.client_storage.get("email")
                 self.database.create_group_with_email(self.add_group_dialog.get_created_group_name(), self.add_group_dialog.get_created_group_desc(), email)
-                self.database.update_refs()
-                self.home_page.group_listview.add_new_item(self.home_page.add_dialog.get_created_group_name(), self.new_image_string)
+                self.page.client_storage.set("just_opened", False)
+                self.home_page.group_listview.trigger_reload(email)
                 self.database.upload_group_image(self.add_group_dialog.get_created_group_name(), self.image_path)
                 self.home_page.close_dialog(None)
                 self.new_image_string == ""
@@ -72,9 +72,8 @@ class AddDialogController:
             if self.code_validated:
                 email = self.page.client_storage.get("email")
                 self.database.join_group_with_email(self.add_group_dialog.get_group_code_entry(), email)
-                self.database.update_refs()
-                group_name = self.database.get_group_by_code(self.add_group_dialog.get_group_code_entry())
-                self.home_page.group_listview.add_new_item(group_name, self.database.get_group_image(group_name))
+                self.page.client_storage.set("just_opened", False)
+                self.home_page.group_listview.trigger_reload(email)
                 self.home_page.close_dialog(None)
                 self.page.update()
     
