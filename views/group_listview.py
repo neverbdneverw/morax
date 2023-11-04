@@ -85,13 +85,11 @@ class GroupListView(ft.AnimatedSwitcher):
         
         add_button = AddGroupButton()
         self.grid.controls.append(add_button)
-    
-    def add_new_item(self, group_name: str, new_image_string: str):
-        group_button = GroupButton(group_name, new_image_string)
-        length = len(self.grid.controls)
-        self.grid.controls.insert(length - 1, group_button)
 
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
         self.update()
+    
+    def trigger_reload(self, email: str):
+        pass
             

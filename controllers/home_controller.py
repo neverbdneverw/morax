@@ -20,6 +20,7 @@ class HomeController:
         self.home_page.group_listview.items_view.receivables_button.on_click = self.show_receivables
         self.home_page.group_listview.items_view.add_receivable_button.on_click = self.open_receivable_adding_dialog
         self.home_page.group_listview.items_view.on_trigger_reload = lambda event: self.reload_listview(event)
+        self.home_page.group_listview.trigger_reload = self.reload_groups
         self.home_page.on_email_retrieved = self.fill_groups
         
         self.sidebar_buttons = [
@@ -28,6 +29,11 @@ class HomeController:
             self.home_page.feedback_button,
             self.home_page.profile_button
         ]
+    
+    def reload_groups(self, email: str):
+        self.home_page.group_listview.grid.controls = []
+        self.home_page.group_listview.update()
+        self.fill_groups(email)
 
     def fill_groups(self, email: str):
         self.database.update_refs()
@@ -40,12 +46,13 @@ class HomeController:
         
         self.home_page.group_listview.setup_gui(groups, images)
         
-        if self.page.client_storage.get("keep_signed_in") is True and self.page.client_storage.get("recent_set_keep_signed_in") is False:
+        if self.page.client_storage.get("keep_signed_in") is True and self.page.client_storage.get("recent_set_keep_signed_in") is False and self.page.client_storage.get("just_opened") is True:
             self.page.snack_bar = ft.SnackBar(ft.Text(f"You are automatically logged in."))
             self.page.snack_bar.open = True
             self.page.update()
         elif self.page.client_storage.get("recent_set_keep_signed_in") is True:
             self.page.client_storage.set("recent_set_keep_signed_in", False)
+            self.page.client_storage.set("just_opened", True)
         
         group_buttons = self.home_page.group_listview.grid.controls
         
