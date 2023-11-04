@@ -45,6 +45,7 @@ class ItemInfoDialogController:
             if verdict == "Successful":
                 self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable is marked as paid."), duration=1000)
                 self.page.snack_bar.open = True
+                self.home_page.group_listview.items_view.on_trigger_reload(event)
             else:
                 self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable cannot be marked as paid."), duration=1000)
                 self.page.snack_bar.open = True
