@@ -11,7 +11,7 @@ Morax is a shared financial manager application for groups written in Flet and P
 ## Try
 Install the following dependencies using pip
 ```
-pip install flet flet_route firebase_admin ssl
+pip install flet flet_route firebase_admin pillow google-auth
 ```
 Clone repository and change directory
 ```
@@ -35,8 +35,8 @@ Feel free to send pull requests to this repository with your code.
 <sup><b>License</b>: GNU GPLv3</sup>
 
 ## A project by:
-Malicsi, Owen David P.
-Paña, Ralph John H.
-Torino, Tristan Kirby E.
-Fernandez, Achilles Maximus M.
-Comprendio, Emmanuel James H.
+### Malicsi, Owen David P.
+### Paña, Ralph John H.
+### Torino, Tristan Kirby E.
+### Fernandez, Achilles Maximus M.
+### Comprendio, Emmanuel James H.
