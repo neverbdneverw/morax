@@ -9,6 +9,7 @@ from views.account_view import AccountView
 from views.add_dialog import AddDialog
 from views.item_info_dialog import ItemInfoDialog
 from views.add_receivable_dialog import AddReceivableDialog
+from views.show_receivable_info_dialog import ShowReceivableInfoDialog
 
 class HomePage():
     def __init__(self):
@@ -149,6 +150,7 @@ class HomePage():
         self.add_group_dialog = AddDialog()
         self.item_infos_dialog = ItemInfoDialog()
         self.add_receivable_dialog = AddReceivableDialog()
+        self.receivable_info_dialog = ShowReceivableInfoDialog()
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
@@ -179,4 +181,9 @@ class HomePage():
     def show_add_receivable_dialog(self):
         self.page.dialog = self.add_receivable_dialog
         self.add_receivable_dialog.open = True
+        self.page.update()
+    
+    def show_receivable_info_dialog(self):
+        self.page.dialog = self.receivable_info_dialog
+        self.receivable_info_dialog.open = True
         self.page.update()

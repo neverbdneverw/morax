@@ -80,8 +80,11 @@ class HomeController:
             self.home_page.group_listview.items_view.display_transactions(email, group, image_string, transactions, item_images)
             self.home_page.group_listview.update()
             
-            for item_button in self.home_page.group_listview.items_view.payable_list.controls:
-                item_button.activate = self.show_item_informations
+            for payable_button in self.home_page.group_listview.items_view.payable_list.controls:
+                payable_button.activate = self.show_item_informations
+            
+            for receivable_button in self.home_page.group_listview.items_view.receivable_list.controls:
+                receivable_button.activate = self.show_receivable_info
     
     def reload_listview(self, event: ft.ControlEvent):
         self.database.update_refs()
@@ -138,3 +141,8 @@ class HomeController:
     def open_receivable_adding_dialog(self, event: ft.ControlEvent):
         self.home_page.add_receivable_dialog.group = self.home_page.group_listview.items_view.group_name.value
         self.home_page.show_add_receivable_dialog()
+    
+    def show_receivable_info(self, event: ft.ControlEvent, item_name: str, item_informations: dict):
+        self.home_page.receivable_info_dialog.title.value = item_name
+        self.home_page.show_receivable_info_dialog()
+        print(item_informations)
