@@ -24,7 +24,9 @@ class AddReceivableDialogController:
         self.add_receivable_dialog.cancel_button.on_click = self.home_page.close_dialog
         
         self.add_receivable_dialog.item_name_textfield.on_change = self.item_info_change
-        self.add_receivable_dialog.item_date_textfield.on_change = self.item_info_change
+        self.add_receivable_dialog.item_month_textfield.on_change = self.item_info_change
+        self.add_receivable_dialog.item_day_textfield.on_change = self.item_info_change
+        self.add_receivable_dialog.item_year_textfield.on_change = self.item_info_change
         self.add_receivable_dialog.item_amount_textfield.on_change = self.item_info_change
         self.add_receivable_dialog.item_description_textfield.on_change = self.item_info_change
         
@@ -51,7 +53,10 @@ class AddReceivableDialogController:
         email = self.page.client_storage.get("email")
         group_name = self.home_page.add_receivable_dialog.group
         item_name = self.add_receivable_dialog.get_item_name()
-        item_date = self.add_receivable_dialog.get_item_creation_date()
+        item_month = self.add_receivable_dialog.get_item_creation_month()
+        item_day = self.add_receivable_dialog.get_item_creation_day()
+        item_year = self.add_receivable_dialog.get_item_creation_year()
+        item_date = f"{item_month} {item_day}, {item_year}"
         item_amount = self.add_receivable_dialog.get_item_amount()
         item_description = self.add_receivable_dialog.get_item_description()
         
@@ -64,10 +69,15 @@ class AddReceivableDialogController:
         
         self.database.update_refs()
         self.home_page.group_listview.items_view.on_trigger_reload(event)
-        # self.reload_listview(event)
     
     def item_info_change(self, event: ft.ControlEvent):
-        if self.add_receivable_dialog.get_item_name() != "" and self.add_receivable_dialog.get_item_creation_date() != "" and self.add_receivable_dialog.get_item_amount() != "" and self.add_receivable_dialog.get_item_description() != "":
+        if all([self.add_receivable_dialog.get_item_name() != "",
+                self.add_receivable_dialog.get_item_creation_month() != "",
+                self.add_receivable_dialog.get_item_creation_day() != "",
+                self.add_receivable_dialog.get_item_creation_year() != "",
+                self.add_receivable_dialog.get_item_amount() != "",
+                self.add_receivable_dialog.get_item_description() != ""]):
+            
             self.add_receivable_dialog.add_item_button.disabled = False
         else:
             self.add_receivable_dialog.add_item_button.disabled = True

@@ -274,6 +274,9 @@ class ItemsView(ft.Column):
             return
         else:
             self.cont.content = self.payable_list
+        
+        if self.add_receivable_button not in self.receivable_list.controls:
+            self.receivable_list.controls.append(self.add_receivable_button)
     
     def set_creator(self, creator):
         self.created_by_text.spans[0].text = creator
