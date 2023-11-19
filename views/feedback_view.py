@@ -204,14 +204,14 @@ class FeedbackView(ft.Column):
             padding=8
         )
 
-        button_contribute = ft.ElevatedButton(
+        self.button_contribute = ft.ElevatedButton(
             text="Contribute Code",
             color="#FFFFFF",
             bgcolor="#AE8948",
         )
 
         button_contribute_container = ft.Container(
-            content=button_contribute,
+            content=self.button_contribute,
             padding=20
         )
 
