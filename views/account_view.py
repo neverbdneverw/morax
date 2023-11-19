@@ -91,7 +91,7 @@ class AccountView(ft.Container):
             weight=ft.FontWeight.BOLD
         )
         
-        change_password_button = ft.Container(
+        self.change_password_button = ft.Container(
             content = ft.Row(
                 controls=[
                     ft.Row(
@@ -107,7 +107,7 @@ class AccountView(ft.Container):
             margin=ft.margin.only(22, 0, 22, 0)
         )
         
-        gcash_button = ft.Container(
+        self.gcash_button = ft.Container(
             content = ft.Row(
                 controls=[
                     ft.Row(
@@ -128,8 +128,8 @@ class AccountView(ft.Container):
                 account_labeler,
                 self.edit_profile_button,
                 security_labeler,
-                change_password_button,
-                gcash_button
+                self.change_password_button,
+                self.gcash_button
             ],
             spacing=10,
             expand=True,

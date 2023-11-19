@@ -10,6 +10,7 @@ from views.add_dialog import AddDialog
 from views.item_info_dialog import ItemInfoDialog
 from views.add_receivable_dialog import AddReceivableDialog
 from views.show_receivable_info_dialog import ShowReceivableInfoDialog
+from views.account_settings_dialogs import *
 
 class HomePage():
     def __init__(self):
@@ -151,6 +152,11 @@ class HomePage():
         self.item_infos_dialog = ItemInfoDialog()
         self.add_receivable_dialog = AddReceivableDialog()
         self.receivable_info_dialog = ShowReceivableInfoDialog()
+        
+        self.change_profile_picture_dialog = ProfilePictureChangeDialog()
+        self.edit_username_email_dialog = EditUsernameEmailDialog()
+        self.edit_password_dialog = EditPasswordDialog()
+        self.edit_gcash_dialog = EditGcashDialog()
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
@@ -186,4 +192,24 @@ class HomePage():
     def show_receivable_info_dialog(self):
         self.page.dialog = self.receivable_info_dialog
         self.receivable_info_dialog.open = True
+        self.page.update()
+    
+    def show_profile_picture_change_dialog(self):
+        self.page.dialog = self.change_profile_picture_dialog
+        self.change_profile_picture_dialog.open = True
+        self.page.update()
+    
+    def show_edit_username_email_dialog(self):
+        self.page.dialog = self.edit_username_email_dialog
+        self.edit_username_email_dialog.open = True
+        self.page.update()
+    
+    def show_edit_password_dialog(self):
+        self.page.dialog = self.edit_password_dialog
+        self.edit_password_dialog.open = True
+        self.page.update()
+    
+    def show_change_gcash_qr_dialog(self):
+        self.page.dialog = self.edit_gcash_dialog
+        self.edit_gcash_dialog.open = True
         self.page.update()

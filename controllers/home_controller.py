@@ -40,6 +40,13 @@ class HomeController:
         
         self.home_page.feedback_view.button_contact_us.on_click = lambda e: webbrowser.open_new("https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzCMtQddshVRjPCKJRGfFwDxvWqJcNftmXFMFqqpdvrXXBpGsrfGGNTnSswPqHpChKdBRJG")
         self.home_page.feedback_view.button_contribute.on_click = lambda e: webbrowser.open_new("https://github.com/neverbdneverw/morax/issues/new")
+        
+        self.home_page.account_view.change_user_picture_button.on_click = lambda e: self.home_page.show_profile_picture_change_dialog()
+        self.home_page.account_view.edit_profile_button.on_click = lambda e: self.home_page.show_edit_username_email_dialog()
+        self.home_page.account_view.change_password_button.on_click = lambda e: self.home_page.show_edit_password_dialog()
+        self.home_page.account_view.gcash_button.on_click = lambda e: self.home_page.show_change_gcash_qr_dialog()
+        
+        self.home_page.account_view.logout_button.on_click = lambda e: self.page.go("/login")
     
     def reload_groups(self, email: str):
         self.home_page.group_listview.grid.controls = []
