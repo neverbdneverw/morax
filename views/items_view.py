@@ -235,7 +235,7 @@ class ItemsView(ft.Column):
         self.controls = [self.header_container, list_view_row]
     
     def display_transactions(self, email: str, group_name: str, image_string: str, transactions: dict, item_images: dict):
-        email = email.replace(".", ".")
+        email = email.replace(".", ",")
         self.group_name.value = group_name
         self.group_image.src_base64 = image_string
         
@@ -246,7 +246,8 @@ class ItemsView(ft.Column):
         
         transactions = dict(transactions)
         for transaction_name in transactions.keys():
-            if transactions[transaction_name]['Posted by']['Username'] == self.username.value and email in transactions[transaction_name]['Paid by']:
+            paid_users = dict(transactions[transaction_name]['Paid by'])
+            if email in paid_users:
                 continue
             elif transactions[transaction_name]['Posted by']['Username'] == self.username.value:
                 receivables += 1
