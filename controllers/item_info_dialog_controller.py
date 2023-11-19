@@ -34,12 +34,15 @@ class ItemInfoDialogController:
         elif self.item_info_dialog.switcher.content == self.item_info_dialog.payment_row:
             self.item_info_dialog.switcher.content = self.item_info_dialog.proof_column
             self.item_info_dialog.switcher.update()
-        else:
             self.item_info_dialog.pay_button.disabled = True
-            
-            group_name = event.control.group_name
+            self.item_info_dialog.pay_button.update()
+        else:
+            group_name = self.item_info_dialog.group_name
             current_email = self.page.client_storage.get("email")
             item_name = self.item_info_dialog.item_name.value
+            
+            self.item_info_dialog.open = False
+            self.page.update()
             
             verdict = self.database.mark_paid_with_proof(group_name, item_name, current_email, self.image_path)
             if verdict == "Successful":
@@ -49,9 +52,6 @@ class ItemInfoDialogController:
             else:
                 self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable cannot be marked as paid."), duration=1000)
                 self.page.snack_bar.open = True
-
-            self.item_info_dialog.open = False
-            self.page.update()
     
     def set_proof_image(self, event: ft.FilePickerResultEvent):
         if event.files is not None:

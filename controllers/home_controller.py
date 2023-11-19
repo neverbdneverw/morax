@@ -23,7 +23,7 @@ class HomeController:
         self.home_page.group_listview.items_view.reload_button.on_click = self.reload_listview
         self.home_page.group_listview.items_view.receivables_button.on_click = self.show_receivables
         self.home_page.group_listview.items_view.add_receivable_button.on_click = self.open_receivable_adding_dialog
-        self.home_page.group_listview.items_view.on_trigger_reload = lambda event: self.reload_listview(event)
+        self.home_page.group_listview.items_view.on_trigger_reload = self.reload_listview
         self.home_page.group_listview.trigger_reload = self.reload_groups
         self.home_page.on_email_retrieved = self.fill_groups
         
@@ -98,7 +98,6 @@ class HomeController:
                 receivable_button.activate = self.show_receivable_info
     
     def reload_listview(self, event: ft.ControlEvent):
-        self.database.update_refs()
         group_name = self.group_listview.items_view.group_name.value
         image_string = self.group_listview.items_view.group_image.src_base64
         

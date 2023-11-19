@@ -201,6 +201,7 @@ class ItemInfoDialog(ft.AlertDialog):
         self.switcher.content = self.main_row
         self.title.visible = True
         self.pay_button.text = "Pay now"
+        self.group_name = control.group_name
 
         self.informations = dict(item_informations)
         self.item_name.value = self.payment_item_name.spans[0].text = item_name
