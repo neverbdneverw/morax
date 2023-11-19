@@ -112,14 +112,14 @@ class FeedbackView(ft.Column):
             padding=8
         )
 
-        button_contact_us = ft.ElevatedButton(
+        self.button_contact_us = ft.ElevatedButton(
             text="Contact Us",
             color="#FFFFFF",
             bgcolor="#AE8948",
         )
 
         button_contact_us_container = ft.Container(
-            content=button_contact_us,
+            content=self.button_contact_us,
             padding=20
         )
 

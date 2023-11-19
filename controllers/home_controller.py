@@ -1,6 +1,10 @@
 from controllers.Database import Database
 from views.home_page import HomePage
 import flet as ft
+import webbrowser
+
+import tkinter as tk
+from PIL import Image, ImageTk
 
 class HomeController:
     code_validated = False
@@ -23,12 +27,18 @@ class HomeController:
         self.home_page.group_listview.trigger_reload = self.reload_groups
         self.home_page.on_email_retrieved = self.fill_groups
         
+        self.home_page.receivable_info_dialog.completed_button.on_click = self.mark_receivable_completed
+        self.home_page.receivable_info_dialog.cancel_button.on_click = lambda e: self.home_page.close_dialog(e)
+        self.home_page.receivable_info_dialog.show_proof = self.show_proof
+        
         self.sidebar_buttons = [
             self.home_page.home_button,
             self.home_page.settings_button,
             self.home_page.feedback_button,
             self.home_page.profile_button
         ]
+        
+        self.home_page.feedback_view.button_contact_us.on_click = lambda e: webbrowser.open("mailto:?to=neverbackdownneverwhatteyvat@gmail.com", new=1)
     
     def reload_groups(self, email: str):
         self.home_page.group_listview.grid.controls = []
@@ -105,7 +115,7 @@ class HomeController:
         self.home_page.group_listview.content = self.home_page.group_listview.grid_view
         self.home_page.group_listview.update()
     
-    def show_item_informations(self, event: ft.ControlEvent, item_name: str, item_informations: dict):
+    def show_item_informations(self, event: ft.ControlEvent, group: str, item_name: str, item_informations: dict):
         self.home_page.item_infos_dialog.load_infos(event.control, item_name, item_informations)
         self.home_page.show_info_dialog()
     
@@ -142,7 +152,30 @@ class HomeController:
         self.home_page.add_receivable_dialog.group = self.home_page.group_listview.items_view.group_name.value
         self.home_page.show_add_receivable_dialog()
     
-    def show_receivable_info(self, event: ft.ControlEvent, item_name: str, item_informations: dict):
+    def show_receivable_info(self, event: ft.ControlEvent, group: str, item_name: str, item_informations: dict):
         self.home_page.receivable_info_dialog.title.value = item_name
+        self.home_page.receivable_info_dialog.group_name = group
+        self.home_page.receivable_info_dialog.show_who_paid(item_informations)
         self.home_page.show_receivable_info_dialog()
-        print(item_informations)
+    
+    def mark_receivable_completed(self, event: ft.ControlEvent):
+        item_name = self.home_page.receivable_info_dialog.title.value
+        group_name = self.home_page.receivable_info_dialog.group_name
+        
+        self.database.complete_transaction(group_name, item_name)
+        
+        self.home_page.close_dialog(event)
+        
+        self.home_page.group_listview.items_view.on_trigger_reload(event)
+    
+    def show_proof(self, picture_id: str):
+        image = self.database.get_image_proof(picture_id)
+        
+        root = tk.Tk()
+        root.title("PROOF OF PAYMENT")
+        photo = ImageTk.PhotoImage(Image.open(image))
+        label = tk.Label(root, image=photo)
+        label.image = photo
+        label.pack(ipadx= 20, pady=20)
+        root.mainloop()
+        

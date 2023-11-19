@@ -343,7 +343,7 @@ Ignore this message if not.
         
         try:
             media = MediaIoBaseUpload(image_bytes, mimetype='image/png')
-            uploaded_file = self.service.files().create(body={'name': f"{group_name}|{item_name}.png"}, media_body=media, fields='id').execute()
+            uploaded_file = self.service.files().create(body={'name': f"PROOF|{group_name}|{item_name}.png"}, media_body=media, fields='id').execute()
             id = uploaded_file.get('id')
             db.reference(f"/Groups/{group_name}/Transactions/{item_name}/Paid by").update({ email : id})
 
@@ -360,6 +360,25 @@ Ignore this message if not.
             print(f'An error occurred: {error}')
             return ""
     
+    def get_image_proof(self, picture_id: str):
+        self.update_refs()
+        
+        if picture_id == "":
+            return ""
+        
+        try:
+            request_file = self.service.files().get_media(fileId = picture_id)
+            file = io.BytesIO()
+            downloader = MediaIoBaseDownload(file, request_file)
+            done = False
+            while done is False:
+                status, done = downloader.next_chunk()
+            
+            return file
+        except HttpError as error:
+            print(F'An error occurred: {error}')
+            return ""
+    
     def create_receivable(self, email: str, group_name: str, item_name: str, item_date: str, item_amount: str, item_description: str):
         username = self.get_username_of_email(email)
         email = email.replace('.', ',')
@@ -368,3 +387,7 @@ Ignore this message if not.
             return "Successful"
         
         return "Cannot add item"
+    
+    def complete_transaction(self, group_name: str, item_name: str):
+        if group_name in self.dictionary["Groups"]:
+            db.reference(f"/Groups/{group_name}/Transactions/{item_name}").delete()

@@ -1,5 +1,7 @@
 import flet as ft
 from views.group_button import GroupButton
+# from group_button import GroupButton
+import webbrowser
 
 class AccountView(ft.Column):
     def __init__(self):
@@ -46,4 +48,14 @@ class AccountView(ft.Column):
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
         self.update()
-            
+
+# def test(page: ft.Page):
+#     page.window_width = 960
+#     page.window_height = 640
+#     page.theme_mode = ft.ThemeMode.LIGHT
+    
+#     webbrowser.open_new("https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzCMtQddshVRjPCKJRGfFwDxvWqJcNftmXFMFqqpdvrXXBpGsrfGGNTnSswPqHpChKdBRJG")
+    
+#     page.add(AccountView())
+
+# ft.app(target=test)

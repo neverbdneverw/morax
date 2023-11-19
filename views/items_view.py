@@ -239,27 +239,20 @@ class ItemsView(ft.Column):
         self.group_name.value = group_name
         self.group_image.src_base64 = image_string
         
-        if len(self.payable_list.controls) > 0:
-            self.payable_list.controls = []
-        
-        if len(self.receivable_list.controls) > 0:
-            self.receivable_list.controls = []
+        self.payable_list.controls = []
+        self.receivable_list.controls = []
 
-        payables = 0
-        receivables = 0
-        
-        total_payable = 0
-        total_receivable = 0
+        payables, receivables, total_payable, total_receivable = 0, 0, 0.0, 0.0
         
         transactions = dict(transactions)
         for transaction_name in transactions.keys():
-            if transactions[transaction_name]['Posted by']['Username'] == self.username.value:
+            if transactions[transaction_name]['Posted by']['Username'] == self.username.value and email in transactions[transaction_name]['Paid by']:
+                continue
+            elif transactions[transaction_name]['Posted by']['Username'] == self.username.value:
                 receivables += 1
                 total_receivable += float(transactions[transaction_name]['Price'])
                 item  = ItemButton(group_name, transaction_name, transactions, item_images[transaction_name], True)
                 self.receivable_list.controls.append(item)
-            elif transactions[transaction_name]['Posted by']['Username'] == self.username.value and email in transactions[transaction_name]['Paid by']:
-                continue
             else:
                 payables += 1
                 total_payable += float(transactions[transaction_name]['Price'])
