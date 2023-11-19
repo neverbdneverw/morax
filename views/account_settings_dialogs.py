@@ -1,0 +1,195 @@
+import flet as ft
+
+class ProfilePictureChangeDialog(ft.AlertDialog):
+    def __init__(self):
+        super().__init__()
+        self.save_changes_button = ft.TextButton(
+            "Save Changes",
+            disabled=True
+        )
+        
+        self.cancel_button = ft.TextButton(
+            "Cancel"
+        )
+        
+        self.actions = [self.save_changes_button, self.cancel_button]
+        
+        self.user_image = ft.Image(
+            src = "resources/default_image.png",
+            width=200,
+            height = 200
+        )
+        
+        self.upload_profile = ft.ElevatedButton(
+            "Upload photo"
+        )
+        
+        content_column = ft.Column(
+            controls=[self.user_image, self.upload_profile],
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            width=300,
+            height=300
+        )
+        
+        self.content = content_column
+
+class EditUsernameEmailDialog(ft.AlertDialog):
+    def __init__(self):
+        super().__init__()
+        self.save_changes_button = ft.TextButton(
+            "Save Changes",
+            disabled=True
+        )
+        
+        self.cancel_button = ft.TextButton(
+            "Cancel"
+        )
+        
+        self.actions = [self.save_changes_button, self.cancel_button]
+        self.title = ft.Text("Edit Profile")
+        
+        new_email = ft.Text(
+            "Enter new email:",
+            width=150
+        )
+        
+        self.new_email_textfield = ft.TextField(
+            hint_text="Email"
+        )
+        
+        new_username = ft.Text(
+            "Enter new username:",
+            width=150
+        )
+        
+        self.new_username_textfield = ft.TextField(
+            hint_text="Username"
+        )
+        
+        email_row = ft.Row(
+            controls=[new_email, self.new_email_textfield]
+        )
+        
+        username_row = ft.Row(
+            controls=[new_username, self.new_username_textfield]
+        )
+        
+        content_column = ft.Column(
+            controls=[email_row, username_row],
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            width=500,
+            height=200
+        )
+        
+        self.content = content_column
+
+class EditPasswordDialog(ft.AlertDialog):
+    def __init__(self):
+        super().__init__()
+        self.save_changes_button = ft.TextButton(
+            "Save Changes",
+            disabled=True
+        )
+        
+        self.cancel_button = ft.TextButton(
+            "Cancel"
+        )
+        
+        self.actions = [self.save_changes_button, self.cancel_button]
+        self.title = ft.Text("Edit Profile")
+        
+        new_password = ft.Text(
+            "Enter new password:",
+            width=150
+        )
+        
+        self.new_password_textfield = ft.TextField(
+            hint_text="New Password",
+            password=True,
+            can_reveal_password=True
+        )
+        
+        reenter_password = ft.Text(
+            "Re-enter new username:",
+            width=150       
+        )
+        
+        self.reenter_password_textfield = ft.TextField(
+            hint_text="Confirm Password",
+            password=True,
+            can_reveal_password=True
+        )
+        
+        password_row = ft.Row(
+            controls=[new_password, self.new_password_textfield]
+        )
+        
+        reenter_password_row = ft.Row(
+            controls=[reenter_password, self.reenter_password_textfield]
+        )
+        
+        content_column = ft.Column(
+            controls=[password_row, reenter_password_row],
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            width=500,
+            height=200
+        )
+        
+        self.content = content_column
+
+class EditGcashDialog(ft.AlertDialog):
+    def __init__(self):
+        super().__init__()
+        self.save_changes_button = ft.TextButton(
+            "Save Changes",
+            disabled=True
+        )
+        
+        self.cancel_button = ft.TextButton(
+            "Cancel"
+        )
+        
+        self.actions = [self.save_changes_button, self.cancel_button]
+        self.title = ft.Text("GCash Settings")
+        
+        self.qr_image = ft.Image(
+            src = "resources/sample_qr.png",
+            width=100,
+            height = 100
+        )
+        
+        self.upload_qr_button = ft.ElevatedButton(
+            "Upload QR Code"
+        )
+        
+        qr_column = ft.Column(
+            controls=[self.qr_image, self.upload_qr_button],
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            alignment=ft.MainAxisAlignment.CENTER
+        )
+        
+        enter_gcash = ft.Text(
+            "Enter GCash number:"
+        )
+        
+        self.number_textfield = ft.TextField(
+            hint_text = "GCash number"
+        )
+        
+        number_column = ft.Column(
+            controls = [enter_gcash, self.number_textfield],
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            alignment=ft.MainAxisAlignment.CENTER
+        )
+        
+        content_container = ft.Container(
+            content = ft.Row(
+                controls = [qr_column, number_column]
+            ),
+            bgcolor="#f6f8f8",
+            width=500,
+            height=200,
+            padding=20
+        )
+        
+        self.content = content_container
