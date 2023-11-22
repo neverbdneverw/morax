@@ -19,6 +19,7 @@ from controllers.add_dialog_controller import AddDialogController
 from controllers.item_info_dialog_controller import ItemInfoDialogController
 from controllers.add_receivable_dialog_controller import AddReceivableDialogController
 from controllers.onboarding_page_controller import OnboardingController
+from controllers.account_settings_dialogs_controller import AccountSettingsDialogsController
 
 from controllers.Database import Database
 
@@ -58,6 +59,7 @@ def main(page: ft.Page):
     AddDialogController(page, database, home_page)
     ItemInfoDialogController(page, database, home_page)
     AddReceivableDialogController(page, database, home_page)
+    AccountSettingsDialogsController(page, database, home_page)
     OpeningController(page, database, opening_page)
     OnboardingController(page, database, onboarding_page)
     LoginController(page, database, login_page)

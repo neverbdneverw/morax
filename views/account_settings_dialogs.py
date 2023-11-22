@@ -15,7 +15,7 @@ class ProfilePictureChangeDialog(ft.AlertDialog):
         self.actions = [self.save_changes_button, self.cancel_button]
         
         self.user_image = ft.Image(
-            src = "resources/default_image.png",
+            src = "resources/empty_user_image.svg",
             width=200,
             height = 200
         )
@@ -33,7 +33,7 @@ class ProfilePictureChangeDialog(ft.AlertDialog):
         
         self.content = content_column
 
-class EditUsernameEmailDialog(ft.AlertDialog):
+class EditUsernameDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
         self.save_changes_button = ft.TextButton(
@@ -48,15 +48,6 @@ class EditUsernameEmailDialog(ft.AlertDialog):
         self.actions = [self.save_changes_button, self.cancel_button]
         self.title = ft.Text("Edit Profile")
         
-        new_email = ft.Text(
-            "Enter new email:",
-            width=150
-        )
-        
-        self.new_email_textfield = ft.TextField(
-            hint_text="Email"
-        )
-        
         new_username = ft.Text(
             "Enter new username:",
             width=150
@@ -66,16 +57,12 @@ class EditUsernameEmailDialog(ft.AlertDialog):
             hint_text="Username"
         )
         
-        email_row = ft.Row(
-            controls=[new_email, self.new_email_textfield]
-        )
-        
         username_row = ft.Row(
             controls=[new_username, self.new_username_textfield]
         )
         
         content_column = ft.Column(
-            controls=[email_row, username_row],
+            controls=[username_row],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             width=500,
             height=200
@@ -110,7 +97,7 @@ class EditPasswordDialog(ft.AlertDialog):
         )
         
         reenter_password = ft.Text(
-            "Re-enter new username:",
+            "Re-enter new password:",
             width=150       
         )
         
