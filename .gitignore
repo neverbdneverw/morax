@@ -2,3 +2,4 @@ controllers/__pycache__/
 views/__pycache__/
 __pycache__/
 resources/credentials.json
+resources/secrets.py
