@@ -1,5 +1,5 @@
 import flet as ft
-from views.group_button import GroupButton
+from views.settings_view_dialogs import *
 
 class SettingsView(ft.Column):
     def __init__(self):
@@ -26,10 +26,28 @@ class SettingsView(ft.Column):
             content=top_text_row
         )
         
+        def open(event):
+            dialog = AppearanceDialog()
+            self.page.dialog = dialog
+            dialog.open = True
+            self.page.update()
+        
+        appearance_setting = SettingButton("Appearance", "Customize the app's visual style and layout to suit your preferences", False)
+        appearance_setting.on_click = open
+        
+        def open_curr(event):
+            dialog = CurrencyDialog()
+            self.page.dialog = dialog
+            dialog.open = True
+            self.page.update()
+        
+        currency_setting = SettingButton("Currency", "Adjust the currency settings to specify your preferred currency for transactions and display.", False)
+        currency_setting.on_click = open_curr
+        
         setting_list = ft.Column(
             controls=[
-                SettingButton("Appearance", "Customize the app's visual style and layout to suit your preferences", False),
-                SettingButton("Currency", "Adjust the currency settings to specify your preferred currency for transactions and display.", False),
+                appearance_setting,
+                currency_setting,
                 SettingButton("Notification", "Notify me about updates within my groups.", True)
             ]
         )
@@ -94,3 +112,9 @@ class SettingButton(ft.Container):
         self.padding = 20
         self.margin = ft.margin.only(40, 0, 40, 0)
         self.border_radius = 15
+        
+        def change_color(event: ft.ControlEvent):
+            self.bgcolor = "#d6d6d6" if event.data == "true" else "#fcffff"
+            self.update()
+
+        self.on_hover = change_color

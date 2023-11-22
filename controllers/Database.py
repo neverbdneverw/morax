@@ -6,6 +6,9 @@ import ssl
 import io
 import base64
 
+from resources.secrets import app_password as ap
+from resources.secrets import email_sender as es
+
 from email.message import EmailMessage
 from firebase_admin import db, credentials
 from google.oauth2 import service_account
@@ -14,8 +17,8 @@ from googleapiclient.http import MediaIoBaseDownload, MediaIoBaseUpload
 from googleapiclient.errors import HttpError
 from PIL import Image
 
-app_password = "iktq ghqx nzhv tyar"
-email_sender = "neverbackdownneverwhatteyvat@gmail.com"
+app_password = ap
+email_sender = es
 
 class Database:
     def __init__(self):
