@@ -234,7 +234,7 @@ class ItemsView(ft.Column):
         
         self.controls = [self.header_container, list_view_row]
     
-    def display_transactions(self, email: str, group_name: str, image_string: str, transactions: dict, item_images: dict):
+    def display_transactions(self, email: str, group_name: str, image_string: str, transactions: dict, item_images: dict, usernames: dict, user_images: dict):
         email = email.replace(".", ",")
         self.group_name.value = group_name
         self.group_image.src_base64 = image_string
@@ -249,15 +249,21 @@ class ItemsView(ft.Column):
             paid_users = dict(transactions[transaction_name]['Paid by'])
             if email in paid_users:
                 continue
-            elif transactions[transaction_name]['Posted by']['Username'] == self.username.value:
+            elif transactions[transaction_name]['Posted by']['Email'] == usernames[self.username.value]:
                 receivables += 1
                 total_receivable += float(transactions[transaction_name]['Price'])
-                item  = ItemButton(group_name, transaction_name, transactions, item_images[transaction_name], True)
+                item  = ItemButton(group_name, self.username.value, user_images[transactions[transaction_name]['Posted by']['Email']], transaction_name, transactions, item_images[transaction_name], True)
                 self.receivable_list.controls.append(item)
             else:
                 payables += 1
                 total_payable += float(transactions[transaction_name]['Price'])
-                item  = ItemButton(group_name, transaction_name, transactions, item_images[transaction_name], False)
+                
+                user = ""
+                for username in usernames:
+                    if transactions[transaction_name]['Posted by']['Email'] == usernames[username]:
+                        user = username
+                
+                item  = ItemButton(group_name, user, user_images[transactions[transaction_name]['Posted by']['Email']], transaction_name, transactions, item_images[transaction_name], False)
                 self.payable_list.controls.append(item)
         
         self.total_payable_text.value = f"Total Payable: ₱ {total_payable}"

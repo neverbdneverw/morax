@@ -233,7 +233,6 @@ Ignore this message if not.
         return "Unsuccessful"
     
     def get_user_image(self, email: str):
-        self.update_refs()
         email = email.replace('.', ',')
         picture_id = self.dictionary['Users'][email]['Picture Link']
         base64_content = ""
@@ -252,9 +251,65 @@ Ignore this message if not.
         
         return base64_content
     
+    def get_user_images(self):
+        images = dict()
+        for user in self.dictionary["Users"]:
+            images.update({user: self.get_user_image(user)})
+            
+        return images
+
+    def get_gcash_credentials(self):
+        gcash_infos = dict()
+        for user in self.dictionary['Users']:
+            gcash_qr_id = self.dictionary['Users'][user]['QR Image id']
+            gcash_number = self.dictionary['Users'][user]['GCash']
+
+            base64_content = ""
+            try:
+                request_file = self.service.files().get_media(fileId = gcash_qr_id)
+                file = io.BytesIO()
+                downloader = MediaIoBaseDownload(file, request_file)
+                done = False
+                while done is False:
+                    status, done = downloader.next_chunk()
+                
+                base64_content = base64.b64encode(file.getvalue()).decode('utf-8')
+            except HttpError as error:
+                print(F'An error occurred: {error}')
+                return ""
+
+            gcash_infos.update({user : {"QR Image" : base64_content, "GCash number": gcash_number}})
+        
+        return gcash_infos
+    
+    def get_gcash_of_user(self, email: str):
+        email = email.replace(".", ",")
+        gcash_qr_id = self.dictionary['Users'][email]['QR Image id']
+        gcash_number = self.dictionary['Users'][email]['GCash']
+
+        base64_content = ""
+        try:
+            request_file = self.service.files().get_media(fileId = gcash_qr_id)
+            file = io.BytesIO()
+            downloader = MediaIoBaseDownload(file, request_file)
+            done = False
+            while done is False:
+                status, done = downloader.next_chunk()
+            
+            base64_content = base64.b64encode(file.getvalue()).decode('utf-8')
+        except HttpError as error:
+            print(F'An error occurred: {error}')
+            return ""
+
+        return base64_content, gcash_number
+    
     def get_item_picture_by_item_name(self, item_name, group_name):
         self.update_refs()
         return self.dictionary['Groups'][group_name]["Transactions"][item_name]["Image id"]
+    
+    def change_username(self, email: str, replacement: str):
+        email = email.replace('.', ',')
+        db.reference(f"/Users/{email}/").update({"Username": replacement})
 
     def get_item_image(self, item_name: str, group_name: str):
         picture_id = self.get_item_picture_by_item_name(item_name, group_name)
@@ -426,10 +481,9 @@ Ignore this message if not.
             return ""
     
     def create_receivable(self, email: str, group_name: str, item_name: str, item_date: str, item_amount: str, item_description: str):
-        username = self.get_username_of_email(email)
         email = email.replace('.', ',')
         if group_name in self.dictionary["Groups"]:
-            db.reference(f"/Groups/{group_name}/Transactions").update({item_name : { "Description" : item_description, "Price": item_amount, "Posted by": {"Email": email, "Username": username}, "Time created": item_date, "Image id": "", "Paid by": ""}})
+            db.reference(f"/Groups/{group_name}/Transactions").update({item_name : { "Description" : item_description, "Price": item_amount, "Posted by": {"Email": email}, "Time created": item_date, "Image id": "", "Paid by": ""}})
             return "Successful"
         
         return "Cannot add item"
@@ -437,3 +491,11 @@ Ignore this message if not.
     def complete_transaction(self, group_name: str, item_name: str):
         if group_name in self.dictionary["Groups"]:
             db.reference(f"/Groups/{group_name}/Transactions/{item_name}").delete()
+    
+    def get_usernames(self):
+        self.update_refs()
+        usernames = dict()
+        for user in self.dictionary["Users"]:
+            usernames.update({self.dictionary["Users"][user]["Username"] : user})
+            
+        return usernames

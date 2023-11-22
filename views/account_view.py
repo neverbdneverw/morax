@@ -13,6 +13,11 @@ class AccountView(ft.Container):
             height=100
         )
         
+        user_picture_container = ft.Container(
+            self.user_picture,
+            border_radius=15
+        )
+        
         self.change_user_picture_button = ft.ElevatedButton(
             text="Change",
             bgcolor="#f8fafc",
@@ -39,7 +44,7 @@ class AccountView(ft.Container):
         
         picture_row = ft.Row(
             controls=[
-                self.user_picture,
+                user_picture_container,
                 user_info_column
             ]
         )

@@ -1,7 +1,7 @@
 import flet as ft
 
 class ItemButton(ft.ElevatedButton):
-    def __init__(self, group_name: str, transaction_name: str, transactions: dict, item_image_string: str, has_amount_received: bool):
+    def __init__(self, group_name: str, username: str, image_string: str, transaction_name: str, transactions: dict, item_image_string: str, has_amount_received: bool):
         super().__init__(
             expand=True,
             style=ft.ButtonStyle(shape = ft.ContinuousRectangleBorder(radius = 0))
@@ -9,14 +9,17 @@ class ItemButton(ft.ElevatedButton):
         
         self.group_name = group_name
 
-        account_image = ft.Image(
+        self.account_image = ft.Image(
             "resources/empty_user_image.svg",
             width = 100,
             height = 100
         )
         
+        if image_string != "":
+            self.account_image.src_base64 = image_string
+        
         user_name = ft.Text(
-            transactions[transaction_name]["Posted by"]["Username"],
+            username,
             color="#ae8948",
             weight=ft.FontWeight.W_600,
             size=16,
@@ -25,7 +28,7 @@ class ItemButton(ft.ElevatedButton):
         )
         
         account_column = ft.Column(
-            controls=[account_image, user_name],
+            controls=[ft.Container(self.account_image, border_radius=15), user_name],
             spacing=0,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER
         )

@@ -26,6 +26,7 @@ class HomeController:
         self.home_page.group_listview.items_view.on_trigger_reload = self.reload_listview
         self.home_page.group_listview.trigger_reload = self.reload_groups
         self.home_page.on_email_retrieved = self.fill_groups
+        self.home_page.trigger_reload_account_view = self.update_account_view
         
         self.home_page.receivable_info_dialog.completed_button.on_click = self.mark_receivable_completed
         self.home_page.receivable_info_dialog.cancel_button.on_click = lambda e: self.home_page.close_dialog(e)
@@ -40,11 +41,6 @@ class HomeController:
         
         self.home_page.feedback_view.button_contact_us.on_click = lambda e: webbrowser.open_new("https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzCMtQddshVRjPCKJRGfFwDxvWqJcNftmXFMFqqpdvrXXBpGsrfGGNTnSswPqHpChKdBRJG")
         self.home_page.feedback_view.button_contribute.on_click = lambda e: webbrowser.open_new("https://github.com/neverbdneverw/morax/issues/new")
-        
-        self.home_page.account_view.change_user_picture_button.on_click = lambda e: self.home_page.show_profile_picture_change_dialog()
-        self.home_page.account_view.edit_profile_button.on_click = lambda e: self.home_page.show_edit_username_email_dialog()
-        self.home_page.account_view.change_password_button.on_click = lambda e: self.home_page.show_edit_password_dialog()
-        self.home_page.account_view.gcash_button.on_click = lambda e: self.home_page.show_change_gcash_qr_dialog()
         
         self.home_page.account_view.logout_button.on_click = lambda e: self.page.go("/login")
     
@@ -84,6 +80,9 @@ class HomeController:
             self.database.update_refs()
             transactions = self.database.get_transactions(group)
             item_images = self.database.get_item_images_for_group(group)
+            usernames = self.database.get_usernames()
+            user_images = self.database.get_user_images()
+            gcash_infos = self.database.get_gcash_credentials()
             
             email = self.page.client_storage.get("email")
             current_user = self.database.get_username_of_email(email)
@@ -95,13 +94,15 @@ class HomeController:
             self.home_page.group_listview.items_view.set_creator(self.database.get_group_creator(group))
             self.home_page.group_listview.items_view.set_user_image(user_image)
             self.home_page.group_listview.content = self.home_page.group_listview.items_view
-            self.home_page.group_listview.items_view.display_transactions(email, group, image_string, transactions, item_images)
+            self.home_page.group_listview.items_view.display_transactions(email, group, image_string, transactions, item_images, usernames, user_images)
             self.home_page.group_listview.update()
             
             for payable_button in self.home_page.group_listview.items_view.payable_list.controls:
+                payable_button.gcash_infos = gcash_infos
                 payable_button.activate = self.show_item_informations
             
             for receivable_button in self.home_page.group_listview.items_view.receivable_list.controls:
+                receivable_button.gcash_infos = gcash_infos
                 receivable_button.activate = self.show_receivable_info
     
     def reload_listview(self, event: ft.ControlEvent):
@@ -123,7 +124,8 @@ class HomeController:
         self.home_page.group_listview.update()
     
     def show_item_informations(self, event: ft.ControlEvent, group: str, item_name: str, item_informations: dict):
-        self.home_page.item_infos_dialog.load_infos(event.control, item_name, item_informations)
+        usernames = self.database.get_usernames()
+        self.home_page.item_infos_dialog.load_infos(event.control, item_name, item_informations, usernames)
         self.home_page.show_info_dialog()
     
     def buttons_change(self, event: ft.ControlEvent):
@@ -138,6 +140,9 @@ class HomeController:
         
         for iter, view in enumerate(self.home_page.slider_stack.controls):
             view.show(iter - new_index)
+            
+        if new_button == self.home_page.profile_button:
+                self.update_account_view()
         
         self.page.update()
     
@@ -185,4 +190,10 @@ class HomeController:
         label.image = photo
         label.pack(ipadx= 20, pady=20)
         root.mainloop()
-        
+    
+    def update_account_view(self):
+        email = self.page.client_storage.get("email")
+        user_image = self.database.get_user_image(email)
+        self.home_page.account_view.user_picture.src_base64 = user_image
+        self.home_page.account_view.username_text.value = self.database.get_username_of_email(email)
+        self.home_page.account_view.email_text.value = email

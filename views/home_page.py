@@ -154,7 +154,7 @@ class HomePage():
         self.receivable_info_dialog = ShowReceivableInfoDialog()
         
         self.change_profile_picture_dialog = ProfilePictureChangeDialog()
-        self.edit_username_email_dialog = EditUsernameEmailDialog()
+        self.edit_username_dialog = EditUsernameDialog()
         self.edit_password_dialog = EditPasswordDialog()
         self.edit_gcash_dialog = EditGcashDialog()
     
@@ -168,6 +168,9 @@ class HomePage():
         pass
     
     def check_if_autologin(self):
+        pass
+    
+    def trigger_reload_account_view(self):
         pass
     
     def show_add_group_dialog(self):
@@ -199,9 +202,9 @@ class HomePage():
         self.change_profile_picture_dialog.open = True
         self.page.update()
     
-    def show_edit_username_email_dialog(self):
-        self.page.dialog = self.edit_username_email_dialog
-        self.edit_username_email_dialog.open = True
+    def show_edit_username_dialog(self):
+        self.page.dialog = self.edit_username_dialog
+        self.edit_username_dialog.open = True
         self.page.update()
     
     def show_edit_password_dialog(self):

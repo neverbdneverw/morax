@@ -197,16 +197,31 @@ class ItemInfoDialog(ft.AlertDialog):
         self.switcher.content = self.payment_row
         self.switcher.update()
     
-    def load_infos(self, control: ItemButton, item_name: str, item_informations: dict):
+    def load_infos(self, control: ItemButton, item_name: str, item_informations: dict, usernames: dict):
         self.switcher.content = self.main_row
         self.title.visible = True
         self.pay_button.text = "Pay now"
         self.group_name = control.group_name
-
         self.informations = dict(item_informations)
+        gcash_infos = dict(control.gcash_infos)
+        
+        user = ""
+        qr_image_string = ""
+        gcash_number = ""
+        for username in usernames:
+            if usernames[username] == self.informations["Posted by"]['Email']:
+                qr_image_string = gcash_infos[usernames[username]]["QR Image"]
+                gcash_number = gcash_infos[usernames[username]]["GCash number"]
+                user = username
+
         self.item_name.value = self.payment_item_name.spans[0].text = item_name
         self.price.value = self.item_price.spans[0].text = f"₱ {self.informations['Price']}"
         self.item_image.src_base64 = control.item_image.src_base64
         self.item_post_time.spans[0].text = self.informations['Time created']
-        self.account_name_info.value = self.account_name_payment.value = self.informations["Posted by"]['Username']
+        self.account_name_info.value = self.account_name_payment.value = user
         self.description.value = self.informations['Description']
+        self.qr_code.src_base64 = qr_image_string
+        self.gcash_number.spans[0].text = gcash_number
+        
+        if control.account_image.src_base64 != "":
+            self.account_image.src_base64 = control.account_image.src_base64
