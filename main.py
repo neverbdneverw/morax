@@ -7,6 +7,7 @@ from views.signup_page import SignupPage
 from views.forgot_password_page import ForgotPasswordPage
 from views.confirm_email_page import ConfirmEmailPage
 from views.home_page import HomePage
+from views.onboarding_page import OnboardingPage
 
 from controllers.opening_controller import OpeningController
 from controllers.login_controller import LoginController
@@ -17,6 +18,7 @@ from controllers.home_controller import HomeController
 from controllers.add_dialog_controller import AddDialogController
 from controllers.item_info_dialog_controller import ItemInfoDialogController
 from controllers.add_receivable_dialog_controller import AddReceivableDialogController
+from controllers.onboarding_page_controller import OnboardingController
 
 from controllers.Database import Database
 
@@ -31,6 +33,7 @@ def main(page: ft.Page):
     signup_page = SignupPage()
     login_page = LoginPage()
     forgot_password_page = ForgotPasswordPage()
+    onboarding_page = OnboardingPage()
     
     home_page = HomePage()
     
@@ -40,7 +43,8 @@ def main(page: ft.Page):
         path(url="/signup", clear=True, view=signup_page.get_view), 
         path(url="/forgot_password", clear=True, view=forgot_password_page.get_view),
         path(url="/confirm_email", clear=True, view=confirm_email_page.get_view),
-        path(url="/home", clear=True, view=home_page.get_view)
+        path(url="/home", clear=True, view=home_page.get_view),
+        path(url="/onboarding", clear=False, view=onboarding_page.get_view)
     ]
     
     Routing(page = page, app_routes = app_routes)
@@ -55,6 +59,7 @@ def main(page: ft.Page):
     ItemInfoDialogController(page, database, home_page)
     AddReceivableDialogController(page, database, home_page)
     OpeningController(page, database, opening_page)
+    OnboardingController(page, database, onboarding_page)
     LoginController(page, database, login_page)
     SignupController(page, database, signup_page)
     ForgotController(page, database, forgot_password_page)

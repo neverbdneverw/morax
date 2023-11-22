@@ -22,11 +22,15 @@ class LoginController:
             self.login_page.allow_login(False)
     
     def login(self, event):
-        verdict = self.database.query_login(self.login_page.get_email_entry(), self.login_page.get_password_entry())
+        email = self.login_page.get_email_entry()
+        verdict = self.database.query_login(email, self.login_page.get_password_entry())
         if verdict == "Found":
-            email = self.login_page.get_email_entry()
             self.page.client_storage.set("email", email)
-            self.page.go("/home")
+            if self.database.get_first_run(email):
+                self.page.go("/onboarding")
+                self.database.confirm_first_run(email)
+            else:
+                self.page.go("/home")
         elif verdict == "Not found":
             self.login_page.display_on_dialog("Username or Password might be wrong. Please Try Again.")
         else:

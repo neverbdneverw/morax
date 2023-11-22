@@ -63,10 +63,19 @@ class Database:
     def create_account(self, email: str, username: str, password: str):
         email = email.replace('.', ',')
         if email not in self.dictionary["Users"]:
-            db.reference(f"/Users/").update({email : { "Username" : username, "Password": password, "Picture Link": ""}})
+            db.reference(f"/Users/").update({email : { "Username" : username, "Password": password, "Picture Link": "", "First Run": True, "GCash": "", "QR Image id": ""}})
             return "Successful"
         
         return "Account already exists."
+
+    def get_first_run(self, email: str):
+        self.update_refs()
+        email = email.replace('.', ',')
+        return self.dictionary["Users"][email]["First Run"]
+    
+    def confirm_first_run(self, email: str):
+        email = email.replace('.', ',')
+        db.reference(f"/Users/{email}/").update({"First Run": False})
     
     def create_group_with_email(self, group_name: str, group_description: str, email: str):
         username = self.get_username_of_email(email)
@@ -320,6 +329,43 @@ Ignore this message if not.
             uploaded_file = self.service.files().create(body={'name': f"{group_name}|{item_name}.png"}, media_body=media, fields='id').execute()
             id = uploaded_file.get('id')
             db.reference(f"/Groups/{group_name}/Transactions/{item_name}").update({"Image id": id})
+
+            permission = {
+                'type': 'user',
+                'role': 'writer',
+                'emailAddress': email_sender
+            }
+            self.service.permissions().create(fileId=id, body=permission).execute()
+            
+        except HttpError as error:
+            print(f'An error occurred: {error}')
+    
+    def upload_user_qr_number(self, email: str, qr_bytes: io.BytesIO, number: str):
+        email = email.replace(".", ",")
+
+        try:
+            media = MediaIoBaseUpload(qr_bytes, mimetype='image/png')
+            uploaded_file = self.service.files().create(body={'name': f"{email}|QRCODE.png"}, media_body=media, fields='id').execute()
+            id = uploaded_file.get('id')
+            db.reference(f"/Users/{email}/").update({"QR Image id": id, "GCash": number})
+
+            permission = {
+                'type': 'user',
+                'role': 'writer',
+                'emailAddress': email_sender
+            }
+            self.service.permissions().create(fileId=id, body=permission).execute()
+            
+        except HttpError as error:
+            print(f'An error occurred: {error}')
+    
+    def update_user_image(self, email: str, user_image_buffer: io.BytesIO):
+        email = email.replace('.', ',')
+        try:
+            media = MediaIoBaseUpload(user_image_buffer, mimetype='image/png')
+            uploaded_file = self.service.files().create(body={'name': f"{email}|USERIMAGE.png"}, media_body=media, fields='id').execute()
+            id = uploaded_file.get('id')
+            db.reference(f"/Users/{email}/").update({"Picture Link": id})
 
             permission = {
                 'type': 'user',
