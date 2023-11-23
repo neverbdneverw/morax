@@ -1,11 +1,11 @@
-from controllers.Database import Database
-from views.forgot_password_page import ForgotPasswordPage
+from model import Model
+from views import ForgotPasswordPage
 import flet as ft
 
 class ForgotController:
-    def __init__(self, page: ft.Page, database: Database, forgot_password_page: ForgotPasswordPage):
+    def __init__(self, page: ft.Page, model: Model, forgot_password_page: ForgotPasswordPage):
         self.page = page
-        self.database = database
+        self.model = model
         self.forgot_password_page = forgot_password_page
         
         self.forgot_password_page.new_password_textfield.on_change = self.validate
@@ -31,10 +31,10 @@ class ForgotController:
         self.page.go("/signup")
     
     def change_password(self, event):
-        code = self.database.confirm_email_ownership(self.forgot_password_page.get_email_to_send_entry())
+        code = self.model.confirm_email_ownership(self.forgot_password_page.get_email_to_send_entry())
         command = [
             "COMMAND_CHANGE_PASSWORD",
-            self.database.change_password,
+            self.model.change_password,
             code,
             self.forgot_password_page.get_email_to_send_entry(),
             self.forgot_password_page.get_new_password_entry(),

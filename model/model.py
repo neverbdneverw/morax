@@ -20,7 +20,7 @@ from PIL import Image
 app_password = ap
 email_sender = es
 
-class Database:
+class Model:
     def __init__(self):
         cred = credentials.Certificate("resources/credentials.json")
         firebase_admin.initialize_app(cred, {"databaseURL" : "https://morax-shared-financial-manager-default-rtdb.asia-southeast1.firebasedatabase.app/"})

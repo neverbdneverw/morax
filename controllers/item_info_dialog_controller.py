@@ -1,15 +1,17 @@
-from controllers.Database import Database
-from views.home_page import HomePage
-import flet as ft
+from model import Model
+from views import HomePage
+
 from PIL import Image
+
+import flet as ft
 import io
 import base64
 
 class ItemInfoDialogController:
     image_path = ""
-    def __init__(self, page: ft.Page, database: Database, home_page: HomePage):
+    def __init__(self, page: ft.Page, model: Model, home_page: HomePage):
         self.page = page
-        self.database = database
+        self.model = model
         self.home_page = home_page
         self.item_info_dialog = home_page.item_infos_dialog
         
@@ -44,10 +46,11 @@ class ItemInfoDialogController:
             self.item_info_dialog.open = False
             self.page.update()
             
-            verdict = self.database.mark_paid_with_proof(group_name, item_name, current_email, self.image_path)
+            verdict = self.model.mark_paid_with_proof(group_name, item_name, current_email, self.image_path)
             if verdict == "Successful":
                 self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable is marked as paid."), duration=1000)
                 self.page.snack_bar.open = True
+
                 self.home_page.group_listview.items_view.on_trigger_reload(event)
             else:
                 self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable cannot be marked as paid."), duration=1000)

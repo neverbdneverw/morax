@@ -1,11 +1,11 @@
-from controllers.Database import Database
-from views.signup_page import SignupPage
+from model import Model
+from views import SignupPage
 import flet as ft
 
 class SignupController:
-    def __init__(self, page: ft.Page, database: Database, signup_page: SignupPage):
+    def __init__(self, page: ft.Page, model: Model, signup_page: SignupPage):
         self.page = page
-        self.database = database
+        self.model = model
         self.signup_page = signup_page
         
         self.signup_page.email_textfield.on_change = self.validate
@@ -32,10 +32,10 @@ class SignupController:
             self.signup_page.allow_register(False)
     
     def register(self, event):
-        code = self.database.confirm_email_ownership(self.signup_page.get_email_entry())
+        code = self.model.confirm_email_ownership(self.signup_page.get_email_entry())
         command = [
             "COMMAND_REGISTER",
-            self.database.create_account,
+            self.model.create_account,
             code,
             self.signup_page.get_email_entry(),
             self.signup_page.get_username_entry(),

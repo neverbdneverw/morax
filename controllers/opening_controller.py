@@ -1,11 +1,11 @@
-from controllers.Database import Database
-from views.opening_page import OpeningPage
+from model import Model
+from views import OpeningPage
 import flet as ft
 
 class OpeningController:
-    def __init__(self, page: ft.Page, database: Database, opening_page: OpeningPage):
+    def __init__(self, page: ft.Page, model: Model, opening_page: OpeningPage):
         self.page = page
-        self.database = database
+        self.model = model
         self.opening_page = opening_page
         
         self.handle_automatic_login()

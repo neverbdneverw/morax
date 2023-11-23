@@ -3,6 +3,8 @@ import flet as ft
 class AddReceivableDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
+        self.group = ""
+        
         self.add_item_button = ft.TextButton("Add Item", disabled=True)
         self.cancel_button = ft.TextButton("Cancel")
         
