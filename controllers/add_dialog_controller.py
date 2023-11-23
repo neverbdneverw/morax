@@ -1,18 +1,19 @@
-import flet as ft
-from controllers.Database import Database
+from model import Model
+from views import AddDialog, HomePage
+
 from PIL import Image
+
+import flet as ft
 import io
 import base64
-from views.add_dialog import AddDialog
-from views.home_page import HomePage
 
 class AddDialogController:
     code_validated = False
-    def __init__(self, page: ft.Page, database: Database, home_page: HomePage):
+    def __init__(self, page: ft.Page, model: Model, home_page: HomePage):
         self.page = page
-        self.database = database
+        self.model = model
         self.home_page = home_page
-        self.add_group_dialog = home_page.add_group_dialog
+        self.add_group_dialog: AddDialog = home_page.add_group_dialog
         
         self.file_picker = ft.FilePicker()
         self.file_picker.on_result = self.set_image
@@ -47,10 +48,10 @@ class AddDialogController:
         else:
             if self.add_group_dialog.get_created_group_name() != "" and self.add_group_dialog.get_created_group_desc() != "":
                 email = self.page.client_storage.get("email")
-                self.database.create_group_with_email(self.add_group_dialog.get_created_group_name(), self.add_group_dialog.get_created_group_desc(), email)
+                self.model.create_group_with_email(self.add_group_dialog.get_created_group_name(), self.add_group_dialog.get_created_group_desc(), email)
                 self.page.client_storage.set("just_opened", False)
                 self.home_page.group_listview.trigger_reload(email)
-                self.database.upload_group_image(self.add_group_dialog.get_created_group_name(), self.image_path)
+                self.model.upload_group_image(self.add_group_dialog.get_created_group_name(), self.image_path)
                 self.home_page.close_dialog(None)
                 self.new_image_string == ""
                 
@@ -71,7 +72,7 @@ class AddDialogController:
         else:
             if self.code_validated:
                 email = self.page.client_storage.get("email")
-                self.database.join_group_with_email(self.add_group_dialog.get_group_code_entry(), email)
+                self.model.join_group_with_email(self.add_group_dialog.get_group_code_entry(), email)
                 self.page.client_storage.set("just_opened", False)
                 self.home_page.group_listview.trigger_reload(email)
                 self.home_page.close_dialog(None)
@@ -88,7 +89,7 @@ class AddDialogController:
     def check_if_code_exists(self, event):
         code = self.add_group_dialog.get_group_code_entry()
         if code != "":
-            exists = self.database.is_group_existing(code)
+            exists = self.model.is_group_existing(code)
             
             if exists:
                 print("Code existsing. pede na magjoin yiee")
@@ -113,7 +114,7 @@ class AddDialogController:
             pil_img.save(buff, format="PNG")
             
             self.new_image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
-            self.home_page.add_group_dialog.image_preview.src_base64 = self.new_image_string
-            self.home_page.add_group_dialog.image_preview.update()
+            self.add_group_dialog.image_preview.src_base64 = self.new_image_string
+            self.add_group_dialog.image_preview.update()
         else:
             self.image_path = ""

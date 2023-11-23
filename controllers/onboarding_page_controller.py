@@ -1,17 +1,20 @@
-from controllers.Database import Database
-from views.onboarding_page import OnboardingPage
+from model import Model
+from views import OnboardingPage
+
 from io import BytesIO
 from PIL import Image
+
 import flet as ft
 import qrcode
 import cv2
 import base64
 
 class OnboardingController:
-    def __init__(self, page: ft.Page, database: Database, onboarding_page: OnboardingPage):
+    def __init__(self, page: ft.Page, model: Model, onboarding_page: OnboardingPage):
         self.page = page
-        self.database = database
+        self.model = model
         self.onboarding_page = onboarding_page
+        
         self.current = 0
         self.gcash_qr_base64 = ""
         
@@ -116,13 +119,13 @@ class OnboardingController:
             self.onboarding_page.profile_column.offset = ft.transform.Offset(0, 0)
             self.onboarding_page.profile_column.update()
             
-            self.database.upload_user_qr_number(email, self.buffered, self.onboarding_page.number_textfield.value)
+            self.model.upload_user_qr_number(email, self.buffered, self.onboarding_page.number_textfield.value)
             
             self.onboarding_page.next_button.text = "Start Morax"
             self.onboarding_page.next_button.update()
             self.current = 2
         elif self.current == 2:
             if self.dp_image_path != "":
-                self.database.update_user_image(email, self.dp_image_buffer)
+                self.model.update_user_image(email, self.dp_image_buffer)
             
             self.page.go("/home")

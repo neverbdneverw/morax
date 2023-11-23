@@ -1,18 +1,18 @@
+from model import Model
+from views import HomePage, AddReceivableDialog
+
 import flet as ft
-from controllers.Database import Database
 from PIL import Image
 import io
 import base64
-from views.add_dialog import AddDialog
-from views.home_page import HomePage
 
 class AddReceivableDialogController:
     image_path = ""
-    def __init__(self, page: ft.Page, database: Database, home_page: HomePage):
+    def __init__(self, page: ft.Page, model: Model, home_page: HomePage):
         self.page = page
-        self.database = database
+        self.model = model
         self.home_page = home_page
-        self.add_receivable_dialog = home_page.add_receivable_dialog
+        self.add_receivable_dialog: AddReceivableDialog = home_page.add_receivable_dialog
         
         self.file_picker = ft.FilePicker()
         self.file_picker.on_result = self.set_item_image
@@ -51,7 +51,7 @@ class AddReceivableDialogController:
 
     def add_receivable(self, event: ft.ControlEvent):
         email = self.page.client_storage.get("email")
-        group_name = self.home_page.add_receivable_dialog.group
+        group_name = self.add_receivable_dialog.group
         item_name = self.add_receivable_dialog.get_item_name()
         item_month = self.add_receivable_dialog.get_item_creation_month()
         item_day = self.add_receivable_dialog.get_item_creation_day()
@@ -60,14 +60,14 @@ class AddReceivableDialogController:
         item_amount = self.add_receivable_dialog.get_item_amount()
         item_description = self.add_receivable_dialog.get_item_description()
         
-        verdict = self.database.create_receivable(email, group_name, item_name, item_date, item_amount, item_description)
+        verdict = self.model.create_receivable(email, group_name, item_name, item_date, item_amount, item_description)
         if verdict == "Successful":
             self.home_page.close_dialog(event)
             
         if self.image_path != "":
-            self.database.upload_item_image(group_name, item_name, self.image_path)
+            self.model.upload_item_image(group_name, item_name, self.image_path)
         
-        self.database.update_refs()
+        self.model.update_refs()
         self.home_page.group_listview.items_view.on_trigger_reload(event)
     
     def item_info_change(self, event: ft.ControlEvent):

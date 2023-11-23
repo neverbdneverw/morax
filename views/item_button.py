@@ -8,6 +8,7 @@ class ItemButton(ft.ElevatedButton):
         )
         
         self.group_name = group_name
+        self.gcash_infos = None
 
         self.account_image = ft.Image(
             "resources/empty_user_image.svg",

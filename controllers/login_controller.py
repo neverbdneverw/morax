@@ -1,11 +1,11 @@
-from controllers.Database import Database
-from views.login_page import LoginPage
+from model import Model
+from views import LoginPage
 import flet as ft
 
 class LoginController:
-    def __init__(self, page: ft.Page, database: Database, login_page: LoginPage):
+    def __init__(self, page: ft.Page, model: Model, login_page: LoginPage):
         self.page = page
-        self.database = database
+        self.model = model
         self.login_page = login_page
         
         self.login_page.email_textfield.on_change = self.validate
@@ -23,12 +23,12 @@ class LoginController:
     
     def login(self, event):
         email = self.login_page.get_email_entry()
-        verdict = self.database.query_login(email, self.login_page.get_password_entry())
+        verdict = self.model.query_login(email, self.login_page.get_password_entry())
         if verdict == "Found":
             self.page.client_storage.set("email", email)
-            if self.database.get_first_run(email):
+            if self.model.get_first_run(email):
                 self.page.go("/onboarding")
-                self.database.confirm_first_run(email)
+                self.model.confirm_first_run(email)
             else:
                 self.page.go("/home")
         elif verdict == "Not found":

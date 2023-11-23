@@ -1,11 +1,11 @@
-from controllers.Database import Database
-from views.confirm_email_page import ConfirmEmailPage
+from model import Model
+from views import ConfirmEmailPage
 import flet as ft
 
 class ConfirmEmailController:
-    def __init__(self, page: ft.Page, database: Database, confirm_email_page: ConfirmEmailPage):
+    def __init__(self, page: ft.Page, model: Model, confirm_email_page: ConfirmEmailPage):
         self.page = page
-        self.database = database
+        self.model = model
         self.confirm_email_page = confirm_email_page
         
         self.confirm_email_page.code_sent_textfield.on_change = self.validate
@@ -32,7 +32,7 @@ class ConfirmEmailController:
                 
                 if verdict == "Successful":
                     self.confirm_email_page.display_on_dialog("Success!", "Your account has been created. You may now log in.")
-                    self.database.update_refs()
+                    self.model.update_refs()
                 else:
                     self.confirm_email_page.display_on_dialog("Can't Register", "An account is already linked to the credentials given.")
             elif command_type == "COMMAND_CHANGE_PASSWORD":
@@ -40,7 +40,7 @@ class ConfirmEmailController:
                 
                 if verdict == "Password Changed":
                     self.confirm_email_page.display_on_dialog("Success!", "Your password has been updated. You may now log in again.")
-                    self.database.update_refs()
+                    self.model.update_refs()
                 else:
                     self.confirm_email_page.display_on_dialog("Can't Change Password", "An account bound to the email doesn't exist.")
             else:

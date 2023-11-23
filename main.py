@@ -1,27 +1,9 @@
 import flet as ft
 
 from flet_route import Routing, path
-from views.opening_page import OpeningPage
-from views.login_page import LoginPage
-from views.signup_page import SignupPage
-from views.forgot_password_page import ForgotPasswordPage
-from views.confirm_email_page import ConfirmEmailPage
-from views.home_page import HomePage
-from views.onboarding_page import OnboardingPage
-
-from controllers.opening_controller import OpeningController
-from controllers.login_controller import LoginController
-from controllers.signup_controller import SignupController
-from controllers.forgot_controller import ForgotController
-from controllers.confirm_email_controller import ConfirmEmailController
-from controllers.home_controller import HomeController
-from controllers.add_dialog_controller import AddDialogController
-from controllers.item_info_dialog_controller import ItemInfoDialogController
-from controllers.add_receivable_dialog_controller import AddReceivableDialogController
-from controllers.onboarding_page_controller import OnboardingController
-from controllers.account_settings_dialogs_controller import AccountSettingsDialogsController
-
-from controllers.Database import Database
+from views import *
+from controllers import *
+from model import *
 
 def main(page: ft.Page):
     page.window_width = 1024
@@ -53,19 +35,20 @@ def main(page: ft.Page):
     
     # page.client_storage.clear()
     
-    database = Database()
+    model = Model()
 
-    HomeController(page, database, home_page)
-    AddDialogController(page, database, home_page)
-    ItemInfoDialogController(page, database, home_page)
-    AddReceivableDialogController(page, database, home_page)
-    AccountSettingsDialogsController(page, database, home_page)
-    OpeningController(page, database, opening_page)
-    OnboardingController(page, database, onboarding_page)
-    LoginController(page, database, login_page)
-    SignupController(page, database, signup_page)
-    ForgotController(page, database, forgot_password_page)
-    ConfirmEmailController(page, database, confirm_email_page)
+    HomeController(page, model, home_page)
+    AddDialogController(page, model, home_page)
+    ItemInfoDialogController(page, model, home_page)
+    AddReceivableDialogController(page, model, home_page)
+    AccountSettingsDialogsController(page, model, home_page)
+    ReceivableInfoDialogController(page, model, home_page)
+    OpeningController(page, model, opening_page)
+    OnboardingController(page, model, onboarding_page)
+    LoginController(page, model, login_page)
+    SignupController(page, model, signup_page)
+    ForgotController(page, model, forgot_password_page)
+    ConfirmEmailController(page, model, confirm_email_page)
 
 if __name__ == "__main__":
     ft.app(target=main)
