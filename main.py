@@ -35,20 +35,20 @@ def main(page: ft.Page):
     
     # page.client_storage.clear()
     
-    model = Model()
+    repository = Repository()
 
-    HomeController(page, model, home_page)
-    AddDialogController(page, model, home_page)
-    ItemInfoDialogController(page, model, home_page)
-    AddReceivableDialogController(page, model, home_page)
-    AccountSettingsDialogsController(page, model, home_page)
-    ReceivableInfoDialogController(page, model, home_page)
-    OpeningController(page, model, opening_page)
-    OnboardingController(page, model, onboarding_page)
-    LoginController(page, model, login_page)
-    SignupController(page, model, signup_page)
-    ForgotController(page, model, forgot_password_page)
-    ConfirmEmailController(page, model, confirm_email_page)
+    HomeController(page, repository, home_page)
+    AddDialogController(page, repository, home_page)
+    ItemInfoDialogController(page, repository, home_page)
+    AddReceivableDialogController(page, repository, home_page)
+    AccountSettingsDialogsController(page, repository, home_page)
+    ReceivableInfoDialogController(page, repository, home_page)
+    OpeningController(page, opening_page)
+    OnboardingController(page, repository, onboarding_page)
+    LoginController(page, repository, login_page)
+    SignupController(page, repository, signup_page)
+    ForgotController(page, repository, forgot_password_page)
+    ConfirmEmailController(page, repository, confirm_email_page)
 
 if __name__ == "__main__":
     ft.app(target=main)

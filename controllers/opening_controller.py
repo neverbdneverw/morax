@@ -1,11 +1,9 @@
-from model import Model
 from views import OpeningPage
 import flet as ft
 
 class OpeningController:
-    def __init__(self, page: ft.Page, model: Model, opening_page: OpeningPage):
+    def __init__(self, page: ft.Page, opening_page: OpeningPage):
         self.page = page
-        self.model = model
         self.opening_page = opening_page
         
         self.handle_automatic_login()

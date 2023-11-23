@@ -1,11 +1,11 @@
-from model import Model
+from model import Repository
 from views import LoginPage
 import flet as ft
 
 class LoginController:
-    def __init__(self, page: ft.Page, model: Model, login_page: LoginPage):
+    def __init__(self, page: ft.Page, repository: Repository, login_page: LoginPage):
         self.page = page
-        self.model = model
+        self.repository = repository
         self.login_page = login_page
         
         self.login_page.email_textfield.on_change = self.validate
@@ -22,19 +22,23 @@ class LoginController:
             self.login_page.allow_login(False)
     
     def login(self, event):
-        email = self.login_page.get_email_entry()
-        verdict = self.model.query_login(email, self.login_page.get_password_entry())
-        if verdict == "Found":
-            self.page.client_storage.set("email", email)
-            if self.model.get_first_run(email):
-                self.page.go("/onboarding")
-                self.model.confirm_first_run(email)
-            else:
-                self.page.go("/home")
-        elif verdict == "Not found":
-            self.login_page.display_on_dialog("Username or Password might be wrong. Please Try Again.")
-        else:
-            self.login_page.display_on_dialog("Password is wrong. Please Try Again.")
+        email = self.login_page.get_email_entry().replace(".", ",")
+        password = self.login_page.get_password_entry()
+        
+        for user in self.repository.users:
+            if user.email == email and user.password == password:
+                self.page.client_storage.set("email", email)
+                if user.first_run:
+                    self.page.go("/onboarding")
+                else:
+                    self.page.go("/home")
+                
+                return
+            elif user.email == email and user.password != password:
+                self.login_page.display_on_dialog("Password is wrong. Please Try Again.")
+                return
+        
+        self.login_page.display_on_dialog("Username or Password might be wrong. Please Try Again.")
     
     def handle_automatic_login(self, event):
         setting = self.login_page.get_keep_signed_in()

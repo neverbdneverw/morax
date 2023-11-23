@@ -1,4 +1,4 @@
-from model import Model
+from model import Repository, Transaction
 from views import HomePage
 
 from PIL import Image
@@ -9,9 +9,9 @@ import base64
 
 class ItemInfoDialogController:
     image_path = ""
-    def __init__(self, page: ft.Page, model: Model, home_page: HomePage):
+    def __init__(self, page: ft.Page, repository: Repository, home_page: HomePage):
         self.page = page
-        self.model = model
+        self.repository = repository
         self.home_page = home_page
         self.item_info_dialog = home_page.item_infos_dialog
         
@@ -46,15 +46,27 @@ class ItemInfoDialogController:
             self.item_info_dialog.open = False
             self.page.update()
             
-            verdict = self.model.mark_paid_with_proof(group_name, item_name, current_email, self.image_path)
-            if verdict == "Successful":
-                self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable is marked as paid."), duration=1000)
-                self.page.snack_bar.open = True
+            image_bytes = io.BytesIO()
+            image = Image.open(self.image_path).convert("RGBA")
+            image = image.resize((200, 200))
+            image.save(image_bytes, format="PNG")
+            
+            paid_proof_id = self.repository.upload_image(f"PROOF|{group_name}|{item_name}.png", image_bytes)
+            
+            for group in self.repository.groups:
+                if group.group_name == group_name:
+                    transaction: Transaction = None
+                    for transaction in group.transactions:
+                        if transaction.name == item_name:
+                            transaction.paid_by["Email"] = paid_proof_id
+                            
+                            self.repository.update_group(group)
+                            self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable is marked as paid."), duration=1000)
+                            self.page.snack_bar.open = True
 
-                self.home_page.group_listview.items_view.on_trigger_reload(event)
-            else:
-                self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable cannot be marked as paid."), duration=1000)
-                self.page.snack_bar.open = True
+                            self.home_page.group_listview.items_view.on_trigger_reload(event)
+                            
+                            return
     
     def set_proof_image(self, event: ft.FilePickerResultEvent):
         if event.files is not None:
