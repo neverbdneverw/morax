@@ -1,6 +1,5 @@
 import firebase_admin
 import random
-import string
 import smtplib
 import ssl
 import io
@@ -157,6 +156,7 @@ class Repository:
         })
         
         self.update_refs()
+        self.load_groups()
     
     def update_user(self, user: User):
         db.reference('/Users/').update({
@@ -171,6 +171,7 @@ class Repository:
         })
         
         self.update_refs()
+        self.load_users()
     
     def upload_image(self, file_name: str, buffer: io.BytesIO) -> str:
         try:
@@ -231,11 +232,3 @@ Ignore this message if not.
             smtp.sendmail(email_sender, email, email_message.as_string())
 
         return code
-
-    def generate_unique_code(self):
-        res = ''.join(random.choices(
-            string.ascii_letters +
-            string.digits
-            , k=8))
-        
-        return str(res)

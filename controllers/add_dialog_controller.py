@@ -1,4 +1,4 @@
-from model import Repository, Group, Member
+from model import Repository, Group, Member, utils
 from views import AddDialog, HomePage
 
 from PIL import Image
@@ -61,7 +61,7 @@ class AddDialogController:
                 image.save(image_bytes, format="PNG")
                 
                 empty_list = list()
-                unique_code = self.repository.generate_unique_code()
+                unique_code = utils.generate_unique_code()
                 
                 group_image_id = self.repository.upload_image(f"{self.add_group_dialog.get_created_group_name()}.png", image_bytes)
                 
@@ -76,8 +76,6 @@ class AddDialogController:
                 )
                 
                 self.repository.update_group(new_group)
-                self.repository.update_refs()
-                self.repository.load_groups()
                 self.page.client_storage.set("just_opened", False)
                 self.home_page.group_listview.trigger_reload(email)
                 self.home_page.close_dialog(None)
@@ -111,8 +109,6 @@ class AddDialogController:
                         group.members.append(Member(username, email))
 
                         self.repository.update_group(group)
-                        self.repository.update_refs()
-                        self.repository.load_groups()
                 
                         self.page.client_storage.set("just_opened", False)
                         self.home_page.group_listview.trigger_reload(email)
@@ -137,11 +133,15 @@ class AddDialogController:
                     break
             
             if exists:
-                print("Code existsing. pede na magjoin yiee")
+                self.page.snack_bar = ft.SnackBar(ft.Text("The group code is valid. You may now join..."), duration=3000)
+                self.page.snack_bar.open = True
+                self.page.update()
                 self.code_validated = True
                 self.add_group_dialog.join_button.disabled = False
             else:
-                print("Nothing like that exists")
+                self.page.snack_bar = ft.SnackBar(ft.Text("The group code is invalid. Please try again..."), duration=3000)
+                self.page.snack_bar.open = True
+                self.page.update()
                 self.code_validated = False
                 self.add_group_dialog.join_button.disabled = True
             
