@@ -76,6 +76,8 @@ class AddDialogController:
                 )
                 
                 self.repository.update_group(new_group)
+                self.repository.update_refs()
+                self.repository.load_groups()
                 self.page.client_storage.set("just_opened", False)
                 self.home_page.group_listview.trigger_reload(email)
                 self.home_page.close_dialog(None)
@@ -107,6 +109,10 @@ class AddDialogController:
                 for group in self.repository.groups:
                     if group.unique_code == self.add_group_dialog.get_group_code_entry():
                         group.members.append(Member(username, email))
+
+                        self.repository.update_group(group)
+                        self.repository.update_refs()
+                        self.repository.load_groups()
                 
                         self.page.client_storage.set("just_opened", False)
                         self.home_page.group_listview.trigger_reload(email)

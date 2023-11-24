@@ -86,12 +86,12 @@ class HomeController:
             self.group_listview.empty_warning_text_container.offset = ft.transform.Offset(-1, 0)
             self.group_listview.empty_warning_text_container.visible = False
 
-        for joined_group in joined_groups:
-            group: Group = joined_group[0]
-            group_image = joined_group[1]
-            
-            group_button = GroupButton(group.group_name, group_image)
-            group_button.activate = lambda group_name, image_string: self.open_group(group_name, image_string, group, False)
+        group_object: Group = None
+        group_image: str = ""
+        for group_object, group_image in joined_groups:
+            group_button = GroupButton(group_object.group_name, group_image)
+            group_button.group = group_object
+            group_button.activate = lambda button, group_name, image_string: self.open_group(group_name, image_string, button.group, False)
             self.group_listview.grid.controls.append(group_button)
         
         add_button = AddGroupButton()
@@ -143,7 +143,6 @@ class HomeController:
         self.items_view.group: Group = group
         self.items_view.set_creator(group.created_by)
         self.items_view.set_user_image(current_user_image)
-        # self.items_view.display_transactions(email, group, image_string, transactions, item_images, usernames, user_images)
         
         self.items_view.payable_list.controls = []
         self.items_view.receivable_list.controls = []
@@ -176,14 +175,11 @@ class HomeController:
         
         if payables == 0:
             self.items_view.cont.content = self.items_view.empty_warning_text_container
-            return
         else:
             self.items_view.cont.content = self.items_view.payable_list
         
         if self.items_view.add_receivable_button not in self.items_view.receivable_list.controls:
             self.items_view.receivable_list.controls.append(self.items_view.add_receivable_button)
-        
-        # 
 
         self.group_listview.content = self.items_view
         self.group_listview.update()

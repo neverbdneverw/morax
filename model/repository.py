@@ -77,30 +77,31 @@ class Repository:
             
             transactions_dict = repo_groups[group]['Transactions']
             
-            for transaction in transactions_dict:
-                transaction_name = transaction
-                transaction_description = transactions_dict[transaction]['Description']
-                transaction_image_id = transactions_dict[transaction]['Image id']
-                transaction_price = transactions_dict[transaction]['Price']
-                transaction_time_created = transactions_dict[transaction]['Time created']
-                transaction_paid_by = list(dict(transactions_dict[transaction]['Paid by']).items())
-                
-                transaction_posted_by = ""
-                for user in self.users:
-                    if user.email == transactions_dict[transaction]['Posted by']["Email"]:
-                        transaction_posted_by = user.email
-                
-                transactions.append(
-                    Transaction(
-                        transaction_name,
-                        transaction_description,
-                        transaction_image_id,
-                        transaction_paid_by,
-                        transaction_posted_by,
-                        transaction_price,
-                        transaction_time_created
+            if transactions_dict != "None":
+                for transaction in transactions_dict:
+                    transaction_name = transaction
+                    transaction_description = transactions_dict[transaction]['Description']
+                    transaction_image_id = transactions_dict[transaction]['Image id']
+                    transaction_price = transactions_dict[transaction]['Price']
+                    transaction_time_created = transactions_dict[transaction]['Time created']
+                    transaction_paid_by = list(dict(transactions_dict[transaction]['Paid by']).items())
+                    
+                    transaction_posted_by = ""
+                    for user in self.users:
+                        if user.email == transactions_dict[transaction]['Posted by']["Email"]:
+                            transaction_posted_by = user.email
+                    
+                    transactions.append(
+                        Transaction(
+                            transaction_name,
+                            transaction_description,
+                            transaction_image_id,
+                            transaction_paid_by,
+                            transaction_posted_by,
+                            transaction_price,
+                            transaction_time_created
+                        )
                     )
-                )
             
             self.groups.append(
                 Group(
@@ -120,7 +121,7 @@ class Repository:
         
         member: Member = None
         for member in group.members:
-            members.update({member.username, member.email})
+            members.update({member.username : member.email})
             
         transaction: Transaction = None
         for transaction in group.transactions:
@@ -140,6 +141,9 @@ class Repository:
                     "Posted by": { "Email" : transaction.posted_by },
                 }
             })
+        
+        if len(transactions.items()) == 0:
+            transactions = "None"
         
         db.reference('/Groups/').update({
             group.group_name: {

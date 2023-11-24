@@ -22,8 +22,13 @@ class ItemInfoDialogController:
         
         self.item_info_dialog.upload_proof_button.on_click = self.open_chooser
         
-        self.item_info_dialog.cancel_button.on_click = self.home_page.close_dialog
+        self.item_info_dialog.cancel_button.on_click = self.reset_button_states
         self.item_info_dialog.pay_button.on_click = self.show_payment_details
+    
+    def reset_button_states(self, event: ft.ControlEvent):
+        self.item_info_dialog.pay_button.disabled = False
+        self.item_info_dialog.pay_button.update()
+        self.home_page.close_dialog(event)
     
     def open_chooser(self, event: ft.ControlEvent):
         self.file_picker.pick_files("Choose Image proof", allowed_extensions = ["png", "jpg", "jpeg", "PNG", "JPG"], file_type = ft.FilePickerFileType.CUSTOM)
@@ -58,7 +63,7 @@ class ItemInfoDialogController:
                     transaction: Transaction = None
                     for transaction in group.transactions:
                         if transaction.name == item_name:
-                            transaction.paid_by["Email"] = paid_proof_id
+                            transaction.paid_by.append((current_email, paid_proof_id))
                             
                             self.repository.update_group(group)
                             self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable is marked as paid."), duration=1000)

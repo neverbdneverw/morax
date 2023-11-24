@@ -43,12 +43,12 @@ class GroupButton(ft.ElevatedButton):
         )
         
         self.content = column
-        self.on_click = lambda event: self.activate(group_name, self.image_string)
+        self.on_click = lambda event: self.activate(self, group_name, self.image_string)
         self.style=ft.ButtonStyle(
             shape=ft.RoundedRectangleBorder(radius=10)
         )
         
-    def activate(self, group_name: str, image_string: str):
+    def activate(self, this, group_name: str, image_string: str):
         pass
 
 class AddGroupButton(GroupButton):
