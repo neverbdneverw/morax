@@ -15,3 +15,11 @@ def generate_unique_code(self):
             , k=8))
         
         return str(res)
+
+accepted_months = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December",
+    
+    "Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+]

@@ -1,5 +1,5 @@
 from models import Transaction
-from repository import Repository
+from repository import Repository, utils
 from views import HomePage, AddReceivableDialog
 
 import flet as ft
@@ -90,14 +90,22 @@ class AddReceivableDialogController:
                 break
     
     def item_info_change(self, event: ft.ControlEvent):
-        if all([self.add_receivable_dialog.get_item_name() != "",
-                self.add_receivable_dialog.get_item_creation_month() != "",
-                self.add_receivable_dialog.get_item_creation_day() != "",
-                self.add_receivable_dialog.get_item_creation_year() != "",
-                self.add_receivable_dialog.get_item_amount() != "",
-                self.add_receivable_dialog.get_item_description() != ""]):
-            
-            self.add_receivable_dialog.add_item_button.disabled = False
-        else:
+        try:
+            if all([self.add_receivable_dialog.get_item_name() != "",
+                    self.add_receivable_dialog.get_item_creation_month() != "",
+                    self.add_receivable_dialog.get_item_creation_day() != "",
+                    self.add_receivable_dialog.get_item_creation_year() != "",
+                    self.add_receivable_dialog.get_item_amount() != "",
+                    self.add_receivable_dialog.get_item_description() != "",
+                    self.add_receivable_dialog.get_item_creation_month() in utils.accepted_months,
+                    int(self.add_receivable_dialog.get_item_creation_day()) in range(0, 32),
+                    int(self.add_receivable_dialog.get_item_creation_year()) in range(2000, 2024),
+                    float(self.add_receivable_dialog.get_item_amount())]):
+                
+                self.add_receivable_dialog.add_item_button.disabled = False
+            else:
+                self.add_receivable_dialog.add_item_button.disabled = True
+            self.add_receivable_dialog.update()
+        except:
             self.add_receivable_dialog.add_item_button.disabled = True
-        self.add_receivable_dialog.update()
+            self.add_receivable_dialog.add_item_button.update()
