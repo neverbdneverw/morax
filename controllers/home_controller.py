@@ -224,8 +224,6 @@ class HomeController:
         for user in self.repository.users:
             usernames.update({user.username : user.email})
         
-        # self.home_page.item_infos_dialog.load_infos(event.control, item_name, item_informations, usernames)
-        
         self.home_page.item_infos_dialog.switcher.content = self.home_page.item_infos_dialog.main_row
         self.home_page.item_infos_dialog.title.visible = True
         self.home_page.item_infos_dialog.pay_button.text = "Pay now"

@@ -56,8 +56,6 @@ class ConfirmEmailController:
 
         self.repository.update_user(new_user)
         self.confirm_email_page.display_on_dialog("Success!", "Your account has been created. You may now log in.")
-        self.repository.update_refs()
-        self.repository.load_users()
     
     def change_password(self, argument_list: list):
         for user in self.repository.users:
@@ -66,8 +64,6 @@ class ConfirmEmailController:
                 self.repository.update_user(user)
                 
                 self.confirm_email_page.display_on_dialog("Success!", "Your password has been updated. You may now log in again.")
-                self.repository.update_refs()
-                self.repository.load_users()
                 return
 
         self.confirm_email_page.display_on_dialog("Can't Change Password", "An account bound to the email doesn't exist.")

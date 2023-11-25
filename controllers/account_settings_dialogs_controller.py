@@ -131,6 +131,10 @@ class AccountSettingsDialogsController:
                     
                     self.home_page.close_dialog(event)
                     
+                    self.page.snack_bar = ft.SnackBar(ft.Text("Profile Picture has been changed. Please wait for changes to take effect..."))
+                    self.page.snack_bar.open = True
+                    self.page.update()
+                    
                     return
     
     def save_changed_username(self, event: ft.ControlEvent):
