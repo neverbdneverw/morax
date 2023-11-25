@@ -45,7 +45,13 @@ class HomeController:
         self.feedback_view.button_contact_us.on_click = lambda e: webbrowser.open_new("https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRzCMtQddshVRjPCKJRGfFwDxvWqJcNftmXFMFqqpdvrXXBpGsrfGGNTnSswPqHpChKdBRJG")
         self.feedback_view.button_contribute.on_click = lambda e: webbrowser.open_new("https://github.com/neverbdneverw/morax/issues/new")
         
-        self.account_view.logout_button.on_click = lambda e: self.page.go("/login")
+        self.account_view.logout_button.on_click = self.logout_account
+    
+    def logout_account(self, event: ft.ControlEvent):
+        self.page.client_storage.set("keep_signed_in", False)
+        self.page.client_storage.set("recent_set_keep_signed_in", False)
+        self.group_listview.grid.controls = []
+        self.page.go("/login")
     
     def reload_groups(self, email: str):
         self.group_listview.grid.controls = []
@@ -300,7 +306,7 @@ class HomeController:
         self.home_page.receivable_info_dialog.paid_list.controls = []
         if transaction.paid_by != "None":
             for user in transaction.paid_by:
-                image = ft.Image("assets/empty_user_image.svg", width=36, height=36)
+                image = ft.Image("/empty_user_image.svg", width=36, height=36)
                 user_label = ft.Text(
                     user[0]
                 )

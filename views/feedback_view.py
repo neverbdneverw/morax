@@ -45,7 +45,7 @@ class FeedbackView(ft.Column):
         )
 
         contact_image = ft.Image(
-            src="assets/contact_icon.svg",
+            src="/contact_icon.svg",
             width = 200,
             height = 200
         )
@@ -56,7 +56,7 @@ class FeedbackView(ft.Column):
         )
 
         contact_checkicon = ft.Image(
-            src="assets/check_icon.svg",
+            src="/check_icon.svg",
             width=24,
             height=24
         )
@@ -140,7 +140,7 @@ class FeedbackView(ft.Column):
         )
 
         contribute_image = ft.Image(
-            src="assets/contribute_icon.svg",
+            src="/contribute_icon.svg",
             width=200,
             height=200
         )
@@ -151,7 +151,7 @@ class FeedbackView(ft.Column):
         )
 
         contribute_checkicon = ft.Image(
-            src="assets/check_icon.svg",
+            src="/check_icon.svg",
             width=24,
             height=24
         )

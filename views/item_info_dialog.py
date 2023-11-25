@@ -22,13 +22,13 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         self.item_image = ft.Image(
-            "assets/default_image.png",
+            "/default_image.png",
             width=120,
             height=120
         )
         
         self.account_image = ft.Image(
-            "assets/empty_user_image.svg",
+            "/empty_user_image.svg",
             width = 36,
             height = 36
         )
@@ -80,7 +80,7 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         self.qr_code = ft.Image(
-            "assets/sample_qr.png",
+            "/sample_qr.png",
             width = 120,
             height = 120
         )
@@ -91,7 +91,7 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         self.account_image = ft.Image(
-            "assets/empty_user_image.svg",
+            "/empty_user_image.svg",
             width = 30,
             height = 30
         )
@@ -154,7 +154,7 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         self.payment_preview_image = ft.Image(
-            src="assets/default_image.png",
+            src="/default_image.png",
             width=120,
             height=120
         )

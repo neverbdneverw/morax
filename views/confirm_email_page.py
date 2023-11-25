@@ -4,7 +4,7 @@ from flet_route import Params, Basket
 class ConfirmEmailPage():
     def __init__(self):
         lock_icon = ft.Image(
-            src = "assets/lock.svg",
+            src = "/lock.svg",
             width = 200,
             height = 200
         )

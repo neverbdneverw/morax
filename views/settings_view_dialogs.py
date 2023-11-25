@@ -70,7 +70,7 @@ class ChoiceButton(ft.Column):
         
         supporting_image = ft.Container(
             ft.Image(
-                "assets/" + source,
+                "/" + source,
                 width=50,
                 height=50,
                 fit=ft.ImageFit.FILL

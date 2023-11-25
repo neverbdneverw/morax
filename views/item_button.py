@@ -12,7 +12,7 @@ class ItemButton(ft.ElevatedButton):
         self.gcash_infos = None
 
         self.account_image = ft.Image(
-            "assets/empty_user_image.svg",
+            "/empty_user_image.svg",
             width = 100,
             height = 100
         )
@@ -95,7 +95,7 @@ class ItemButton(ft.ElevatedButton):
         )
         
         self.item_image = ft.Image(
-            "assets/default_image.png",
+            "/default_image.png",
             width = 100,
             height = 100
         )

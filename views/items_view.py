@@ -10,7 +10,7 @@ class ItemsView(ft.Column):
         )
         
         self.group_image = ft.Image(
-            "assets/default_image.png",
+            "/default_image.png",
             height=80,
             width=80
         )
@@ -31,12 +31,12 @@ class ItemsView(ft.Column):
         )
         
         self.reload_button = ft.Container(
-            content=ft.Image("assets/refresh.svg", width=48, height=48),
+            content=ft.Image("/refresh.svg", width=48, height=48),
             padding=ft.padding.only(15, 15, 0, 15)
         )
         
         self.return_button = ft.Container(
-            content=ft.Image("assets/return.svg", width=48, height=48),
+            content=ft.Image("/return.svg", width=48, height=48),
             padding=15
         )
         
@@ -163,7 +163,7 @@ class ItemsView(ft.Column):
         )
         
         self.user_image = ft.Image(
-            "assets/empty_user_image.svg",
+            "/empty_user_image.svg",
             width=75,
             height=75
         )
