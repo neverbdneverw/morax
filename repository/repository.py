@@ -4,8 +4,6 @@ import smtplib
 import ssl
 import io
 
-from resources import app_password, email_sender
-
 from email.message import EmailMessage
 from firebase_admin import db, credentials
 from google.oauth2 import service_account
@@ -13,7 +11,9 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload, MediaIoBaseUpload
 from googleapiclient.errors import HttpError
 
-from . import User, Group, Member, Transaction
+from models import User, Group, Member, Transaction
+
+from .secrets import *
 
 from typing import List
 
@@ -21,10 +21,10 @@ class Repository:
     users: List[User] = []
     groups: List[Group] = []
     def __init__(self):
-        cred = credentials.Certificate("resources/credentials.json")
+        cred = credentials.Certificate("repository/credentials.json")
         firebase_admin.initialize_app(cred, {"databaseURL" : "https://morax-shared-financial-manager-default-rtdb.asia-southeast1.firebasedatabase.app/"})
         scope = ['https://www.googleapis.com/auth/drive']
-        drive_credentials = service_account.Credentials.from_service_account_file(filename="resources/credentials.json", scopes=scope)
+        drive_credentials = service_account.Credentials.from_service_account_file(filename="repository/credentials.json", scopes=scope)
         self.service = build('drive', 'v3', credentials=drive_credentials)
         self.update_refs()
         
@@ -36,13 +36,6 @@ class Repository:
         self.dictionary = dict(ref.get())
         results = self.service.files().list(pageSize=1000, fields="nextPageToken, files(id, name, mimeType)", q='name contains "de"').execute()
         self.drive_files = results.get('files', [])
-    
-    def update_repo(function):
-        def wrapper(*args):
-            function(args)
-            this: Repository = args[0]
-            this.update_refs()
-        return wrapper
         
     def load_users(self):
         self.users = []
@@ -83,7 +76,12 @@ class Repository:
                     transaction_image_id = transactions_dict[transaction]['Image id']
                     transaction_price = transactions_dict[transaction]['Price']
                     transaction_time_created = transactions_dict[transaction]['Time created']
-                    transaction_paid_by = list(dict(transactions_dict[transaction]['Paid by']).items())
+                    
+                    transaction_paid_by = None
+                    if transactions_dict[transaction]['Paid by'] == "None":
+                        transaction_paid_by = "None"
+                    else:
+                        transaction_paid_by = list(dict(transactions_dict[transaction]['Paid by']).items())
                     
                     transaction_posted_by = ""
                     for user in self.users:
@@ -126,9 +124,12 @@ class Repository:
         for transaction in group.transactions:
             paid_users = dict()
             
-            paid_user: tuple = None
-            for paid_user in transaction.paid_by:
-                paid_users.update({paid_user[0] : paid_user[1]})
+            if len(paid_users.items()) == 0:
+                paid_users = "None"
+            else:
+                paid_user: tuple = None
+                for paid_user in transaction.paid_by:
+                    paid_users.update({paid_user[0] : paid_user[1]})
             
             transactions.update({
                 transaction.name : {
@@ -205,6 +206,9 @@ class Repository:
     
     def delete_transaction(self, group_name: str, transaction: Transaction):
         db.reference(f"/Groups/{group_name}/Transactions/{transaction.name}").delete()
+        
+        self.update_refs()
+        self.load_groups()
     
     def get_email_confirmation_code(self, email):
         code = random.randrange(100000, 999999)

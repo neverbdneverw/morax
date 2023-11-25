@@ -1,4 +1,4 @@
-from models import Repository
+from repository import Repository
 from views import ForgotPasswordPage
 import flet as ft
 

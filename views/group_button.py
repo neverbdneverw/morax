@@ -22,7 +22,7 @@ class GroupButton(ft.ElevatedButton):
         )
             
         group_image = ft.Image(
-            "resources/default_image.png",
+            "assets/default_image.png",
             width=130,
             height=130
         )
@@ -54,6 +54,6 @@ class GroupButton(ft.ElevatedButton):
 class AddGroupButton(GroupButton):
     def __init__(self):
         super().__init__("Add", "")
-        self.image.controls[0].src = "resources/add_icon.svg"
+        self.image.controls[0].src = "assets/add_icon.svg"
         self.text_row.visible = False
         

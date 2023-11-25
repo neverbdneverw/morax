@@ -1,4 +1,4 @@
-from models import Repository
+from repository import Repository
 from views import SignupPage
 import flet as ft
 

@@ -4,7 +4,7 @@ from flet_route import Params, Basket
 class SignupPage():
     def __init__(self):
         query_icon = ft.Image(
-            src = "resources/question_mark.svg",
+            src = "assets/question_mark.svg",
             width = 200,
             height = 200
         )

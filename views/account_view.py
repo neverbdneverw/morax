@@ -8,7 +8,7 @@ class AccountView(ft.Container):
         )
         
         self.user_picture = ft.Image(
-            src = "resources/empty_user_image.svg",
+            src = "assets/empty_user_image.svg",
             width=100,
             height=100
         )

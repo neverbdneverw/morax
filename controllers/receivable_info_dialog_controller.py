@@ -1,4 +1,5 @@
-from models import Repository, Transaction
+from models import Transaction
+from repository import Repository
 from views import HomePage, ShowReceivableInfoDialog
 from PIL import Image, ImageTk
 

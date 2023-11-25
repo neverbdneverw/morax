@@ -1,4 +1,5 @@
-from models import Repository, Transaction
+from models import Transaction
+from repository import Repository
 from views import HomePage, AddReceivableDialog
 
 import flet as ft
@@ -71,8 +72,9 @@ class AddReceivableDialogController:
             name=item_name,
             description=item_description,
             image_id=receivable_image_id,
-            paid_by="",
-            posted_by={"Email" : email.replace(".", ",")},
+            paid_by="None",
+            posted_by=email.replace(".", ","),
+            price=item_amount,
             time_created=item_date
         )
         

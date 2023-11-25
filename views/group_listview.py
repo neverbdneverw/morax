@@ -70,21 +70,6 @@ class GroupListView(ft.AnimatedSwitcher):
         )
         
         self.content = self.grid_view
-    
-    # def setup_gui(self, groups: dict, images: dict):
-    #     if len(groups.keys()) == 0:
-    #         self.empty_warning_text_container.visible = True
-    #         self.empty_warning_text_container.offset = ft.transform.Offset(0, 0)
-    #     else:
-    #         self.empty_warning_text_container.offset = ft.transform.Offset(-1, 0)
-    #         self.empty_warning_text_container.visible = False
-
-    #     for group_name in groups.keys():
-    #         group_button = GroupButton(group_name, images[group_name])
-    #         self.grid.controls.append(group_button)
-        
-    #     add_button = AddGroupButton()
-    #     self.grid.controls.append(add_button)
 
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)

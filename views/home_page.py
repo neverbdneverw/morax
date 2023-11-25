@@ -36,7 +36,7 @@ class HomePage():
         )
         
         logo = ft.Image(
-            src = "resources/logo_filled.png",
+            src = "assets/logo_filled.png",
             width=50,
             height=50
         )

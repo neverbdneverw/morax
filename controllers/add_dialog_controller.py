@@ -1,4 +1,5 @@
-from models import Repository, Group, Member, utils
+from models import Group, Member
+from repository import Repository, utils
 from views import AddDialog, HomePage
 
 from PIL import Image

@@ -1,7 +1,7 @@
 from typing import List
 
 class Transaction:
-    def __init__(self, name: str, description: str, image_id: str, paid_by, posted_by, price: str, time_created: str):
+    def __init__(self, name: str, description: str, image_id: str, paid_by, posted_by: str, price: str, time_created: str):
         self._description = description
         self._image_id = image_id
         self._paid_by = paid_by
@@ -43,11 +43,11 @@ class Transaction:
         self._paid_by = paid_by
     
     @property
-    def posted_by(self):
+    def posted_by(self) -> str:
         return self._posted_by
     
     @posted_by.setter
-    def posted_by(self, posted_by):
+    def posted_by(self, posted_by: str):
         self._posted_by = posted_by
     
     @property
