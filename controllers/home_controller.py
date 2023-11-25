@@ -1,4 +1,4 @@
-from model import Repository, Member, Group, User, Transaction, utils
+from models import Repository, Member, Group, User, Transaction, utils
 from views import HomePage, GroupListView, FeedbackView, AccountView, ItemsView, GroupButton, ItemButton, AddGroupButton
 
 import flet as ft

@@ -1,4 +1,4 @@
-from model import Repository
+from models import Repository
 from views import LoginPage
 import flet as ft
 

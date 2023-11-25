@@ -1,4 +1,4 @@
-from model import Repository, Transaction
+from models import Repository, Transaction
 from views import HomePage
 
 from PIL import Image

@@ -1,4 +1,4 @@
-from model import Repository, User
+from models import Repository, User
 from views import ConfirmEmailPage
 import flet as ft
 

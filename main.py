@@ -3,7 +3,7 @@ import flet as ft
 from flet_route import Routing, path
 from views import *
 from controllers import *
-from model import *
+from models import *
 
 def main(page: ft.Page):
     page.window_width = 1024

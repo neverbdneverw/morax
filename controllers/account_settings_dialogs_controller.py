@@ -1,5 +1,5 @@
 from views import HomePage, ProfilePictureChangeDialog, EditGcashDialog, EditUsernameDialog, EditPasswordDialog, AccountView
-from model import Repository, utils
+from models import Repository, utils
 
 from PIL import Image
 from io import BytesIO
