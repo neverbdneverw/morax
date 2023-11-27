@@ -3,6 +3,7 @@ views/__pycache__/
 resources/__pycache__/
 model/__pycache__/
 __pycache__/
-resources/credentials.json
-resources/secrets.py
+repository/credentials.json
+repository/secrets.py
 Morax_Installer.exe
+main.exe
