@@ -77,7 +77,7 @@ class AccountView(ft.Container):
                 ft.Row(
                     controls = [
                         ft.Icon(ft.icons.EDIT, color="#c09451"),
-                        ft.Text("Edit Profile", color="black", weight=ft.FontWeight.W_400)
+                        ft.Text("Edit Username", color="black", weight=ft.FontWeight.W_400)
                     ]
                 ),
                 ft.Icon(ft.icons.NAVIGATE_NEXT, color="#c09451")

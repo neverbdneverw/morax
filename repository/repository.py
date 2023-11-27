@@ -82,6 +82,7 @@ class Repository:
                         transaction_paid_by = "None"
                     else:
                         transaction_paid_by = list(dict(transactions_dict[transaction]['Paid by']).items())
+                        print(transaction_paid_by)
                     
                     transaction_posted_by = ""
                     for user in self.users:

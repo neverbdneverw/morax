@@ -234,7 +234,7 @@ class HomeController:
         self.home_page.item_infos_dialog.switcher.content = self.home_page.item_infos_dialog.main_row
         self.home_page.item_infos_dialog.title.visible = True
         self.home_page.item_infos_dialog.pay_button.text = "Pay now"
-        self.group_name = button.group_name
+        self.home_page.item_infos_dialog.group_name = button.group_name
         gcash_infos = button.gcash_infos
         
         user = ""
