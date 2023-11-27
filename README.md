@@ -3,7 +3,7 @@
     <h3 align="center">A Shared Financial Manager</h3>
 </div>
 
-![screenshot](resources/app_screenshot.png)
+![screenshot](assets/app_screenshot.png)
 
 <br>
 Morax is a shared financial manager application for groups written in Flet and Python
