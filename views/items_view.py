@@ -10,7 +10,7 @@ class ItemsView(ft.Column):
         )
         
         self.group_image = ft.Image(
-            "resources/default_image.png",
+            "/default_image.png",
             height=80,
             width=80
         )
@@ -31,12 +31,12 @@ class ItemsView(ft.Column):
         )
         
         self.reload_button = ft.Container(
-            content=ft.Image("resources/refresh.svg", width=48, height=48),
+            content=ft.Image("/refresh.svg", width=48, height=48),
             padding=ft.padding.only(15, 15, 0, 15)
         )
         
         self.return_button = ft.Container(
-            content=ft.Image("resources/return.svg", width=48, height=48),
+            content=ft.Image("/return.svg", width=48, height=48),
             padding=15
         )
         
@@ -151,8 +151,19 @@ class ItemsView(ft.Column):
             italic=True,
         )
         
+        self.group_code_text = ft.Text(
+            value = "Group Code: ",
+            spans = [ft.TextSpan(
+                "haihfass",
+                style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300)
+            )],
+            color="#ae8948",
+            weight=ft.FontWeight.W_500,
+            italic=True
+        )
+        
         self.user_image = ft.Image(
-            "resources/empty_user_image.svg",
+            "/empty_user_image.svg",
             width=75,
             height=75
         )
@@ -212,7 +223,7 @@ class ItemsView(ft.Column):
         )
         
         self.group_info_column = ft.Column(
-            controls=[self.group_name_text, self.group_description, self.created_by_text]
+            controls=[self.group_name_text, self.group_description, self.created_by_text, self.group_code_text]
         )
         
         self.info_sidebar_column = ft.Column(
@@ -233,50 +244,6 @@ class ItemsView(ft.Column):
         )
         
         self.controls = [self.header_container, list_view_row]
-    
-    def display_transactions(self, email: str, group_name: str, image_string: str, transactions: dict, item_images: dict, usernames: dict, user_images: dict):
-        email = email.replace(".", ",")
-        self.group_name.value = group_name
-        self.group_image.src_base64 = image_string
-        
-        self.payable_list.controls = []
-        self.receivable_list.controls = []
-
-        payables, receivables, total_payable, total_receivable = 0, 0, 0.0, 0.0
-        
-        transactions = dict(transactions)
-        for transaction_name in transactions.keys():
-            paid_users = dict(transactions[transaction_name]['Paid by'])
-            if email in paid_users:
-                continue
-            elif transactions[transaction_name]['Posted by']['Email'] == usernames[self.username.value]:
-                receivables += 1
-                total_receivable += float(transactions[transaction_name]['Price'])
-                item  = ItemButton(group_name, self.username.value, user_images[transactions[transaction_name]['Posted by']['Email']], transaction_name, transactions, item_images[transaction_name], True)
-                self.receivable_list.controls.append(item)
-            else:
-                payables += 1
-                total_payable += float(transactions[transaction_name]['Price'])
-                
-                user = ""
-                for username in usernames:
-                    if transactions[transaction_name]['Posted by']['Email'] == usernames[username]:
-                        user = username
-                
-                item  = ItemButton(group_name, user, user_images[transactions[transaction_name]['Posted by']['Email']], transaction_name, transactions, item_images[transaction_name], False)
-                self.payable_list.controls.append(item)
-        
-        self.total_payable_text.value = f"Total Payable: ₱ {total_payable}"
-        self.total_receivable_text.value = f"Total Receivable: ₱ {total_receivable}"
-        
-        if payables == 0:
-            self.cont.content = self.empty_warning_text_container
-            return
-        else:
-            self.cont.content = self.payable_list
-        
-        if self.add_receivable_button not in self.receivable_list.controls:
-            self.receivable_list.controls.append(self.add_receivable_button)
     
     def set_creator(self, creator):
         self.created_by_text.spans[0].text = creator

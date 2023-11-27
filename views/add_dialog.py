@@ -50,7 +50,7 @@ class AddDialog(ft.AlertDialog):
         )
         
         self.image_preview = ft.Image(
-            "resources/default_image.png",
+            "/default_image.png",
             width=160,
             height=160
         )

@@ -15,7 +15,7 @@ class ProfilePictureChangeDialog(ft.AlertDialog):
         self.actions = [self.save_changes_button, self.cancel_button]
         
         self.user_image = ft.Image(
-            src = "resources/empty_user_image.svg",
+            src = "/empty_user_image.svg",
             width=200,
             height = 200
         )
@@ -140,7 +140,7 @@ class EditGcashDialog(ft.AlertDialog):
         self.title = ft.Text("GCash Settings")
         
         self.qr_image = ft.Image(
-            src = "resources/sample_qr.png",
+            src = "/sample_qr.png",
             width=100,
             height = 100
         )

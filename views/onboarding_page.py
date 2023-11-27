@@ -4,7 +4,7 @@ from flet_route import Params, Basket
 class OnboardingPage():
     def __init__(self):
         logo = ft.Image(
-            src = "resources/logo_filled.png",
+            src = "/logo_filled.png",
             width = 200,
             height = 200,
         )
@@ -37,7 +37,7 @@ class OnboardingPage():
         )
         
         gcash_logo = ft.Image(
-            "resources/gcash.png",
+            "/gcash.png",
             width = 200,
             height = 200,
         )
@@ -48,7 +48,7 @@ class OnboardingPage():
         )
         
         self.qr_image = ft.Image(
-            "resources/sample_qr.png",
+            "/sample_qr.png",
             width=100,
             height=100
         )
@@ -115,7 +115,7 @@ class OnboardingPage():
         )
         
         profile_logo = ft.Image(
-            src = "resources/logo_filled.png",
+            src = "/logo_filled.png",
             width = 200,
             height = 200,
         )
@@ -126,7 +126,7 @@ class OnboardingPage():
         )
         
         self.user_image = ft.Image(
-            "resources/empty_user_image.svg",
+            "/empty_user_image.svg",
             width=100,
             height=100
         )

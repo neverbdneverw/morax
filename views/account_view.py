@@ -8,7 +8,7 @@ class AccountView(ft.Container):
         )
         
         self.user_picture = ft.Image(
-            src = "resources/empty_user_image.svg",
+            src = "/empty_user_image.svg",
             width=100,
             height=100
         )
@@ -77,7 +77,7 @@ class AccountView(ft.Container):
                 ft.Row(
                     controls = [
                         ft.Icon(ft.icons.EDIT, color="#c09451"),
-                        ft.Text("Edit Profile", color="black", weight=ft.FontWeight.W_400)
+                        ft.Text("Edit Username", color="black", weight=ft.FontWeight.W_400)
                     ]
                 ),
                 ft.Icon(ft.icons.NAVIGATE_NEXT, color="#c09451")

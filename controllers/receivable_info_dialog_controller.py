@@ -1,4 +1,5 @@
-from model import Model
+from models import Transaction
+from repository import Repository
 from views import HomePage, ShowReceivableInfoDialog
 from PIL import Image, ImageTk
 
@@ -6,9 +7,9 @@ import flet as ft
 import tkinter as tk
 
 class ReceivableInfoDialogController:
-    def __init__(self, page: ft.Page, model: Model, home_page: HomePage):
+    def __init__(self, page: ft.Page, repository: Repository, home_page: HomePage):
         self.page = page
-        self.model = model
+        self.repository = repository
         self.home_page = home_page
         self.receivable_info_dialog: ShowReceivableInfoDialog = home_page.receivable_info_dialog
         
@@ -20,14 +21,18 @@ class ReceivableInfoDialogController:
         item_name = self.receivable_info_dialog.title.value
         group_name = self.receivable_info_dialog.group_name
         
-        self.model.complete_transaction(group_name, item_name)
+        for group in self.repository.groups:
+            if group.group_name == group_name:
+                transaction: Transaction = None
+                for transaction in group.transactions:
+                    if transaction.name == item_name:
+                        self.repository.delete_transaction(group_name, transaction)
         
         self.home_page.close_dialog(event)
-        
         self.home_page.group_listview.items_view.on_trigger_reload(event)
     
     def show_proof(self, picture_id: str):
-        image = self.model.get_image_proof(picture_id)
+        image = self.repository.download_image(picture_id)
         
         root = tk.Tk()
         root.title("PROOF OF PAYMENT")

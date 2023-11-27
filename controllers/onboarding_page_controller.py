@@ -1,4 +1,5 @@
-from model import Model
+from models import User
+from repository import Repository
 from views import OnboardingPage
 
 from io import BytesIO
@@ -10,9 +11,9 @@ import cv2
 import base64
 
 class OnboardingController:
-    def __init__(self, page: ft.Page, model: Model, onboarding_page: OnboardingPage):
+    def __init__(self, page: ft.Page, repository: Repository, onboarding_page: OnboardingPage):
         self.page = page
-        self.model = model
+        self.repository = repository
         self.onboarding_page = onboarding_page
         
         self.current = 0
@@ -100,7 +101,13 @@ class OnboardingController:
             self.qr_image_path = ""
     
     def switch_view(self, event: ft.ControlEvent):
-        email = self.page.client_storage.get("email")
+        email: str = self.page.client_storage.get("email")
+        
+        current_user: User = None
+        for user in self.repository.users:
+            if user.email == email.replace(".", ","):
+                current_user = user
+        
         if self.current == 0:
             self.onboarding_page.main_column.offset = ft.transform.Offset(-1, 0)
             self.onboarding_page.main_column.update()
@@ -119,13 +126,19 @@ class OnboardingController:
             self.onboarding_page.profile_column.offset = ft.transform.Offset(0, 0)
             self.onboarding_page.profile_column.update()
             
-            self.model.upload_user_qr_number(email, self.buffered, self.onboarding_page.number_textfield.value)
+            id = self.repository.upload_image(f"{current_user.email}|QRCode.png", self.buffered)
+            
+            current_user.qr_image_id = id
+            current_user.gcash_number = self.onboarding_page.number_textfield.value
             
             self.onboarding_page.next_button.text = "Start Morax"
             self.onboarding_page.next_button.update()
             self.current = 2
         elif self.current == 2:
             if self.dp_image_path != "":
-                self.model.update_user_image(email, self.dp_image_buffer)
+                id = self.repository.upload_image(f"{current_user.email}|DP.png", self.dp_image_buffer)
+                current_user.picture_link = id
+                current_user.first_run = False
+                self.repository.update_user(current_user)
             
             self.page.go("/home")

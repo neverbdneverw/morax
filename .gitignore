@@ -1,5 +1,8 @@
 controllers/__pycache__/
 views/__pycache__/
+resources/__pycache__/
+model/__pycache__/
 __pycache__/
 resources/credentials.json
 resources/secrets.py
+Morax_Installer.exe

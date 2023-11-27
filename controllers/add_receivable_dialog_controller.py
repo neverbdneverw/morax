@@ -1,4 +1,5 @@
-from model import Model
+from models import Transaction
+from repository import Repository, utils
 from views import HomePage, AddReceivableDialog
 
 import flet as ft
@@ -8,9 +9,9 @@ import base64
 
 class AddReceivableDialogController:
     image_path = ""
-    def __init__(self, page: ft.Page, model: Model, home_page: HomePage):
+    def __init__(self, page: ft.Page, repository: Repository, home_page: HomePage):
         self.page = page
-        self.model = model
+        self.repository = repository
         self.home_page = home_page
         self.add_receivable_dialog: AddReceivableDialog = home_page.add_receivable_dialog
         
@@ -50,7 +51,7 @@ class AddReceivableDialogController:
             self.image_path = ""
 
     def add_receivable(self, event: ft.ControlEvent):
-        email = self.page.client_storage.get("email")
+        email: str = self.page.client_storage.get("email")
         group_name = self.add_receivable_dialog.group
         item_name = self.add_receivable_dialog.get_item_name()
         item_month = self.add_receivable_dialog.get_item_creation_month()
@@ -60,25 +61,51 @@ class AddReceivableDialogController:
         item_amount = self.add_receivable_dialog.get_item_amount()
         item_description = self.add_receivable_dialog.get_item_description()
         
-        verdict = self.model.create_receivable(email, group_name, item_name, item_date, item_amount, item_description)
-        if verdict == "Successful":
-            self.home_page.close_dialog(event)
-            
-        if self.image_path != "":
-            self.model.upload_item_image(group_name, item_name, self.image_path)
+        image_bytes = io.BytesIO()
+        image = Image.open(self.image_path).convert("RGBA")
+        image = image.resize((200, 200))
+        image.save(image_bytes, format="PNG")
         
-        self.model.update_refs()
-        self.home_page.group_listview.items_view.on_trigger_reload(event)
+        receivable_image_id = self.repository.upload_image(f"{group_name}|{item_name}.png", image_bytes)
+        
+        new_transaction = Transaction(
+            name=item_name,
+            description=item_description,
+            image_id=receivable_image_id,
+            paid_by="None",
+            posted_by=email.replace(".", ","),
+            price=item_amount,
+            time_created=item_date
+        )
+        
+        for group in self.repository.groups:
+            if group.group_name == group_name:
+                group.transactions.append(new_transaction)
+                self.repository.update_group(group)
+                self.home_page.close_dialog(event)
+                
+                self.repository.update_refs()
+                self.home_page.group_listview.items_view.on_trigger_reload(event)
+                
+                break
     
     def item_info_change(self, event: ft.ControlEvent):
-        if all([self.add_receivable_dialog.get_item_name() != "",
-                self.add_receivable_dialog.get_item_creation_month() != "",
-                self.add_receivable_dialog.get_item_creation_day() != "",
-                self.add_receivable_dialog.get_item_creation_year() != "",
-                self.add_receivable_dialog.get_item_amount() != "",
-                self.add_receivable_dialog.get_item_description() != ""]):
-            
-            self.add_receivable_dialog.add_item_button.disabled = False
-        else:
+        try:
+            if all([self.add_receivable_dialog.get_item_name() != "",
+                    self.add_receivable_dialog.get_item_creation_month() != "",
+                    self.add_receivable_dialog.get_item_creation_day() != "",
+                    self.add_receivable_dialog.get_item_creation_year() != "",
+                    self.add_receivable_dialog.get_item_amount() != "",
+                    self.add_receivable_dialog.get_item_description() != "",
+                    self.add_receivable_dialog.get_item_creation_month() in utils.accepted_months,
+                    int(self.add_receivable_dialog.get_item_creation_day()) in range(0, 32),
+                    int(self.add_receivable_dialog.get_item_creation_year()) in range(2000, 2024),
+                    float(self.add_receivable_dialog.get_item_amount())]):
+                
+                self.add_receivable_dialog.add_item_button.disabled = False
+            else:
+                self.add_receivable_dialog.add_item_button.disabled = True
+            self.add_receivable_dialog.update()
+        except:
             self.add_receivable_dialog.add_item_button.disabled = True
-        self.add_receivable_dialog.update()
+            self.add_receivable_dialog.add_item_button.update()

@@ -1,7 +1,8 @@
 import flet as ft
 
 class ItemButton(ft.ElevatedButton):
-    def __init__(self, group_name: str, username: str, image_string: str, transaction_name: str, transactions: dict, item_image_string: str, has_amount_received: bool):
+    transaction = None
+    def __init__(self, group_name: str, username: str, image_string: str, transaction_name: str, transaction_description: str, transaction_creation: str, transaction_price: str, item_image_string: str, has_amount_received: bool):
         super().__init__(
             expand=True,
             style=ft.ButtonStyle(shape = ft.ContinuousRectangleBorder(radius = 0))
@@ -11,7 +12,7 @@ class ItemButton(ft.ElevatedButton):
         self.gcash_infos = None
 
         self.account_image = ft.Image(
-            "resources/empty_user_image.svg",
+            "/empty_user_image.svg",
             width = 100,
             height = 100
         )
@@ -55,13 +56,13 @@ class ItemButton(ft.ElevatedButton):
             max_lines=3,
             color=ft.colors.BLACK,
             size = 12,
-            value = transactions[transaction_name]["Description"]
+            value = transaction_description
         )
         
         item_post_time = ft.Text(
             value = "Date Posted: ",
             spans = [ft.TextSpan(
-                f"{transactions[transaction_name]['Time created']}",
+                transaction_creation,
                 style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300)
             )],
             color="#ae8948",
@@ -94,7 +95,7 @@ class ItemButton(ft.ElevatedButton):
         )
         
         self.item_image = ft.Image(
-            "resources/default_image.png",
+            "/default_image.png",
             width = 100,
             height = 100
         )
@@ -103,7 +104,7 @@ class ItemButton(ft.ElevatedButton):
             self.item_image.src_base64 = item_image_string
         
         amount = ft.Text(
-            f"₱ {transactions[transaction_name]['Price']}",
+            f"₱ {transaction_price}",
             color="#ae8948",
             weight=ft.FontWeight.W_700,
             size=20
@@ -132,7 +133,7 @@ class ItemButton(ft.ElevatedButton):
         )
         
         self.content = column
-        self.on_click = lambda event: self.activate(event, self.group_name, transaction_name, transactions[transaction_name])
+        self.on_click = lambda event: self.activate(event, self.group_name, transaction_name)
     
-    def activate(self, event: ft.ControlEvent, group: str, item_name: str,  item_informations: dict):
+    def activate(self, event: ft.ControlEvent, group: str, item_name: str):
         pass

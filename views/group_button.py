@@ -22,7 +22,7 @@ class GroupButton(ft.ElevatedButton):
         )
             
         group_image = ft.Image(
-            "resources/default_image.png",
+            "/default_image.png",
             width=130,
             height=130
         )
@@ -43,17 +43,17 @@ class GroupButton(ft.ElevatedButton):
         )
         
         self.content = column
-        self.on_click = lambda event: self.activate(group_name, self.image_string)
+        self.on_click = lambda event: self.activate(self, group_name, self.image_string)
         self.style=ft.ButtonStyle(
             shape=ft.RoundedRectangleBorder(radius=10)
         )
         
-    def activate(self, group_name: str, image_string: str):
+    def activate(self, this, group_name: str, image_string: str):
         pass
 
 class AddGroupButton(GroupButton):
     def __init__(self):
         super().__init__("Add", "")
-        self.image.controls[0].src = "resources/add_icon.svg"
+        self.image.controls[0].src = "/add_icon.svg"
         self.text_row.visible = False
         

@@ -4,7 +4,7 @@ from flet_route import Params, Basket
 class OpeningPage():
     def __init__(self):
         logo = ft.Image(
-            src = "resources/logo.png",
+            src = "/logo.png",
             width = 400,
             height = 400
         )

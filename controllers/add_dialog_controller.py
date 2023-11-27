@@ -1,4 +1,5 @@
-from model import Model
+from models import Group, Member
+from repository import Repository, utils
 from views import AddDialog, HomePage
 
 from PIL import Image
@@ -9,9 +10,9 @@ import base64
 
 class AddDialogController:
     code_validated = False
-    def __init__(self, page: ft.Page, model: Model, home_page: HomePage):
+    def __init__(self, page: ft.Page, repository: Repository, home_page: HomePage):
         self.page = page
-        self.model = model
+        self.repository = repository
         self.home_page = home_page
         self.add_group_dialog: AddDialog = home_page.add_group_dialog
         
@@ -47,11 +48,37 @@ class AddDialogController:
             self.page.update()
         else:
             if self.add_group_dialog.get_created_group_name() != "" and self.add_group_dialog.get_created_group_desc() != "":
-                email = self.page.client_storage.get("email")
-                self.model.create_group_with_email(self.add_group_dialog.get_created_group_name(), self.add_group_dialog.get_created_group_desc(), email)
+                email: str = self.page.client_storage.get("email")
+                
+                creator = ""
+                for user in self.repository.users:
+                    if user.email == email.replace(".", "."):
+                        creator = user.username
+                        break
+                    
+                image_bytes = io.BytesIO()
+                image = Image.open(self.image_path).convert("RGBA")
+                image = image.resize((200, 200))
+                image.save(image_bytes, format="PNG")
+                
+                empty_list = list()
+                unique_code = utils.generate_unique_code()
+                
+                group_image_id = self.repository.upload_image(f"{self.add_group_dialog.get_created_group_name()}.png", image_bytes)
+                
+                new_group = Group(
+                    group_name=self.add_group_dialog.get_created_group_name(),
+                    created_by=creator,
+                    description=self.add_group_dialog.get_created_group_desc(),
+                    members=[Member(creator, email)],
+                    picture_id=group_image_id,
+                    unique_code=unique_code,
+                    transactions=empty_list
+                )
+                
+                self.repository.update_group(new_group)
                 self.page.client_storage.set("just_opened", False)
                 self.home_page.group_listview.trigger_reload(email)
-                self.model.upload_group_image(self.add_group_dialog.get_created_group_name(), self.image_path)
                 self.home_page.close_dialog(None)
                 self.new_image_string == ""
                 
@@ -71,12 +98,23 @@ class AddDialogController:
         
         else:
             if self.code_validated:
-                email = self.page.client_storage.get("email")
-                self.model.join_group_with_email(self.add_group_dialog.get_group_code_entry(), email)
-                self.page.client_storage.set("just_opened", False)
-                self.home_page.group_listview.trigger_reload(email)
-                self.home_page.close_dialog(None)
-                self.page.update()
+                email = str(self.page.client_storage.get("email")).replace(".", ",")
+                
+                username = ""
+                for user in self.repository.users:
+                    if user.email == email:
+                        username = user.username
+                
+                for group in self.repository.groups:
+                    if group.unique_code == self.add_group_dialog.get_group_code_entry():
+                        group.members.append(Member(username, email))
+
+                        self.repository.update_group(group)
+                
+                        self.page.client_storage.set("just_opened", False)
+                        self.home_page.group_listview.trigger_reload(email)
+                        self.home_page.close_dialog(None)
+                        self.page.update()
     
     def validate_creation_params(self, event):
         if self.add_group_dialog.get_created_group_desc() != "" and self.add_group_dialog.get_created_group_name() != "":
@@ -89,14 +127,22 @@ class AddDialogController:
     def check_if_code_exists(self, event):
         code = self.add_group_dialog.get_group_code_entry()
         if code != "":
-            exists = self.model.is_group_existing(code)
+            exists = False
+            for group in self.repository.groups:
+                if code == group.unique_code:
+                    exists = True
+                    break
             
             if exists:
-                print("Code existsing. pede na magjoin yiee")
+                self.page.snack_bar = ft.SnackBar(ft.Text("The group code is valid. You may now join..."), duration=3000)
+                self.page.snack_bar.open = True
+                self.page.update()
                 self.code_validated = True
                 self.add_group_dialog.join_button.disabled = False
             else:
-                print("Nothing like that exists")
+                self.page.snack_bar = ft.SnackBar(ft.Text("The group code is invalid. Please try again..."), duration=3000)
+                self.page.snack_bar.open = True
+                self.page.update()
                 self.code_validated = False
                 self.add_group_dialog.join_button.disabled = True
             

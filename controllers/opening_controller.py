@@ -1,11 +1,9 @@
-from model import Model
 from views import OpeningPage
 import flet as ft
 
 class OpeningController:
-    def __init__(self, page: ft.Page, model: Model, opening_page: OpeningPage):
+    def __init__(self, page: ft.Page, opening_page: OpeningPage):
         self.page = page
-        self.model = model
         self.opening_page = opening_page
         
         self.handle_automatic_login()
@@ -24,7 +22,7 @@ class OpeningController:
         email = self.page.client_storage.get("email")
         
         if automatic_login is True and email is not None and email != "":
-            self.page.snack_bar = ft.SnackBar(ft.Text(f"You will be automatically logged in."), duration=1000)
+            self.page.snack_bar = ft.SnackBar(ft.Text(f"You will be automatically logged in."))
             self.page.snack_bar.open = True
             self.page.update()
             self.page.go("/home")

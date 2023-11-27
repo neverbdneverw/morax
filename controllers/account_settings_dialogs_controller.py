@@ -1,5 +1,5 @@
 from views import HomePage, ProfilePictureChangeDialog, EditGcashDialog, EditUsernameDialog, EditPasswordDialog, AccountView
-from model import Model
+from repository import Repository, utils
 
 from PIL import Image
 from io import BytesIO
@@ -9,9 +9,9 @@ import cv2
 import qrcode
 
 class AccountSettingsDialogsController:
-    def __init__(self, page: ft.Page, model: Model, home_page: HomePage):
+    def __init__(self, page: ft.Page, repository: Repository, home_page: HomePage):
         self.page = page
-        self.model = model
+        self.repository = repository
         self.home_page = home_page
         
         self.change_dp_dialog: ProfilePictureChangeDialog = home_page.change_profile_picture_dialog
@@ -21,7 +21,7 @@ class AccountSettingsDialogsController:
         
         self.account_view: AccountView = home_page.account_view
         
-        self.email = self.page.client_storage.get("email")
+        self.email: str = self.page.client_storage.get("email")
         
         self.qr_picker = ft.FilePicker()
         self.qr_picker.on_result = self.set_qr_image
@@ -59,9 +59,12 @@ class AccountSettingsDialogsController:
         self.change_gcash_dialog.save_changes_button.on_click = self.save_changed_gcash_infos
     
     def show_change_gcash_dialog(self, event: ft.ControlEvent):
-        qr_image, gcash_number = self.model.get_gcash_of_user(self.email)
-        self.change_gcash_dialog.qr_image.src_base64 = qr_image
-        self.change_gcash_dialog.number_textfield.value = gcash_number
+        for user in self.repository.users:
+            if user.email == self.email.replace(".", ","):
+                self.change_gcash_dialog.number_textfield.value = user.gcash_number
+                image_bytes = self.repository.download_image(user.qr_image_id)
+                self.change_gcash_dialog.qr_image.src_base64 = utils.convert_to_base64(image_bytes)       
+
         self.home_page.show_change_gcash_qr_dialog()
     
     def handle_username_change(self, event: ft.ControlEvent):
@@ -114,44 +117,59 @@ class AccountSettingsDialogsController:
     
     def save_changed_dp(self, event: ft.ControlEvent):
         if self.dp_image_path != "":
-            self.model.update_user_image(self.email, self.dp_image_buffer)
-            self.home_page.trigger_reload_account_view()
-            self.account_view.user_picture.update()
-            self.account_view.username_text.update()
-            self.account_view.email_text.update()
-            
-            self.home_page.close_dialog(event)
+            for user in self.repository.users:
+                if user.email == self.email.replace(".", ","):
+                    id = self.repository.upload_image(f"{user.email}|DP.png", self.dp_image_buffer)
+                    user.picture_link = id
+                    
+                    self.repository.update_user(user)
+                    
+                    self.home_page.trigger_reload_account_view()
+                    self.account_view.user_picture.update()
+                    self.account_view.username_text.update()
+                    self.account_view.email_text.update()
+                    
+                    self.home_page.close_dialog(event)
+                    
+                    self.page.snack_bar = ft.SnackBar(ft.Text("Profile Picture has been changed. Please wait for changes to take effect..."))
+                    self.page.snack_bar.open = True
+                    self.page.update()
+                    
+                    return
     
     def save_changed_username(self, event: ft.ControlEvent):
         replacement = self.change_username_dialog.new_username_textfield.value
-        self.model.change_username(self.email, replacement)
-        self.home_page.trigger_reload_account_view()
-        self.home_page.group_listview.top_text.value = f"Hello, {replacement}!"
-        self.home_page.group_listview.top_text.update()
-        self.account_view.user_picture.update()
-        self.account_view.username_text.update()
-        self.account_view.email_text.update()
-        
-        self.home_page.close_dialog(event)
+        for user in self.repository.users:
+            if user.email == self.email.replace(".", ","):
+                user.username = replacement
+                self.repository.update_user(user)
+                self.home_page.trigger_reload_account_view()
+                self.home_page.group_listview.top_text.value = f"Hello, {replacement}!"
+                self.home_page.group_listview.top_text.update()
+                self.account_view.user_picture.update()
+                self.account_view.username_text.update()
+                self.account_view.email_text.update()
+                
+                self.home_page.close_dialog(event)
+                
+                return
     
     def save_changed_password(self, event: ft.ControlEvent):
-        email = self.page.client_storage.get("email")
         password = self.change_password_dialog.new_password_textfield.value
         
-        verdict = self.model.change_password(email, password)
-        
-        self.home_page.close_dialog(event)
-        
-        text = ft.Text()
-        
-        if verdict == "Password Changed":
-            text.value = "Your password has been successfully changed."
-        else:
-            text.value = "Your password cannot be changed."
-        
-        self.page.snack_bar = ft.SnackBar(text, duration=3000)
-        self.page.snack_bar.open = True
-        self.page.update()
+        for user in self.repository.users:
+            if user.email == self.email.replace(".", ","):
+                user.password = password
+                self.repository.update_user(user)
+                
+                self.home_page.close_dialog(event)
+                
+                text = ft.Text("Your password has been successfully changed.")
+                self.page.snack_bar = ft.SnackBar(text, duration=3000)
+                self.page.snack_bar.open = True
+                self.page.update()
+                
+                return
     
     def set_qr_image(self, event: ft.FilePickerResultEvent):
         if event.files is not None:
@@ -177,9 +195,9 @@ class AccountSettingsDialogsController:
             qr.add_data(data)
             qr.make(fit=True)
             image = qr.make_image()
-            self.buffered = BytesIO()
-            image.save(self.buffered, format="JPEG")
-            self.gcash_qr_base64 = base64.b64encode(self.buffered.getvalue()).decode("utf-8")
+            self.qr_buffer = BytesIO()
+            image.save(self.qr_buffer, format="JPEG")
+            self.gcash_qr_base64 = base64.b64encode(self.qr_buffer.getvalue()).decode("utf-8")
             self.change_gcash_dialog.qr_image.src_base64 = self.gcash_qr_base64
             self.change_gcash_dialog.qr_image.update()
             self.gcash_changed()
@@ -198,6 +216,13 @@ class AccountSettingsDialogsController:
             self.change_gcash_dialog.save_changes_button.update()
     
     def save_changed_gcash_infos(self, event: ft.ControlEvent):
-        self.model.upload_user_qr_number(self.email, self.buffered, self.change_gcash_dialog.number_textfield.value)
-        self.home_page.close_dialog(event)
+        for user in self.repository.users:
+            if user.email == self.email.replace(".", ","):
+                id = self.repository.upload_image(f"{user.email}|QRCode.png", self.qr_buffer)
+                user.qr_image_id = id
+                user.gcash_number = self.change_gcash_dialog.number_textfield.value
+                self.repository.update_user(user)
+                self.home_page.close_dialog(event)
+                
+                return
         

@@ -15,7 +15,7 @@ class AddReceivableDialog(ft.AlertDialog):
         self.actions_alignment = ft.MainAxisAlignment.SPACE_BETWEEN 
         
         self.item_image = ft.Image(
-            "resources/default_image.png",
+            "/default_image.png",
             width = 250,
             height = 250
         )
