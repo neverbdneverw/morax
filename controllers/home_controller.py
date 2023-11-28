@@ -63,7 +63,7 @@ class HomeController:
         self.repository.update_refs()
         
         if self.page.client_storage.get("keep_signed_in") is True and self.page.client_storage.get("recent_set_keep_signed_in") is False and self.page.client_storage.get("just_opened") is True:
-            self.page.snack_bar = ft.SnackBar(ft.Text(f"You are automatically logged in."))
+            self.page.snack_bar = ft.SnackBar(ft.Text(f"You are automatically logged in."), duration=1000)
             self.page.snack_bar.open = True
             self.page.update()
         elif self.page.client_storage.get("recent_set_keep_signed_in") is True:
@@ -194,11 +194,13 @@ class HomeController:
         for payable_button in self.items_view.payable_list.controls:
             payable_button: ItemButton = payable_button
             payable_button.gcash_infos = gcash_infos
+            payable_button.group = group
             payable_button.activate = self.show_item_informations
         
         for receivable_button in self.items_view.receivable_list.controls:
             receivable_button: ItemButton = receivable_button
             receivable_button.gcash_infos = gcash_infos
+            receivable_button.group = group
             receivable_button.activate = self.show_receivable_info
     
     def reload_listview(self, event: ft.ControlEvent):
@@ -222,10 +224,11 @@ class HomeController:
         self.group_listview.content = self.group_listview.grid_view
         self.group_listview.update()
     
-    def show_item_informations(self, event: ft.ControlEvent, group_name: str, item_name: str):
+    def show_item_informations(self, event: ft.ControlEvent, item_name: str):
         usernames = dict()
         
         button: ItemButton = event.control
+        group: Group = button.group
         
         user: User = None
         for user in self.repository.users:
@@ -234,7 +237,7 @@ class HomeController:
         self.home_page.item_infos_dialog.switcher.content = self.home_page.item_infos_dialog.main_row
         self.home_page.item_infos_dialog.title.visible = True
         self.home_page.item_infos_dialog.pay_button.text = "Pay now"
-        self.home_page.item_infos_dialog.group_name = button.group_name
+        self.home_page.item_infos_dialog.group_name = group.group_name
         gcash_infos = button.gcash_infos
         
         user = ""
@@ -296,12 +299,13 @@ class HomeController:
         self.home_page.add_receivable_dialog.group = self.items_view.group_name.value
         self.home_page.show_add_receivable_dialog()
     
-    def show_receivable_info(self, event: ft.ControlEvent, group: str, item_name: str):
-        self.home_page.receivable_info_dialog.title.value = item_name
-        self.home_page.receivable_info_dialog.group_name = group
-
+    def show_receivable_info(self, event: ft.ControlEvent, item_name: str):
         button: ItemButton = event.control
         transaction: Transaction = button.transaction
+        group: Group = button.group
+        
+        self.home_page.receivable_info_dialog.title.value = item_name
+        self.home_page.receivable_info_dialog.group_name = group
 
         self.home_page.receivable_info_dialog.paid_list.controls = []
         if transaction.paid_by != "None":
@@ -311,8 +315,20 @@ class HomeController:
                     user[0]
                 )
                 
+                reject_button = ft.IconButton(
+                    ft.icons.REMOVE_CIRCLE_OUTLINE,
+                    icon_color="#ae8948"
+                )
+                
+                show_proof_button = ft.Container(
+                    ft.Row(
+                        [image, user_label]
+                    )
+                )
+                
                 row = ft.Row(
-                    controls=[image, user_label]
+                    controls=[show_proof_button, reject_button],
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN
                 )
                 
                 container = ft.Container(
@@ -323,7 +339,8 @@ class HomeController:
                     tooltip= "Show proof of payment"
                 )
                 
-                container.on_click = lambda e: self.home_page.receivable_info_dialog.show_proof(user[1])
+                show_proof_button.on_click = lambda e: self.home_page.receivable_info_dialog.show_proof(user[1])
+                reject_button.on_click = lambda e: self.reject_received_payment(container, group, transaction, user)
                 
                 self.home_page.receivable_info_dialog.paid_list.controls.append(container)
 
@@ -333,6 +350,23 @@ class HomeController:
             self.home_page.receivable_info_dialog.content = self.home_page.receivable_info_dialog.paid_list
         
         self.home_page.show_receivable_info_dialog()
+    
+    def reject_received_payment(self, button, group: Group, transaction: Transaction, user: tuple):
+        transaction.paid_by.remove(user)
+        
+        if len(transaction.paid_by) == 0:
+            transaction.paid_by = "None"
+        
+        self.repository.update_group(group)
+        
+        self.home_page.receivable_info_dialog.paid_list.controls.remove(button)
+        
+        if len(transaction.paid_by) == 0 or transaction.paid_by == "None":
+            self.home_page.receivable_info_dialog.content = self.home_page.receivable_info_dialog.no_paid_label
+        else:
+            self.home_page.receivable_info_dialog.content = self.home_page.receivable_info_dialog.paid_list
+        
+        self.home_page.receivable_info_dialog.update()
     
     def update_account_view(self):
         email = str(self.page.client_storage.get("email")).replace(".", ",")

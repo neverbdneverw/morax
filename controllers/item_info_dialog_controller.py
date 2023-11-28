@@ -64,7 +64,12 @@ class ItemInfoDialogController:
                     transaction: Transaction = None
                     for transaction in group.transactions:
                         if transaction.name == item_name:
-                            transaction.paid_by.append((current_email, paid_proof_id))
+                            list(transaction.paid_by).append((current_email, paid_proof_id))
+                            
+                            if type(transaction.paid_by) is list:
+                                transaction.paid_by.append(set(current_email, paid_proof_id))
+                            else:
+                                transaction.paid_by = [(current_email, paid_proof_id)]
                             
                             self.repository.update_group(group)
                             self.page.snack_bar = ft.SnackBar(ft.Text(f"Your payable is marked as paid."), duration=1000)
