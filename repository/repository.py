@@ -82,7 +82,6 @@ class Repository:
                         transaction_paid_by = "None"
                     else:
                         transaction_paid_by = list(dict(transactions_dict[transaction]['Paid by']).items())
-                        print(transaction_paid_by)
                     
                     transaction_posted_by = ""
                     for user in self.users:
@@ -125,7 +124,7 @@ class Repository:
         for transaction in group.transactions:
             paid_users = dict()
             
-            if len(paid_users.items()) == 0:
+            if transaction.paid_by == "None":
                 paid_users = "None"
             else:
                 paid_user: tuple = None

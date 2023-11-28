@@ -133,7 +133,7 @@ class ItemButton(ft.ElevatedButton):
         )
         
         self.content = column
-        self.on_click = lambda event: self.activate(event, self.group_name, transaction_name)
+        self.on_click = lambda event: self.activate(event, transaction_name)
     
-    def activate(self, event: ft.ControlEvent, group: str, item_name: str):
+    def activate(self, event: ft.ControlEvent, item_name: str):
         pass
