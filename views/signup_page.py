@@ -16,7 +16,6 @@ class SignupPage():
         
         self.signup_indicator_text = ft.Text(
             value="Sign up",
-            # color = ft.colors.BLACK,
             weight=ft.FontWeight.W_700,
             size=54
         )
@@ -29,7 +28,6 @@ class SignupPage():
         
         self.welcome_back_text = ft.Text(
             "Fill your information below",
-            # color = ft.colors.BLACK,
             size = 24
         )
         
@@ -41,17 +39,11 @@ class SignupPage():
         
         self.email_textfield = ft.TextField(
             label = "Email",
-            # color = ft.colors.BLACK,
             border_radius = 25,
-            # border_color = "#d6d6d6",
-            # bgcolor="#d6d6d6",
-            # cursor_color="black",
             cursor_height=20,
             expand = True,
             height=44,
-            label_style = ft.TextStyle(
-                # color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         email_textfield_row = ft.Row(
@@ -62,17 +54,11 @@ class SignupPage():
         
         self.username_textfield = ft.TextField(
             label = "Username",
-            # color = ft.colors.BLACK,
             border_radius = 25,
-            # border_color = "#d6d6d6",
-            # cursor_color="black",
             cursor_height=20,
-            # bgcolor="#d6d6d6",
             expand = True,
             height=44,
-            label_style = ft.TextStyle(
-                # color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         username_textfield_row = ft.Row(
@@ -83,19 +69,13 @@ class SignupPage():
         
         self.password_textfield = ft.TextField(
             label = "Password",
-            # color = ft.colors.BLACK,
             border_radius = 25,
-            # border_color = "#d6d6d6",
-            # bgcolor="#d6d6d6",
-            # cursor_color="black",
             cursor_height=20,
             expand = True,
             height=44,
             password=True,
             can_reveal_password=True,
-            label_style = ft.TextStyle(
-                # color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         password_textfield_row = ft.Row(
@@ -106,19 +86,13 @@ class SignupPage():
         
         self.confirm_password_textfield = ft.TextField(
             label = "Confirm Password",
-            # color = ft.colors.BLACK,
             border_radius = 25,
-            # border_color = "#d6d6d6",
-            # bgcolor="#d6d6d6",
-            # cursor_color="black",
             expand = True,
             height=44,
             cursor_height=20,
             password=True,
             can_reveal_password=True,
-            label_style = ft.TextStyle(
-                # color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         confirm_password_textfield_row = ft.Row(
@@ -128,9 +102,7 @@ class SignupPage():
         confirm_password_textfield_row.controls.append(self.confirm_password_textfield)
         
         self.agree_eula_check = ft.Checkbox(
-            value=False,
-            # fill_color="#d6d6d6",
-            # check_color="#ae8948"
+            value=False
         )
         
         agree_eula_indicator_text = ft.Text(
@@ -145,13 +117,11 @@ class SignupPage():
         )
         
         self.register_btn = ft.ElevatedButton(
-            # bgcolor = "#d6d6d6",
             width = 200,
             height = 44,
             disabled=True,
             content=ft.Text(
                 value="Register",
-                # color = "#ae8948",
                 size=24
             )
         )
@@ -169,7 +139,6 @@ class SignupPage():
         self.login_indicator_text = ft.Text(
             value="Already have an account?",
             color = ft.colors.BLACK,
-            # weight=ft.FontWeight.W_200,
             size=16
         )
         
@@ -180,12 +149,10 @@ class SignupPage():
         )
         
         self.login_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             width = 200,
             height = 44,
             content=ft.Text(
                 value="Log in",
-                color = "#ae8948",
                 size=24
             )
         )
@@ -231,7 +198,6 @@ class SignupPage():
         self.sidebar_container = ft.Container(
             expand = True,
             padding = 40,
-            # bgcolor = "#fafafa",
             content = sidebar_main_column,
         )
         
@@ -261,7 +227,6 @@ class SignupPage():
         self.route_address = "/signup"
         self.view = ft.View(
             route=self.route_address,
-            bgcolor = "#9a6e32",
             padding = 0,
             controls = [self.main_container]
         )
@@ -324,6 +289,9 @@ class SignupPage():
         
         self.register_btn.bgcolor = colors["d6d6d6"]
         self.register_btn.content.color = colors["ae8948"]
+        
+        self.login_button.bgcolor = colors["d6d6d6"]
+        self.login_button.content.color = colors["ae8948"]
         
         self.login_indicator_text.color = colors["black"]
         

@@ -8,17 +8,16 @@ class SettingsView(ft.Column):
             animate_offset=ft.animation.Animation(300)
         )
         
-        top_text = ft.Text(
+        self.top_text = ft.Text(
             expand=True,
             value="Settings",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_600,
             size=54
         )
         
         top_text_row = ft.Row(
             expand=True,
-            controls=[top_text]
+            controls=[self.top_text]
         )
         
         self.top_text_container = ft.Container(
@@ -36,19 +35,31 @@ class SettingsView(ft.Column):
             ]
         )
         
-        setting_container = ft.Container(
+        self.setting_container = ft.Container(
             setting_list,
-            bgcolor="#ebebeb",
             border_radius=15,
             margin=30,
             padding=ft.padding.only(0, 40, 0, 40)
         )
         
         self.controls.append(self.top_text_container)
-        self.controls.append(setting_container)
+        self.controls.append(self.setting_container)
     
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
+        self.update()
+    
+    def update_colors(self, colors):
+        self.top_text.color = colors["black"]
+        self.setting_container.bgcolor = colors["ebebeb"]
+        self.appearance_setting.update_colors(colors)
+        self.currency_setting.update_colors(colors)
+        
+        self.appearance_setting.on_hover = lambda e: self.change_color(e, colors)
+        self.currency_setting.on_hover = lambda e: self.change_color(e, colors)
+        
+    def change_color(self, event: ft.ControlEvent, colors):
+        self.bgcolor = colors["d6d6d6"] if event.data == "true" else colors["fcffff"]
         self.update()
 
 class SettingButton(ft.Container):
@@ -64,7 +75,6 @@ class SettingButton(ft.Container):
         self.setting_with_current = ft.Text(
             additonal_state,
             italic=True,
-            color="#a6a6a6"
         )
         
         setting_title_row = ft.Row(
@@ -77,7 +87,6 @@ class SettingButton(ft.Container):
         self.setting_description = ft.Text(
             setting_description,
             size=14,
-            color="#a6a6a6",
             expand=True
         )
         
@@ -100,13 +109,12 @@ class SettingButton(ft.Container):
         )
         
         self.content = main_column
-        self.bgcolor = "#fcffff"
         self.padding = 20
         self.margin = ft.margin.only(40, 0, 40, 0)
         self.border_radius = 15
-        
-        def change_color(event: ft.ControlEvent):
-            self.bgcolor = "#d6d6d6" if event.data == "true" else "#fcffff"
-            self.update()
-
-        self.on_hover = change_color
+    
+    def update_colors(self, colors):
+        self.colors = colors
+        self.setting_with_current.color = colors["a6a6a6"]
+        self.setting_description.color = colors["a6a6a6"]
+        self.bgcolor = colors["fcffff"]

@@ -54,9 +54,7 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(
-                # color={"selected": "black", "": "#d6d6d6"}
-            )
+            style=ft.ButtonStyle()
         )
         
         home_button_row = ft.Row(
@@ -71,9 +69,7 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(
-                # color={"selected": "black", "": "#d6d6d6"}
-            )
+            style=ft.ButtonStyle()
         )
         
         settings_button_row = ft.Row(
@@ -88,9 +84,7 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(
-                # color={"selected": "black", "": "#d6d6d6"}
-            ),
+            style=ft.ButtonStyle(),
         )
         
         feedback_button_row = ft.Row(
@@ -105,9 +99,7 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(
-                # color={"selected": "black", "": "#d6d6d6"}
-            )
+            style=ft.ButtonStyle()
         )
         
         profile_button_row = ft.Row(
@@ -137,8 +129,7 @@ class HomePage():
         
         self.sidebar_container = ft.Container(
             content=sidebar,
-            padding=0,
-            # bgcolor="white"
+            padding=0
         )
         
         main_row = ft.Row(
@@ -150,9 +141,9 @@ class HomePage():
                 content_area]
         )
 
+        self.route_address = "/home"
         self.view = ft.View(
-            route = "/home",
-            # bgcolor = "#f8fafc",
+            route = self.route_address,
             padding=0,
             controls = [main_row]
         )
@@ -240,7 +231,6 @@ class HomePage():
         self.page.update()
     
     def update_colors(self, colors):
-        self.update_subviews(colors)
         self.home_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
         self.settings_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
         self.feedback_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
@@ -249,6 +239,10 @@ class HomePage():
         self.sidebar_container.bgcolor = colors["white"]
         
         self.view.bgcolor = colors["f8fafc"]
+        self.update_subviews(colors)
     
     def update_subviews(self, colors):
+        pass
+    
+    def reapply_theme(self):
         pass

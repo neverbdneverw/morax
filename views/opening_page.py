@@ -15,12 +15,10 @@ class OpeningPage():
         )
         
         self.login_button = ft.ElevatedButton(
-            # bgcolor = "#d6d6d6",
             width = 250,
             height = 48,
             content = ft.Text(
                 value = "Log in",
-                # color = "#ae8948",
                 size = 20
             ),
         )
@@ -32,7 +30,6 @@ class OpeningPage():
         
         self.account_none_indicator = ft.Text(
             value = "Don't have an account?",
-            # color = "#ae8948",
             size = 16
         )
         
@@ -42,12 +39,10 @@ class OpeningPage():
         )
         
         self.signup_button = ft.ElevatedButton(
-            # bgcolor = "#d6d6d6",
             width = 250,
             height = 48,
             content = ft.Text(
                 value = "Sign up",
-                # color = "#ae8948",
                 size = 20
             ),
         )
@@ -64,7 +59,6 @@ class OpeningPage():
         self.route_address = "/"
         self.view = ft.View(
             route = self.route_address,
-            # bgcolor = "#fafafa",
             controls = [main_column]
         )
     
@@ -75,19 +69,19 @@ class OpeningPage():
     
     def update_colors(self, colors):
         self.login_button.bgcolor = colors["d6d6d6"]
-        self.login_button.update()
         
         self.login_button.content.color = colors["ae8948"]
-        self.login_button.content.update()
         
         self.account_none_indicator.color = colors["ae8948"]
-        self.account_none_indicator.update()
         
         self.signup_button.bgcolor = colors["d6d6d6"]
-        self.signup_button.update()
         
         self.signup_button.content.color = colors["ae8948"]
-        self.signup_button.content.update()
         
         self.view.bgcolor = colors["fafafa"]
+    
+    def update(self):
+        self.login_button.update()
+        self.account_none_indicator.update()
+        self.signup_button.update()
         self.view.update()

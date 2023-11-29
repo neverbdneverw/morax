@@ -1,5 +1,5 @@
 from views import HomePage, ProfilePictureChangeDialog, EditGcashDialog, EditUsernameDialog, EditPasswordDialog, AccountView
-from repository import Repository, utils
+from repository import Repository, utils, get_colors
 
 from PIL import Image
 from io import BytesIO
@@ -59,6 +59,9 @@ class AccountSettingsDialogsController:
         self.change_gcash_dialog.save_changes_button.on_click = self.save_changed_gcash_infos
     
     def show_change_gcash_dialog(self, event: ft.ControlEvent):
+        colors = get_colors(self.page.client_storage.get("dark_mode"))
+        self.change_gcash_dialog.update_colors(colors)
+        
         for user in self.repository.users:
             if user.email == self.email.replace(".", ","):
                 self.change_gcash_dialog.number_textfield.value = user.gcash_number

@@ -6,10 +6,9 @@ class GroupButton(ft.ElevatedButton):
         self.group_name = group_name
         self.image_string = image_string
         
-        text = ft.Container(
+        self.text = ft.Container(
             content=ft.Text(
-                f"{group_name}",
-                color="#ae8948",
+                group_name,
                 weight=ft.FontWeight.W_700,
                 size=20
             ),
@@ -17,7 +16,7 @@ class GroupButton(ft.ElevatedButton):
         )
         
         self.text_row = ft.Row(
-            controls=[text],
+            controls=[self.text],
             alignment=ft.MainAxisAlignment.CENTER
         )
             
@@ -50,6 +49,9 @@ class GroupButton(ft.ElevatedButton):
         
     def activate(self, this, group_name: str, image_string: str):
         pass
+    
+    def update_colors(self, colors):
+        self.text.content.color = colors["ae8948"]
 
 class AddGroupButton(GroupButton):
     def __init__(self):

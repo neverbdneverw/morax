@@ -20,21 +20,17 @@ class AccountView(ft.Container):
         
         self.change_user_picture_button = ft.ElevatedButton(
             text="Change",
-            bgcolor="#f8fafc",
-            color="#c09451"
         )
         
         self.username_text = ft.Text(
             "Owen David",
             size="36",
             weight=ft.FontWeight.BOLD,
-            color="#fcffff"
         )
         
         self.email_text = ft.Text(
             "22-04905@g.batstate-u.edu.ph",
             size="16",
-            color="#fcffff"
         )
         
         user_info_column = ft.Column(
@@ -54,7 +50,7 @@ class AccountView(ft.Container):
             expand=True
         )
         
-        profile_info_container = ft.Container(
+        self.profile_info_container = ft.Container(
             profile_info_column,
             padding=ft.padding.all(20),
             margin=ft.margin.only(150, 0, 150, 0),
@@ -86,8 +82,7 @@ class AccountView(ft.Container):
         )
         
         self.edit_profile_button = ft.ElevatedButton(
-            content=button_label_contents,
-            bgcolor="#d6d6d6"
+            content=button_label_contents
         )
         
         security_labeler = ft.Text(
@@ -141,9 +136,8 @@ class AccountView(ft.Container):
             horizontal_alignment=ft.CrossAxisAlignment.STRETCH
         )
         
-        account_settings_container = ft.Container(
+        self.account_settings_container = ft.Container(
             account_settings_column,
-            bgcolor="white",
             padding=ft.padding.all(50),
             margin=ft.margin.only(150, 0, 150, 0),
             expand=True
@@ -151,8 +145,6 @@ class AccountView(ft.Container):
         
         self.logout_button = ft.ElevatedButton(
             "Log Out",
-            bgcolor="#ae8948",
-            color="#fcffff",
             width=200,
             height=36
         )
@@ -168,22 +160,50 @@ class AccountView(ft.Container):
             horizontal_alignment=ft.CrossAxisAlignment.STRETCH
         )
         
-        logout_button_container = ft.Container(
+        self.logout_button_container = ft.Container(
             logout_column,
-            bgcolor="white",
             padding=ft.padding.all(20),
             margin=ft.margin.only(150, 0, 150, 0),
             expand=True
         )
         
         self.content = ft.Column(
-            [profile_info_container, account_settings_container, logout_button_container],
+            [self.profile_info_container, self.account_settings_container, self.logout_button_container],
             horizontal_alignment = ft.CrossAxisAlignment.CENTER,
             spacing=0
         )
-        
-        self.bgcolor = "#f6f7f8"
     
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
         self.update()
+    
+    def update_colors(self, colors):
+        self.change_user_picture_button.bgcolor = colors["f8fafc"]
+        self.change_user_picture_button.color = colors["c09451"]
+        self.username_text.color = colors["fcffff"]
+        self.email_text.color = colors["fcffff"]
+        
+        self.profile_info_container.gradient.colors = [
+            colors["9a6e32"],
+            colors["c7ac65"]
+        ]
+        
+        self.bgcolor = colors["f6f7f8"]
+        self.account_settings_container.bgcolor = colors["white"]
+        self.logout_button_container.bgcolor = colors["white"]
+        
+        self.logout_button.bgcolor = colors["ae8948"]
+        self.logout_button.color = colors["fcffff"]
+        
+        self.edit_profile_button.bgcolor = colors["d6d6d6"]
+        self.edit_profile_button.content.controls[0].controls[0].color = colors["c09451"]
+        self.edit_profile_button.content.controls[0].controls[1].color = colors["black"]
+        self.edit_profile_button.content.controls[1].color = colors["c09451"]
+        
+        self.change_password_button.content.controls[0].controls[0].color = colors["c09451"]
+        self.change_password_button.content.controls[0].controls[1].color = colors["black"]
+        self.change_password_button.content.controls[1].color = colors["c09451"]
+        
+        self.gcash_button.content.controls[0].controls[0].color = colors["c09451"]
+        self.gcash_button.content.controls[0].controls[1].color = colors["black"]
+        self.gcash_button.content.controls[1].color = colors["c09451"]

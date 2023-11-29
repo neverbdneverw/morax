@@ -1,5 +1,5 @@
 from models import Member, Group, User, Transaction
-from repository import Repository, utils
+from repository import Repository, utils, get_colors
 from views import *
 
 import flet as ft
@@ -34,7 +34,8 @@ class HomeController:
         
         self.home_page.on_email_retrieved = self.fill_groups
         self.home_page.trigger_reload_account_view = self.update_account_view
-        self.home_page.update_subviews = self.update_homepage_views
+        self.home_page.update_subviews = self.update_all_subviews
+        self.home_page.reapply_theme = self.reapply_theme
         
         self.sidebar_buttons = [
             self.home_page.home_button,
@@ -48,14 +49,33 @@ class HomeController:
         
         self.account_view.logout_button.on_click = self.logout_account
     
-    def update_homepage_views(self, colors):
-        pass
+    def reapply_theme(self):
+        colors = get_colors(self.page.client_storage.get("dark_mode"))
+        self.home_page.update_colors(colors)
+        self.update_all_subviews(colors)
+        
+        for control in self.group_listview.grid.controls:
+            control.update_colors(colors)
+        
+        for control in self.items_view.receivable_list.controls:
+            control.update_colors(colors)
+            
+        for control in self.items_view.payable_list.controls:
+            control.update_colors(colors)
+    
+    def update_all_subviews(self, colors):
+        self.group_listview.update_colors(colors)
+        self.items_view.update_colors(colors)
+        self.home_page.settings_view.update_colors(colors)
+        self.feedback_view.update_colors(colors)
+        self.account_view.update_colors(colors)
     
     def logout_account(self, event: ft.ControlEvent):
         self.page.client_storage.set("keep_signed_in", False)
         self.page.client_storage.set("recent_set_keep_signed_in", False)
         self.group_listview.grid.controls = []
         self.page.go("/login")
+        self.page.update()
     
     def reload_groups(self, email: str):
         self.group_listview.grid.controls = []
@@ -65,6 +85,7 @@ class HomeController:
     def fill_groups(self, email: str):
         email = email.replace(".", ",")
         self.repository.update_refs()
+        colors = get_colors(self.page.client_storage.get("dark_mode"))
         
         if self.page.client_storage.get("keep_signed_in") is True and self.page.client_storage.get("recent_set_keep_signed_in") is False and self.page.client_storage.get("just_opened") is True:
             self.page.snack_bar = ft.SnackBar(ft.Text(f"You are automatically logged in."), duration=1000)
@@ -101,16 +122,24 @@ class HomeController:
         group_image: str = ""
         for group_object, group_image in joined_groups:
             group_button = GroupButton(group_object.group_name, group_image)
+            group_button.update_colors(colors)
             group_button.group = group_object
             group_button.activate = lambda button, group_name, image_string: self.open_group(group_name, image_string, button.group, False)
             self.group_listview.grid.controls.append(group_button)
         
         add_button = AddGroupButton()
-        add_button.on_click = lambda event: self.home_page.show_add_group_dialog()
+        add_button.update_colors(colors)
+        add_button.on_click = self.show_add_group_dialog
         self.group_listview.grid.controls.append(add_button)
+    
+    def show_add_group_dialog(self, event: ft.ControlEvent):
+        colors = get_colors(self.page.client_storage.get("dark_mode"))
+        self.home_page.add_group_dialog.update_colors(colors)
+        self.home_page.show_add_group_dialog()
     
     def open_group(self, group_name: str, image_string: str, group: Group, from_reload: bool):
         self.repository.update_refs()
+        colors = get_colors(self.page.client_storage.get("dark_mode"))
         
         button: GroupButton = None
         for button in self.group_listview.grid.controls:
@@ -171,13 +200,15 @@ class HomeController:
                 receivables += 1
                 total_receivable += float(transaction.price)
                 item  = ItemButton(group, self.items_view.username.value, user_images[transaction.posted_by], transaction.name, transaction.description, transaction.time_created, f"{utils.currency_symbols[self.page.client_storage.get('currency')]} {transaction.price}", item_image, True)
+                item.update_colors(colors)
                 item.transaction: Transaction = transaction
                 self.items_view.receivable_list.controls.append(item)
             else:
                 payables += 1
                 total_payable += float(transaction.price)
                 
-                item  = ItemButton(group, usernames[transaction.posted_by], user_images[transaction.posted_by], transaction.name,transaction.description, transaction.time_created, f"{utils.currency_symbols[self.page.client_storage.get('currency')]} {transaction.price}", item_image, False)
+                item = ItemButton(group, usernames[transaction.posted_by], user_images[transaction.posted_by], transaction.name,transaction.description, transaction.time_created, f"{utils.currency_symbols[self.page.client_storage.get('currency')]} {transaction.price}", item_image, False)
+                item.update_colors(colors)
                 item.transaction: Transaction = transaction
                 self.items_view.payable_list.controls.append(item)
         
@@ -237,6 +268,9 @@ class HomeController:
         
         button: ItemButton = event.control
         group: Group = button.group
+        colors = get_colors(self.page.client_storage.get("dark_mode"))
+        
+        self.home_page.item_infos_dialog.update_colors(colors)
         
         user: User = None
         for user in self.repository.users:
@@ -308,6 +342,8 @@ class HomeController:
         self.items_view.list_switcher.update()
     
     def open_receivable_adding_dialog(self, event: ft.ControlEvent):
+        colors = get_colors(self.page.client_storage.get("dark_mode"))
+        self.home_page.add_receivable_dialog.update_colors(colors)
         self.home_page.add_receivable_dialog.group = self.items_view.group_name.value
         self.home_page.show_add_receivable_dialog()
     
@@ -315,6 +351,7 @@ class HomeController:
         button: ItemButton = event.control
         transaction: Transaction = button.transaction
         group: Group = button.group
+        colors = get_colors(self.page.client_storage.get("dark_mode"))
         
         self.home_page.receivable_info_dialog.title.value = item_name
         self.home_page.receivable_info_dialog.group_name = group.group_name
@@ -323,6 +360,7 @@ class HomeController:
         if transaction.paid_by != "None":
             for user in transaction.paid_by:
                 paid_user_button = PaidUserButton(user[0])
+                paid_user_button.update_colors(colors)
                 
                 paid_user_button.show_proof_button.on_click = lambda e: self.home_page.receivable_info_dialog.show_proof(user[1])
                 paid_user_button.reject_button.on_click = lambda e: self.reject_received_payment(paid_user_button, group, transaction, user)

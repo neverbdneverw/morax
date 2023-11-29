@@ -1,6 +1,6 @@
 import flet as ft
 
-from repository import Repository
+from repository import Repository, get_colors
 from views import HomePage
 
 class AppearanceDialogController:
@@ -22,9 +22,14 @@ class AppearanceDialogController:
             self.page.client_storage.set("dark_mode", False)
             self.page.theme_mode = ft.ThemeMode.LIGHT
         
+        self.home_page.reapply_theme()
+        self.page.snack_bar = ft.SnackBar(ft.Text("App restart is required for the change to fully take effect..."))
+        self.page.snack_bar.open = True
         self.page.update()
     
     def handle_dialog_open(self, event):
+        colors = get_colors(self.page.client_storage.get("dark_mode"))
+        self.appearance_dialog.update_colors(colors)
         self.appearance_dialog.dark_mode_switch.value = bool(self.page.client_storage.get("dark_mode"))
         self.home_page.show_appearance_dialog()
 
@@ -45,5 +50,7 @@ class CurrencyDialogController:
         self.page.update()
     
     def handle_dialog_open(self, event: ft.ControlEvent):
+        colors = get_colors(self.page.client_storage.get("dark_mode"))
+        self.currency_dialog.update_colors(colors)
         self.currency_dialog.currency_choices.value = self.page.client_storage.get("currency")
         self.home_page.show_currency_dialog()

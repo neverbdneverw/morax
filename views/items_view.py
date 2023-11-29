@@ -18,7 +18,6 @@ class ItemsView(ft.Column):
         self.group_name = ft.Text(
             expand=True,
             value="School",
-            color = ft.colors.WHITE,
             weight=ft.FontWeight.W_600,
             size=44
         )
@@ -70,16 +69,15 @@ class ItemsView(ft.Column):
             padding = 20
         )
         
-        empty_warning_text = ft.Text(
+        self.empty_warning_text = ft.Text(
             expand=True,
             value="Your group has no payables yet.",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_400,
             size=20
         )
         
         empty_warning_text_row = ft.Row(
-            controls=[empty_warning_text]
+            controls=[self.empty_warning_text]
         )
         
         self.empty_warning_text_container = ft.Container(
@@ -129,7 +127,6 @@ class ItemsView(ft.Column):
         
         self.group_name_text = ft.Text(
             "School",
-            color="#ae8948",
             weight=ft.FontWeight.W_600,
             size=24
         )
@@ -146,7 +143,6 @@ class ItemsView(ft.Column):
                 "Owen David",
                 style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300)
             )],
-            color="#ae8948",
             weight=ft.FontWeight.W_500,
             italic=True,
         )
@@ -157,7 +153,6 @@ class ItemsView(ft.Column):
                 "haihfass",
                 style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300)
             )],
-            color="#ae8948",
             weight=ft.FontWeight.W_500,
             italic=True
         )
@@ -174,26 +169,22 @@ class ItemsView(ft.Column):
         
         self.receivables_button = ft.ElevatedButton(
             "My Receivables",
-            bgcolor="#ae8948",
             color="white"
         )
         
-        financial_recap_text = ft.Text(
+        self.financial_recap_text = ft.Text(
             "Financial Recap: ",
             italic=True,
-            color="#ae8948",
             weight=ft.FontWeight.W_400
         )
         
         self.total_payable_text = ft.Text(
             "Total Payable: ",
-            color="#ae8948",
             weight=ft.FontWeight.W_600
         )
         
         self.total_receivable_text = ft.Text(
             "Total Receivable: ",
-            color="#ae8948",
             weight=ft.FontWeight.W_600
         )
         
@@ -203,7 +194,7 @@ class ItemsView(ft.Column):
         )
         
         recap_column = ft.Column(
-            controls=[financial_recap_text, self.total_payable_text, self.total_receivable_text],
+            controls=[self.financial_recap_text, self.total_payable_text, self.total_receivable_text],
             horizontal_alignment=ft.CrossAxisAlignment.STRETCH,
         )
         
@@ -216,7 +207,6 @@ class ItemsView(ft.Column):
         
         self.personal_info_container = ft.Container(
             content=ft.Row([self.personal_info_column], expand=True),
-            bgcolor="#fcffff",
             expand=True,
             padding = 20,
             border=ft.border.all(1, "#d6d6d6")
@@ -234,7 +224,6 @@ class ItemsView(ft.Column):
         
         self.info_sidebar = ft.Container(
             content = self.info_sidebar_column,
-            bgcolor = "#f6f7f8",
             padding = 10
         )
         
@@ -254,3 +243,28 @@ class ItemsView(ft.Column):
     
     def on_trigger_reload(self, event: ft.ControlEvent):
         pass
+    
+    def update_colors(self, colors):
+        self.group_name.color = colors["white"]
+        self.header_container.gradient.colors=[
+            colors["9a6e32"],
+            colors["c7ac65"],
+            colors["c7ac65"],
+            colors["c7ac65"]
+        ]
+        
+        self.empty_warning_text.color = colors["black"]
+        self.group_name_text.color = colors["ae8948"]
+        self.created_by_text.color = colors["ae8948"]
+        self.group_code_text.color = colors["ae8948"]
+        self.receivables_button.bgcolor = colors["ae8948"]
+        
+        self.financial_recap_text.color = colors["ae8948"]
+        self.total_payable_text.color = colors["ae8948"]
+        self.total_receivable_text.color = colors["ae8948"]
+        
+        self.personal_info_container.bgcolor = colors["fcffff"]
+        self.personal_info_container.border = ft.border.all(1, colors["d6d6d6"])
+        
+        self.info_sidebar.bgcolor = colors["f6f7f8"]
+        

@@ -4,10 +4,10 @@ class AppearanceDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
         title = ft.Text("Appearance", weight=ft.FontWeight.BOLD)
-        subtitle = ft.Text("Customize the app's visual style and layout to suit your preferences.", color="#a6a6a6", size=12)
+        self.subtitle = ft.Text("Customize the app's visual style and layout to suit your preferences.", size=12)
         
         title_column = ft.Column(
-            controls = [title, subtitle]
+            controls = [title, self.subtitle]
         )
         
         self.title = title_column
@@ -36,15 +36,18 @@ class AppearanceDialog(ft.AlertDialog):
     
     def on_change(self, event):
         pass
+    
+    def update_colors(self, colors):
+        self.subtitle.color = colors["a6a6a6"]
         
 class CurrencyDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
         title = ft.Text("Currency", weight=ft.FontWeight.BOLD)
-        subtitle = ft.Text("Please be cautious when changing the app's currency, as this action may result in potential pricing and conversion issues for your transactions.", width=400, color="#a6a6a6", size=12)
+        self.subtitle = ft.Text("Please be cautious when changing the app's currency, as this action may result in potential pricing and conversion issues for your transactions.", width=400, size=12)
         
         title_column = ft.Column(
-            controls = [title, subtitle]
+            controls = [title, self.subtitle]
         )
         
         self.title = title_column
@@ -72,6 +75,9 @@ class CurrencyDialog(ft.AlertDialog):
     
     def on_change(self, currency):
         pass
+    
+    def update_colors(self, colors):
+        self.subtitle.color = colors["a6a6a6"]
 
 class ChoiceButton(ft.Column):
     def __init__(self, label: str, source: str):

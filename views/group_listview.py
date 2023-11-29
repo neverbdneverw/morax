@@ -19,7 +19,6 @@ class GroupListView(ft.AnimatedSwitcher):
         self.top_text = ft.Text(
             expand=True,
             value="Hello User",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_600,
             size=54
         )
@@ -34,16 +33,15 @@ class GroupListView(ft.AnimatedSwitcher):
             content=top_text_row
         )
         
-        empty_warning_text = ft.Text(
+        self.empty_warning_text = ft.Text(
             expand=True,
             value="You have not joined a group as of yet. Click the box to create one.",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_400,
             size=20
         )
         
         empty_warning_text_row = ft.Row(
-            controls=[empty_warning_text]
+            controls=[self.empty_warning_text]
         )
         
         self.empty_warning_text_container = ft.Container(
@@ -77,4 +75,7 @@ class GroupListView(ft.AnimatedSwitcher):
     
     def trigger_reload(self, email: str):
         pass
-            
+    
+    def update_colors(self, colors):
+        self.top_text.color = colors["black"]
+        self.empty_warning_text = colors["black"]

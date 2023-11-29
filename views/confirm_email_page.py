@@ -14,9 +14,8 @@ class ConfirmEmailPage():
             content=lock_icon
         )
         
-        confirm_email_indicator_text = ft.Text(
+        self.confirm_email_indicator_text = ft.Text(
             value="Confirm Email",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_700,
             size=54
         )
@@ -25,31 +24,24 @@ class ConfirmEmailPage():
             alignment=ft.MainAxisAlignment.CENTER,
             vertical_alignment=ft.CrossAxisAlignment.CENTER
         )
-        confirm_email_indicator_row.controls.append(confirm_email_indicator_text)
+        confirm_email_indicator_row.controls.append(self.confirm_email_indicator_text)
         
-        code_sent_indicator_text = ft.Text(
+        self.code_sent_indicator_text = ft.Text(
             value="A code was sent to your email.",
-            color = ft.colors.BLACK,
             size = 24
         )
         
         code_sent_indicator_text_row = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            controls=[code_sent_indicator_text]
+            controls=[self.code_sent_indicator_text]
         )
         
         self.code_sent_textfield = ft.TextField(
             label = "Code sent",
-            color = ft.colors.BLACK,
             border_radius = 25,
-            border_color = "#d6d6d6",
-            cursor_color="black",
-            bgcolor="#d6d6d6",
             expand=True,
-            label_style = ft.TextStyle(
-                color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         code_sent_textfield_row = ft.Row(
@@ -59,13 +51,11 @@ class ConfirmEmailPage():
         code_sent_textfield_row.controls.append(self.code_sent_textfield)
         
         self.confirm_email_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             width = 250,
             height = 44,
             disabled=True,
             content=ft.Text(
                 value="Confirm Email",
-                color = "#ae8948",
                 size=24
             )
         )
@@ -80,9 +70,8 @@ class ConfirmEmailPage():
             content=confirm_email_btn_row
         )
         
-        login_indicator_text = ft.Text(
+        self.login_indicator_text = ft.Text(
             value="Already have an account?",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_200,
             size=16
         )
@@ -90,16 +79,14 @@ class ConfirmEmailPage():
         login_indicator_text_row = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            controls=[login_indicator_text]
+            controls=[self.login_indicator_text]
         )
         
         self.login_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             width = 200,
             height = 44,
             content=ft.Text(
                 value="Log in",
-                color = "#ae8948",
                 size=24
             )
         )
@@ -138,9 +125,8 @@ class ConfirmEmailPage():
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
         )
         
-        sidebar_container = ft.Container(
+        self.sidebar_container = ft.Container(
             expand = True,
-            bgcolor = "#fafafa",
             content = sidebar_main_column,
             padding = 40,
         )
@@ -149,11 +135,11 @@ class ConfirmEmailPage():
             expand=True,
             controls = [
                 image_container,
-                sidebar_container
+                self.sidebar_container
             ]
         )
         
-        main_container = ft.Container(
+        self.main_container = ft.Container(
             expand=True,
             content=main_row,
             gradient=ft.LinearGradient(
@@ -171,9 +157,8 @@ class ConfirmEmailPage():
         self.route_address = "/confirm_email"
         self.view = ft.View(
             route=self.route_address,
-            bgcolor = "#9a6e32",
             padding = 0,
-            controls = [main_container]
+            controls = [self.main_container]
         )
         
         self.dialog_text = ft.Text(
@@ -208,4 +193,30 @@ class ConfirmEmailPage():
         self.page.update()
     
     def update_colors(self, colors):
-        pass
+        self.confirm_email_indicator_text.color = colors["black"]
+        self.code_sent_indicator_text.color = colors["black"]
+        
+        self.code_sent_textfield.border_color = colors["d6d6d6"]
+        self.code_sent_textfield.cursor_color = colors["black"]
+        self.code_sent_textfield.bgcolor = colors["d6d6d6"]
+        self.code_sent_textfield.color = colors["black"]
+        self.code_sent_textfield.label_style.color = colors["black"]
+        
+        self.confirm_email_button.bgcolor = colors["d6d6d6"]
+        self.confirm_email_button.content.color = colors["ae8948"]
+        
+        self.login_indicator_text.color = colors["black"]
+        
+        self.login_button.bgcolor = colors["d6d6d6"]
+        self.login_button.content.color = colors["ae8948"]
+        
+        self.sidebar_container.bgcolor = colors["fafafa"]
+        
+        self.main_container.gradient.colors=[
+            colors["9a6e32"],
+            colors["c7ac65"],
+            colors["c7ac65"],
+            colors["c7ac65"]
+        ]
+        
+        self.view.bgcolor = colors["9a6e32"]

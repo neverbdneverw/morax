@@ -16,7 +16,6 @@ class LoginPage():
         
         self.login_indicator_text = ft.Text(
             value="Log in",
-            # color = ft.colors.BLACK,
             weight=ft.FontWeight.W_700,
             size=54
         )
@@ -29,7 +28,6 @@ class LoginPage():
         
         self.welcome_back_text = ft.Text(
             "Welcome back user",
-            # color = ft.colors.BLACK,
             size = 24
         )
         
@@ -41,15 +39,9 @@ class LoginPage():
         
         self.email_textfield = ft.TextField(
             label = "Email",
-            # color = ft.colors.BLACK,
             border_radius = 25,
-            # border_color = "#d6d6d6",
-            # cursor_color="black",
-            # bgcolor="#d6d6d6",
             expand=True,
-            label_style = ft.TextStyle(
-                # color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         email_textfield_row = ft.Row(
@@ -60,17 +52,11 @@ class LoginPage():
         
         self.password_textfield = ft.TextField(
             label = "Password",
-            # color = ft.colors.BLACK,
             border_radius = 25,
-            # border_color = "#d6d6d6",
             expand=True,
-            # cursor_color="black",
             password=True,
             can_reveal_password=True,
-            # bgcolor="#d6d6d6",
-            label_style = ft.TextStyle(
-                # color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         password_textfield_row = ft.Row(
@@ -80,9 +66,7 @@ class LoginPage():
         password_textfield_row.controls.append(self.password_textfield)
         
         self.keep_logged_check = ft.Checkbox(
-            value=False,
-            # fill_color="#d6d6d6",
-            # check_color="#ae8948"
+            value=False
         )
         
         keep_logged_indicator_text = ft.Text(
@@ -91,8 +75,7 @@ class LoginPage():
         )
         
         self.forgot_password_text = ft.Text(
-            "Forgot Password?",
-            # color="#9a6e32"
+            "Forgot Password?"
         )
         
         self.forgot_password_btn = ft.Container(
@@ -106,13 +89,11 @@ class LoginPage():
         )
         
         self.login_btn = ft.ElevatedButton(
-            # bgcolor = "#d6d6d6",
             width = 200,
             height = 44,
             disabled=True,
             content=ft.Text(
                 value="Log in",
-                # color = "#ae8948",
                 size=24
             )
         )
@@ -130,7 +111,6 @@ class LoginPage():
         
         self.signup_indicator_text = ft.Text(
             value="Don't have an account yet?",
-            # color = ft.colors.BLACK,
             weight=ft.FontWeight.W_200,
             size=16
         )
@@ -142,12 +122,10 @@ class LoginPage():
         )
         
         self.signup_button = ft.ElevatedButton(
-            # bgcolor = "#d6d6d6",
             width = 200,
             height = 44,
             content=ft.Text(
                 value="Sign up",
-                # color = "#ae8948",
                 size=24
             )
         )
@@ -190,7 +168,6 @@ class LoginPage():
         
         self.sidebar_container = ft.Container(
             expand = True,
-            bgcolor = "#fafafa",
             content = sidebar_main_column,
             padding = 40
         )
@@ -221,7 +198,6 @@ class LoginPage():
         self.route_address = "/login"
         self.view = ft.View(
             route=self.route_address,
-            # bgcolor = "#9a6e32",
             padding = 0,
             controls = [self.main_container]
         )

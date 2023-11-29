@@ -7,12 +7,12 @@ from models import *
 from repository import *
 
 class RouteManager(Routing):
+    def route_changed(self, route):
+        pass
+    
     def change_route(self, route):
         self.route_changed(route)
         super().change_route(route)
-    
-    def route_changed(self, route):
-        pass
 
 def main(page: ft.Page):
     page.window_width = 1024
@@ -31,11 +31,10 @@ def main(page: ft.Page):
     signup_page = SignupPage()
     login_page = LoginPage()
     forgot_password_page = ForgotPasswordPage()
-    onboarding_page = OnboardingPage()
-    
-    main_pages = [confirm_email_page, opening_page, signup_page, login_page, forgot_password_page, onboarding_page]
-    
+    onboarding_page = OnboardingPage()    
     home_page = HomePage()
+    
+    main_pages = [confirm_email_page, opening_page, signup_page, login_page, forgot_password_page, onboarding_page, home_page]
     
     app_routes = [
         path(url="/", clear=True, view=opening_page.get_view),
@@ -60,7 +59,16 @@ def main(page: ft.Page):
     
     opening_page.update_colors(colors)
     
+    # Take initiative to update the opening page
+    opening_page.update()
+    
     # page.client_storage.clear()
+    
+    # Setting defaults
+    if page.client_storage.get("currency") is None:
+        page.client_storage.set("currency", "PHP")
+    if page.client_storage.get("dark_mode") is None:
+        page.client_storage.set("dark_mode", "False")
     
     repository = Repository()
 
