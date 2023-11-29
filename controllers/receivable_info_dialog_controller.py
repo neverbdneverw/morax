@@ -22,7 +22,6 @@ class ReceivableInfoDialogController:
         group_name = self.receivable_info_dialog.group_name
         
         for group in self.repository.groups:
-            print(item_name, group_name)
             if group.group_name == group_name:
                 transaction: Transaction = None
                 for transaction in group.transactions:
