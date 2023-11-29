@@ -212,7 +212,11 @@ class HomeController:
         self.page.snack_bar = ft.SnackBar(ft.Text(f"Reloading items..."), duration=3000)
         self.page.snack_bar.open = True
         self.page.update()
-        self.open_group(group_name, image_string, self.items_view.group, True)
+        
+        for group in self.repository.groups:
+            if group.group_name == self.items_view.group.group_name:
+                self.open_group(group_name, image_string, group, True)
+                break
     
     def return_to_grid(self, event: ft.ControlEvent):
         self.items_view.payable_list.controls = []
@@ -305,7 +309,7 @@ class HomeController:
         group: Group = button.group
         
         self.home_page.receivable_info_dialog.title.value = item_name
-        self.home_page.receivable_info_dialog.group_name = group
+        self.home_page.receivable_info_dialog.group_name = group.group_name
 
         self.home_page.receivable_info_dialog.paid_list.controls = []
         if transaction.paid_by != "None":

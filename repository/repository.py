@@ -33,9 +33,16 @@ class Repository:
     
     def update_refs(self):
         ref = db.reference("/")
+        db.reference("/Groups").listen(self.listener)
         self.dictionary = dict(ref.get())
         results = self.service.files().list(pageSize=1000, fields="nextPageToken, files(id, name, mimeType)", q='name contains "de"').execute()
         self.drive_files = results.get('files', [])
+    
+    def listener(self, event):
+        if "/Groups" in event.path:
+            print(event.event_type)
+            print(event.path)
+            print(event.data)
         
     def load_users(self):
         self.users = []
