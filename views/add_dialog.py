@@ -7,16 +7,10 @@ class AddDialog(ft.AlertDialog):
         
         self.group_code_textfield = ft.TextField(
             label = "Enter 8 digit group code",
-            color = ft.colors.BLACK,
-            border_color = "#d6d6d6",
             border_radius = 15,
-            bgcolor="#d6d6d6",
-            cursor_color="black",
             expand = True,
             height=44,
-            label_style = ft.TextStyle(
-                color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         group_code_textfield_row = ft.Row(
@@ -26,11 +20,9 @@ class AddDialog(ft.AlertDialog):
         group_code_textfield_row.controls.append(self.group_code_textfield)
         
         self.check_if_exists_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             disabled=True,
             content=ft.Text(
                 value="Verify group code",
-                color = "#ae8948"
             )
         )
         
@@ -63,10 +55,8 @@ class AddDialog(ft.AlertDialog):
         self.image_upload_button = ft.ElevatedButton(
             height=30,
             width=160,
-            bgcolor = "#d6d6d6",
             content=ft.Text(
                 value="Upload image",
-                color="black"
             )
         )
         
@@ -82,16 +72,10 @@ class AddDialog(ft.AlertDialog):
         
         self.group_name_textfield = ft.TextField(
             label = "Group Name",
-            color = ft.colors.BLACK,
             border_radius = 15,
             width=220,
             height=44,
-            border_color = "#d6d6d6",
-            label_style = ft.TextStyle(
-                color = ft.colors.BLACK
-            ),
-            cursor_color="black",
-            bgcolor="#d6d6d6"
+            label_style = ft.TextStyle()
         )
         
         group_name_textfield_row = ft.Row(
@@ -101,19 +85,13 @@ class AddDialog(ft.AlertDialog):
         
         self.group_desc_textfield = ft.TextField(
             label = "Group Description",
-            color = ft.colors.BLACK,
             border_radius = 15,
             width = 220,
             height = 300,
             multiline=True,
-            border_color = "#d6d6d6",
             min_lines=5,
             max_lines=5,
-            cursor_color="black",
-            bgcolor="#d6d6d6",
-            label_style = ft.TextStyle(
-                color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         group_desc_textfield_row = ft.Row(
@@ -173,3 +151,28 @@ class AddDialog(ft.AlertDialog):
     def switch_to_joining(self):
         self.switcher.content = self.join_column
         self.title.value = "Join a group"
+    
+    def update_colors(self, colors):
+        self.group_code_textfield.border_color = colors["d6d6d6"]
+        self.group_code_textfield.cursor_color = colors["black"]
+        self.group_code_textfield.bgcolor = colors["d6d6d6"]
+        self.group_code_textfield.color = colors["black"]
+        self.group_code_textfield.label_style.color = colors["black"]
+        
+        self.check_if_exists_button.bgcolor = colors["d6d6d6"]
+        self.check_if_exists_button.content.color = colors["ae8948"]
+        
+        self.image_upload_button.bgcolor = colors["d6d6d6"]
+        self.image_upload_button.content.color = colors["black"]
+        
+        self.group_name_textfield.border_color = colors["d6d6d6"]
+        self.group_name_textfield.cursor_color = colors["black"]
+        self.group_name_textfield.bgcolor = colors["d6d6d6"]
+        self.group_name_textfield.color = colors["black"]
+        self.group_name_textfield.label_style.color = colors["black"]
+        
+        self.group_desc_textfield.border_color = colors["d6d6d6"]
+        self.group_desc_textfield.cursor_color = colors["black"]
+        self.group_desc_textfield.bgcolor = colors["d6d6d6"]
+        self.group_desc_textfield.color = colors["black"]
+        self.group_desc_textfield.label_style.color = colors["black"]

@@ -11,6 +11,7 @@ from views.item_info_dialog import ItemInfoDialog
 from views.add_receivable_dialog import AddReceivableDialog
 from views.show_receivable_info_dialog import ShowReceivableInfoDialog
 from views.account_settings_dialogs import *
+from views.settings_view_dialogs import *
 
 class HomePage():
     def __init__(self):
@@ -53,7 +54,7 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(color={"selected": "black", "": "#d6d6d6"}),
+            style=ft.ButtonStyle()
         )
         
         home_button_row = ft.Row(
@@ -68,7 +69,7 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(color={"selected": "black", "": "#d6d6d6"}),
+            style=ft.ButtonStyle()
         )
         
         settings_button_row = ft.Row(
@@ -83,7 +84,7 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(color={"selected": "black", "": "#d6d6d6"}),
+            style=ft.ButtonStyle(),
         )
         
         feedback_button_row = ft.Row(
@@ -98,7 +99,7 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(color={"selected": "black", "": "#d6d6d6"})
+            style=ft.ButtonStyle()
         )
         
         profile_button_row = ft.Row(
@@ -126,24 +127,23 @@ class HomePage():
             controls=[sidebar_top_column, profile_button_container]
         )
         
-        sidebar_container = ft.Container(
+        self.sidebar_container = ft.Container(
             content=sidebar,
-            padding=0,
-            bgcolor="#ffffff"
+            padding=0
         )
         
         main_row = ft.Row(
             expand=True,
             spacing=0,
             controls=[
-                sidebar_container,
+                self.sidebar_container,
                 ft.VerticalDivider(width=1),
                 content_area]
         )
 
+        self.route_address = "/home"
         self.view = ft.View(
-            route = "/home",
-            bgcolor = "#f8fafc",
+            route = self.route_address,
             padding=0,
             controls = [main_row]
         )
@@ -157,6 +157,9 @@ class HomePage():
         self.edit_username_dialog = EditUsernameDialog()
         self.edit_password_dialog = EditPasswordDialog()
         self.edit_gcash_dialog = EditGcashDialog()
+        
+        self.appearance_dialog = AppearanceDialog()
+        self.currency_dialog = CurrencyDialog()
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
@@ -216,3 +219,30 @@ class HomePage():
         self.page.dialog = self.edit_gcash_dialog
         self.edit_gcash_dialog.open = True
         self.page.update()
+    
+    def show_appearance_dialog(self):
+        self.page.dialog = self.appearance_dialog
+        self.appearance_dialog.open = True
+        self.page.update()
+    
+    def show_currency_dialog(self):
+        self.page.dialog = self.currency_dialog
+        self.currency_dialog.open = True
+        self.page.update()
+    
+    def update_colors(self, colors):
+        self.home_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
+        self.settings_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
+        self.feedback_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
+        self.profile_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
+        
+        self.sidebar_container.bgcolor = colors["white"]
+        
+        self.view.bgcolor = colors["f8fafc"]
+        self.update_subviews(colors)
+    
+    def update_subviews(self, colors):
+        pass
+    
+    def reapply_theme(self):
+        pass

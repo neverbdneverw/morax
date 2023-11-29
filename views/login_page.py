@@ -14,9 +14,8 @@ class LoginPage():
             content=lock_icon
         )
         
-        login_indicator_text = ft.Text(
+        self.login_indicator_text = ft.Text(
             value="Log in",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_700,
             size=54
         )
@@ -25,11 +24,10 @@ class LoginPage():
             alignment=ft.MainAxisAlignment.CENTER,
             vertical_alignment=ft.CrossAxisAlignment.CENTER
         )
-        login_indicator_row.controls.append(login_indicator_text)
+        login_indicator_row.controls.append(self.login_indicator_text)
         
-        welcome_back_text = ft.Text(
+        self.welcome_back_text = ft.Text(
             "Welcome back user",
-            color = ft.colors.BLACK,
             size = 24
         )
         
@@ -37,19 +35,13 @@ class LoginPage():
             alignment=ft.MainAxisAlignment.CENTER,
             vertical_alignment=ft.CrossAxisAlignment.CENTER
         )
-        welcome_back_row.controls.append(welcome_back_text)
+        welcome_back_row.controls.append(self.welcome_back_text)
         
         self.email_textfield = ft.TextField(
             label = "Email",
-            color = ft.colors.BLACK,
             border_radius = 25,
-            border_color = "#d6d6d6",
-            cursor_color="black",
-            bgcolor="#d6d6d6",
             expand=True,
-            label_style = ft.TextStyle(
-                color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         email_textfield_row = ft.Row(
@@ -60,17 +52,11 @@ class LoginPage():
         
         self.password_textfield = ft.TextField(
             label = "Password",
-            color = ft.colors.BLACK,
             border_radius = 25,
-            border_color = "#d6d6d6",
             expand=True,
-            cursor_color="black",
             password=True,
             can_reveal_password=True,
-            bgcolor="#d6d6d6",
-            label_style = ft.TextStyle(
-                color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         password_textfield_row = ft.Row(
@@ -80,9 +66,7 @@ class LoginPage():
         password_textfield_row.controls.append(self.password_textfield)
         
         self.keep_logged_check = ft.Checkbox(
-            value=False,
-            fill_color="#d6d6d6",
-            check_color="#ae8948"
+            value=False
         )
         
         keep_logged_indicator_text = ft.Text(
@@ -90,13 +74,12 @@ class LoginPage():
             expand=True
         )
         
-        forgot_password_text = ft.Text(
-            "Forgot Password?",
-            color="#9a6e32"
+        self.forgot_password_text = ft.Text(
+            "Forgot Password?"
         )
         
         self.forgot_password_btn = ft.Container(
-            content=forgot_password_text
+            content=self.forgot_password_text
         )
         
         keep_logged_check_row = ft.Row(
@@ -106,13 +89,11 @@ class LoginPage():
         )
         
         self.login_btn = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             width = 200,
             height = 44,
             disabled=True,
             content=ft.Text(
                 value="Log in",
-                color = "#ae8948",
                 size=24
             )
         )
@@ -128,9 +109,8 @@ class LoginPage():
             margin=20
         )
         
-        signup_indicator_text = ft.Text(
+        self.signup_indicator_text = ft.Text(
             value="Don't have an account yet?",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_200,
             size=16
         )
@@ -138,16 +118,14 @@ class LoginPage():
         signup_indicator_text_row = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            controls=[signup_indicator_text]
+            controls=[self.signup_indicator_text]
         )
         
         self.signup_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             width = 200,
             height = 44,
             content=ft.Text(
                 value="Sign up",
-                color = "#ae8948",
                 size=24
             )
         )
@@ -188,22 +166,21 @@ class LoginPage():
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
         )
         
-        sidebar_container = ft.Container(
+        self.sidebar_container = ft.Container(
             expand = True,
-            bgcolor = "#fafafa",
             content = sidebar_main_column,
-            padding = 40,
+            padding = 40
         )
         
         main_row = ft.Row(
             expand=True,
             controls = [
                 image_container,
-                sidebar_container
+                self.sidebar_container
             ]
         )
         
-        main_container = ft.Container(
+        self.main_container = ft.Container(
             expand=True,
             content=main_row,
             gradient=ft.LinearGradient(
@@ -218,11 +195,11 @@ class LoginPage():
             )
         )
         
+        self.route_address = "/login"
         self.view = ft.View(
-            route="/login",
-            bgcolor = "#9a6e32",
+            route=self.route_address,
             padding = 0,
-            controls = [main_container]
+            controls = [self.main_container]
         )
         
         ###### DIALOGS ######
@@ -261,3 +238,44 @@ class LoginPage():
         self.page.dialog = self.warning_dialog
         self.warning_dialog.open = True
         self.page.update()
+    
+    def update_colors(self, colors):
+        self.login_indicator_text.color = colors["black"]
+        
+        self.welcome_back_text.color = colors["black"]
+        
+        self.email_textfield.border_color = colors["d6d6d6"]
+        self.email_textfield.cursor_color = colors["black"]
+        self.email_textfield.bgcolor = colors["d6d6d6"]
+        self.email_textfield.color = colors["black"]
+        self.email_textfield.label_style.color = colors["black"]
+        
+        self.password_textfield.border_color = colors["d6d6d6"]
+        self.password_textfield.cursor_color = colors["black"]
+        self.password_textfield.bgcolor = colors["d6d6d6"]
+        self.password_textfield.color = colors["black"]
+        self.password_textfield.label_style.color = colors["black"]
+        
+        self.keep_logged_check.fill_color = colors["d6d6d6"]
+        self.keep_logged_check.check_color = colors["ae8948"]
+        
+        self.forgot_password_text.color = colors["9a6e32"]
+        
+        self.login_btn.bgcolor = colors["d6d6d6"]
+        self.login_btn.content.color = colors["ae8948"]
+        
+        self.signup_indicator_text.color = colors["black"]
+        
+        self.signup_button.bgcolor = colors["d6d6d6"]
+        self.signup_button.content.color = colors["ae8948"]
+        
+        self.sidebar_container.bgcolor = colors["fafafa"]
+        
+        self.main_container.gradient.colors = [
+            colors["9a6e32"],
+            colors["c7ac65"],
+            colors["c7ac65"],
+            colors["c7ac65"]
+        ]
+        
+        self.view.bgcolor = colors["9a6e32"]

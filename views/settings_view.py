@@ -8,17 +8,16 @@ class SettingsView(ft.Column):
             animate_offset=ft.animation.Animation(300)
         )
         
-        top_text = ft.Text(
+        self.top_text = ft.Text(
             expand=True,
             value="Settings",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_600,
             size=54
         )
         
         top_text_row = ft.Row(
             expand=True,
-            controls=[top_text]
+            controls=[self.top_text]
         )
         
         self.top_text_container = ft.Container(
@@ -26,49 +25,45 @@ class SettingsView(ft.Column):
             content=top_text_row
         )
         
-        def open(event):
-            dialog = AppearanceDialog()
-            self.page.dialog = dialog
-            dialog.open = True
-            self.page.update()
-        
-        appearance_setting = SettingButton("Appearance", "Customize the app's visual style and layout to suit your preferences", False)
-        appearance_setting.on_click = open
-        
-        def open_curr(event):
-            dialog = CurrencyDialog()
-            self.page.dialog = dialog
-            dialog.open = True
-            self.page.update()
-        
-        currency_setting = SettingButton("Currency", "Adjust the currency settings to specify your preferred currency for transactions and display.", False)
-        currency_setting.on_click = open_curr
+        self.appearance_setting = SettingButton("Appearance", "Customize the app's visual style and layout to suit your preferences", "")
+        self.currency_setting = SettingButton("Currency", "Adjust the currency settings to specify your preferred currency for transactions and display.", "Currently set to: P")
         
         setting_list = ft.Column(
             controls=[
-                appearance_setting,
-                currency_setting,
-                SettingButton("Notification", "Notify me about updates within my groups.", True)
+                self.appearance_setting,
+                self.currency_setting,
             ]
         )
         
-        setting_container = ft.Container(
+        self.setting_container = ft.Container(
             setting_list,
-            bgcolor="#ebebeb",
             border_radius=15,
             margin=30,
             padding=ft.padding.only(0, 40, 0, 40)
         )
         
         self.controls.append(self.top_text_container)
-        self.controls.append(setting_container)
+        self.controls.append(self.setting_container)
     
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
         self.update()
+    
+    def update_colors(self, colors):
+        self.top_text.color = colors["black"]
+        self.setting_container.bgcolor = colors["ebebeb"]
+        self.appearance_setting.update_colors(colors)
+        self.currency_setting.update_colors(colors)
+        
+        self.appearance_setting.on_hover = lambda e: self.change_color(e, colors)
+        self.currency_setting.on_hover = lambda e: self.change_color(e, colors)
+        
+    def change_color(self, event: ft.ControlEvent, colors):
+        self.bgcolor = colors["d6d6d6"] if event.data == "true" else colors["fcffff"]
+        self.update()
 
 class SettingButton(ft.Container):
-    def __init__(self, setting_name: str, setting_description: str, stateful: bool):
+    def __init__(self, setting_name: str, setting_description: str, additonal_state: str):
         super().__init__()
         
         self.setting_name = ft.Text(
@@ -77,10 +72,21 @@ class SettingButton(ft.Container):
             weight=ft.FontWeight.W_700
         )
         
+        self.setting_with_current = ft.Text(
+            additonal_state,
+            italic=True,
+        )
+        
+        setting_title_row = ft.Row(
+            [self.setting_name]
+        )
+        
+        if additonal_state:
+            setting_title_row.controls.append(self.setting_with_current)
+        
         self.setting_description = ft.Text(
             setting_description,
             size=14,
-            color="#a6a6a6",
             expand=True
         )
         
@@ -88,33 +94,27 @@ class SettingButton(ft.Container):
             ft.icons.MORE_HORIZ
         )
         
-        self.setting_switch = ft.Switch(
-            height=24,
-            active_color="#ae8948"
-        )
-        
         bottom_row = ft.Row(
             controls=[self.setting_description]
         )
         
-        bottom_row.controls.append(self.setting_switch if stateful else self.setting_icon)
+        bottom_row.controls.append(self.setting_icon)
         
         main_column = ft.Column(
             controls=[
-                self.setting_name,
+                setting_title_row,
                 bottom_row
             ],
             spacing=10
         )
         
         self.content = main_column
-        self.bgcolor = "#fcffff"
         self.padding = 20
         self.margin = ft.margin.only(40, 0, 40, 0)
         self.border_radius = 15
-        
-        def change_color(event: ft.ControlEvent):
-            self.bgcolor = "#d6d6d6" if event.data == "true" else "#fcffff"
-            self.update()
-
-        self.on_hover = change_color
+    
+    def update_colors(self, colors):
+        self.colors = colors
+        self.setting_with_current.color = colors["a6a6a6"]
+        self.setting_description.color = colors["a6a6a6"]
+        self.bgcolor = colors["fcffff"]

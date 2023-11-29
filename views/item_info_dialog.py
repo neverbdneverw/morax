@@ -6,13 +6,11 @@ class ItemInfoDialog(ft.AlertDialog):
         super().__init__()
         self.item_name = ft.Text(
             "Gatas",
-            color="#ae8948",
             weight=ft.FontWeight.W_700,
         )
         
         self.price = ft.Text(
             "₱ 450",
-            color="#ae8948",
             weight=ft.FontWeight.W_700,
         )
         
@@ -34,8 +32,7 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         self.account_name_info = ft.Text(
-            "Owen David",
-            color="#ae8948",
+            "Owen David"
         )
         
         account_row = ft.Row(
@@ -60,7 +57,6 @@ class ItemInfoDialog(ft.AlertDialog):
                 f"October 30, 2023 - 12:00 am",
                 style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300)
             )],
-            color="#ae8948",
             weight=ft.FontWeight.W_500,
             italic=True,
         )
@@ -140,14 +136,13 @@ class ItemInfoDialog(ft.AlertDialog):
             spacing=30
         )
         
-        gcash_container = ft.Container(
+        self.gcash_container = ft.Container(
             content=gcash_info_column,
-            padding=5,
-            bgcolor="#f6f8f8"
+            padding=5
         )
         
         self.payment_row = ft.Row(
-            controls=[qr_column, gcash_container],
+            controls=[qr_column, self.gcash_container],
             spacing = 50,
             width = 480,
             height = 150
@@ -160,10 +155,8 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         self.upload_proof_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             content=ft.Text(
-                value="Upload proof of payment",
-                color="black"
+                value="Upload proof of payment"
             )
         )
         
@@ -196,3 +189,18 @@ class ItemInfoDialog(ft.AlertDialog):
     def show_payment_details(self):
         self.switcher.content = self.payment_row
         self.switcher.update()
+    
+    def update_colors(self, colors):
+        self.item_name.color = colors["ae8948"]
+        self.price.color = colors["ae8948"]
+        self.account_name_info.color = colors["ae8948"]
+        self.item_post_time.color = colors["ae8948"]
+        
+        self.gcash_number.color = colors["black"]
+        self.item_price.color = colors["ae8948"]
+        self.payment_item_name.color = colors["ae8948"]
+        
+        self.gcash_container.bgcolor = colors["f6f7f8"]
+        
+        self.upload_proof_button.bgcolor = colors["d6d6d6"]
+        self.upload_proof_button.content.color = colors["black"]

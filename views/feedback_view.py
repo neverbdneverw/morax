@@ -8,17 +8,16 @@ class FeedbackView(ft.Column):
             animate_offset=ft.animation.Animation(300)
         )
         
-        top_text = ft.Text(
+        self.top_text = ft.Text(
             expand=True,
             value="Help and Support",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_600,
             size=54
         )
         
         top_text_row = ft.Row(
             expand=True,
-            controls=[top_text]
+            controls=[self.top_text]
         )
         
         self.top_text_container = ft.Container(
@@ -26,17 +25,16 @@ class FeedbackView(ft.Column):
             content=top_text_row
         )
 
-        subtitle_text = ft.Text(
+        self.subtitle_text = ft.Text(
             expand=True,
             value="Having problems with the app? Please refer to the options below on how we can help you.",
-            color=ft.colors.BLACK,
             weight=ft.FontWeight.W_400,
             size=20
         )
 
         subtitle_text_row = ft.Row(
             expand=True,
-            controls=[subtitle_text]
+            controls=[self.subtitle_text]
         )
 
         self.subtitle_text_container = ft.Container(
@@ -70,9 +68,8 @@ class FeedbackView(ft.Column):
             controls=[contact_checkicon,contact_describeissue_text]
         )
 
-        describe_issue_container = ft.Container(
+        self.describe_issue_container = ft.Container(
             content=contact_describeissue_row,
-            bgcolor="#F6F8F8",
             border = ft.border.all(width=1, color="#D6D6D6"),
             width=275,
             padding=8
@@ -87,9 +84,8 @@ class FeedbackView(ft.Column):
             controls=[contact_checkicon, contact_send_report_text]
         )
 
-        send_report_container = ft.Container(
+        self.send_report_container = ft.Container(
             content=contact_send_report_row,
-            bgcolor="#F6F8F8",
             border=ft.border.all(width=1, color="#D6D6D6"),
             width = 275,
             padding=8
@@ -104,18 +100,15 @@ class FeedbackView(ft.Column):
             controls=[contact_checkicon, contact_get_help_text]
         )
 
-        get_help_container = ft.Container(
+        self.get_help_container = ft.Container(
             content=contact_get_help_row,
-            bgcolor="#F6F8F8",
             border=ft.border.all(width=1, color="#D6D6D6"),
             width=275,
             padding=8
         )
 
         self.button_contact_us = ft.ElevatedButton(
-            text="Contact Us",
-            color="#FFFFFF",
-            bgcolor="#AE8948",
+            text="Contact Us"
         )
 
         button_contact_us_container = ft.Container(
@@ -124,7 +117,7 @@ class FeedbackView(ft.Column):
         )
 
         contact_background_column = ft.Column(
-            controls=[contact_image_container, describe_issue_container, send_report_container, get_help_container, button_contact_us_container],
+            controls=[contact_image_container, self.describe_issue_container, self.send_report_container, self.get_help_container, button_contact_us_container],
             alignment=ft.MainAxisAlignment.CENTER,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             spacing=0
@@ -132,7 +125,6 @@ class FeedbackView(ft.Column):
 
         self.background_contact_container = ft.Container(
             content=contact_background_column,
-            bgcolor="#F5F7F8",
             padding=ft.padding.only(30, 0, 30, 30),
             margin=40,
             border_radius=15,
@@ -164,9 +156,8 @@ class FeedbackView(ft.Column):
             controls=[contribute_checkicon,contribute_helpproject_text]
         )
 
-        helpproject_container_container = ft.Container(
+        self.helpproject_container_container = ft.Container(
             content=contribute_helpproject_row,
-            bgcolor="#F6F8F8",
             border = ft.border.all(width=1, color="#D6D6D6"),
             width=275,
             padding=8
@@ -180,9 +171,8 @@ class FeedbackView(ft.Column):
             controls=[contribute_checkicon, contribute_contributecode_text]
         )
 
-        contributecode_container_container = ft.Container(
+        self.contributecode_container_container = ft.Container(
             content=contribute_contributecode_row,
-            bgcolor="#F6F8F8",
             border=ft.border.all(width=1, color="#D6D6D6"),
             width=275,
             padding=8
@@ -196,18 +186,15 @@ class FeedbackView(ft.Column):
             controls=[contribute_checkicon, contribute_involve_text]
         )
 
-        involve_container_container = ft.Container(
+        self.involve_container_container = ft.Container(
             content=contribute_involved_row,
-            bgcolor="#F6F8F8",
             border=ft.border.all(width=1, color="#D6D6D6"),
             width=275,
             padding=8
         )
 
         self.button_contribute = ft.ElevatedButton(
-            text="Contribute Code",
-            color="#FFFFFF",
-            bgcolor="#AE8948",
+            text="Contribute Code"
         )
 
         button_contribute_container = ft.Container(
@@ -216,7 +203,7 @@ class FeedbackView(ft.Column):
         )
 
         contribute_background_column = ft.Column(
-            controls=[contribute_image_container, helpproject_container_container, contributecode_container_container, involve_container_container, button_contribute_container],
+            controls=[contribute_image_container, self.helpproject_container_container, self.contributecode_container_container, self.involve_container_container, button_contribute_container],
             alignment=ft.MainAxisAlignment.CENTER,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             spacing=0
@@ -224,7 +211,6 @@ class FeedbackView(ft.Column):
 
         self.background_contribute_container = ft.Container(
             content=contribute_background_column,
-            bgcolor="#F5F7F8",
             padding=ft.padding.only(30, 0, 30, 30),
             margin=40,
             border_radius=15,
@@ -245,4 +231,27 @@ class FeedbackView(ft.Column):
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
         self.update()
-            
+    
+    def update_colors(self, colors):
+        self.top_text.color = colors["black"]
+        self.subtitle_text.color = colors["black"]
+        self.describe_issue_container.bgcolor = colors["f6f7f8"]
+        self.describe_issue_container.border = ft.border.all(width=1, color=colors["d6d6d6"])
+        self.send_report_container.bgcolor = colors["f6f7f8"]
+        self.send_report_container.border = ft.border.all(width=1, color=colors["d6d6d6"])
+        self.get_help_container.bgcolor = colors["f6f7f8"]
+        self.get_help_container.border = ft.border.all(width=1, color=colors["d6d6d6"])
+        self.button_contact_us.color = colors["white"]
+        self.button_contact_us.bgcolor = colors["ae8948"]
+        self.background_contact_container.bgcolor = colors["f6f7f8"]
+        self.background_contact_container.border = ft.border.all(width=1, color=colors["d6d6d6"])
+        self.helpproject_container_container.bgcolor = colors["f6f7f8"]
+        self.helpproject_container_container.border = ft.border.all(width=1, color=colors["d6d6d6"])
+        self.contributecode_container_container.bgcolor = colors["f6f7f8"]
+        self.contributecode_container_container.border = ft.border.all(width=1, color=colors["d6d6d6"])
+        self.involve_container_container.bgcolor = colors["f6f7f8"]
+        self.involve_container_container.border = ft.border.all(width=1, color=colors["d6d6d6"])
+        self.button_contribute.color = colors["white"]
+        self.button_contribute.bgcolor = colors["ae8948"]
+        self.background_contribute_container.bgcolor = colors["f6f7f8"]
+        self.background_contribute_container.border = ft.border.all(width=1, color=colors["d6d6d6"])

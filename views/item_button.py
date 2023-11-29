@@ -20,9 +20,8 @@ class ItemButton(ft.ElevatedButton):
         if image_string != "":
             self.account_image.src_base64 = image_string
         
-        user_name = ft.Text(
+        self.user_name = ft.Text(
             username,
-            color="#ae8948",
             weight=ft.FontWeight.W_600,
             size=16,
             width=100,
@@ -30,7 +29,7 @@ class ItemButton(ft.ElevatedButton):
         )
         
         account_column = ft.Column(
-            controls=[ft.Container(self.account_image, border_radius=15), user_name],
+            controls=[ft.Container(self.account_image, border_radius=15), self.user_name],
             spacing=0,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER
         )
@@ -45,49 +44,45 @@ class ItemButton(ft.ElevatedButton):
             alignment=ft.MainAxisAlignment.CENTER
         )
         
-        item_name = ft.Text(
+        self.item_name = ft.Text(
             transaction_name,
-            color="#ae8948",
             weight=ft.FontWeight.W_700,
             size=20
         )
         
-        item_description = ft.Text(
+        self.item_description = ft.Text(
             max_lines=3,
-            color=ft.colors.BLACK,
             size = 12,
             value = transaction_description
         )
         
-        item_post_time = ft.Text(
+        self.item_post_time = ft.Text(
             value = "Date Posted: ",
             spans = [ft.TextSpan(
                 transaction_creation,
                 style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300)
             )],
-            color="#ae8948",
             weight=ft.FontWeight.W_500,
             italic=True,
         )
         
-        amount_received = ft.Text(
+        self.amount_received = ft.Text(
             value = "Amount Received: ",
             spans = [ft.TextSpan(
                 f"₱ 100",
                 style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300)
             )],
-            color="#ae8948",
             weight=ft.FontWeight.W_500,
             italic=True,
         )
         
         item_info_column = ft.Column(
-            controls=[item_name, item_description, item_post_time],
+            controls=[self.item_name, self.item_description, self.item_post_time],
             expand=True
         )
         
         if has_amount_received:
-            item_info_column.controls.append(amount_received)
+            item_info_column.controls.append(self.amount_received)
         
         item_info_row = ft.Row(
             controls=[item_info_column],
@@ -103,15 +98,14 @@ class ItemButton(ft.ElevatedButton):
         if item_image_string != "":
             self.item_image.src_base64 = item_image_string
         
-        amount = ft.Text(
-            f"₱ {transaction_price}",
-            color="#ae8948",
+        self.amount = ft.Text(
+            transaction_price,
             weight=ft.FontWeight.W_700,
             size=20
         )
         
         payment_column = ft.Column(
-            controls=[amount, self.item_image],
+            controls=[self.amount, self.item_image],
             spacing=0,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER
         )
@@ -137,3 +131,11 @@ class ItemButton(ft.ElevatedButton):
     
     def activate(self, event: ft.ControlEvent, item_name: str):
         pass
+    
+    def update_colors(self, colors):
+        self.user_name.color = colors["ae8948"]
+        self.item_name.color = colors["ae8948"]
+        self.item_description.color = colors["black"]
+        self.item_post_time.color = colors["ae8948"]
+        self.amount_received.color = colors["ae8948"]
+        self.amount.color = colors["ae8948"]

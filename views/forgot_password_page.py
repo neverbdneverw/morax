@@ -14,9 +14,8 @@ class ForgotPasswordPage():
             content=query_icon
         )
         
-        fg_pass_indicator_text = ft.Text(
+        self.fg_pass_indicator_text = ft.Text(
             value="Oh no!",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_700,
             size=54
         )
@@ -25,11 +24,10 @@ class ForgotPasswordPage():
             alignment=ft.MainAxisAlignment.CENTER,
             vertical_alignment=ft.MainAxisAlignment.CENTER
         )
-        fg_pass_indicator_row.controls.append(fg_pass_indicator_text)
+        fg_pass_indicator_row.controls.append(self.fg_pass_indicator_text)
         
-        fg_pass_reminder_text = ft.Text(
+        self.fg_pass_reminder_text = ft.Text(
             "Create a memorable password next time.",
-            color = ft.colors.BLACK,
             size = 24
         )
         
@@ -37,21 +35,15 @@ class ForgotPasswordPage():
             alignment=ft.MainAxisAlignment.CENTER,
             vertical_alignment=ft.MainAxisAlignment.CENTER
         )
-        fg_pass_reminder_row.controls.append(fg_pass_reminder_text)
+        fg_pass_reminder_row.controls.append(self.fg_pass_reminder_text)
         
         self.email_textfield = ft.TextField(
             label = "Email",
-            color = ft.colors.BLACK,
             border_radius = 25,
-            border_color = "#d6d6d6",
-            cursor_color="black",
-            bgcolor="#d6d6d6",
             expand=True,
             height=44,
             cursor_height=20,
-            label_style = ft.TextStyle(
-                color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         email_textfield_row = ft.Row(
@@ -62,19 +54,13 @@ class ForgotPasswordPage():
         
         self.new_password_textfield = ft.TextField(
             label = "New Password",
-            color = ft.colors.BLACK,
             border_radius = 25,
-            border_color = "#d6d6d6",
-            bgcolor="#d6d6d6",
-            cursor_color="black",
             cursor_height=20,
             expand = True,
             height=44,
             password=True,
             can_reveal_password=True,
-            label_style = ft.TextStyle(
-                color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         new_password_textfield_row = ft.Row(
@@ -85,19 +71,13 @@ class ForgotPasswordPage():
         
         self.confirm_new_password_textfield = ft.TextField(
             label = "Confirm Password",
-            color = ft.colors.BLACK,
             border_radius = 25,
-            border_color = "#d6d6d6",
-            bgcolor="#d6d6d6",
-            cursor_color="black",
             expand = True,
             height=44,
             cursor_height=20,
             password=True,
             can_reveal_password=True,
-            label_style = ft.TextStyle(
-                color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         confirm_new_password_textfield_row = ft.Row(
@@ -107,13 +87,11 @@ class ForgotPasswordPage():
         confirm_new_password_textfield_row.controls.append(self.confirm_new_password_textfield)
         
         self.change_password_btn = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             width = 250,
             height = 44,
             disabled=True,
             content=ft.Text(
                 value="Change your password",
-                color = "#ae8948",
                 size=18
             )
         )
@@ -128,9 +106,8 @@ class ForgotPasswordPage():
             content=change_password_btn_row
         )
         
-        signup_indicator_text = ft.Text(
+        self.signup_indicator_text = ft.Text(
             value="Don't have an account yet?",
-            color = ft.colors.BLACK,
             weight=ft.FontWeight.W_200,
             size=16
         )
@@ -138,16 +115,14 @@ class ForgotPasswordPage():
         signup_indicator_text_row = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            controls=[signup_indicator_text]
+            controls=[self.signup_indicator_text]
         )
         
         self.signup_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             width = 200,
             height = 44,
             content=ft.Text(
                 value="Sign up",
-                color = "#ae8948",
                 size=24
             )
         )
@@ -188,10 +163,9 @@ class ForgotPasswordPage():
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
         )
         
-        sidebar_container = ft.Container(
+        self.sidebar_container = ft.Container(
             expand = True,
             padding = 40,
-            bgcolor = "#fafafa",
             content = sidebar_main_column,
         )
         
@@ -199,11 +173,11 @@ class ForgotPasswordPage():
             expand=True,
             controls = [
                 image_container,
-                sidebar_container
+                self.sidebar_container
             ]
         )
         
-        main_container = ft.Container(
+        self.main_container = ft.Container(
             expand=True,
             content=main_row,
             gradient=ft.LinearGradient(
@@ -218,11 +192,11 @@ class ForgotPasswordPage():
             )
         )
         
+        self.route_address = "/forgot_password"
         self.view = ft.View(
-            route="/forgot_password",
-            bgcolor = "#9a6e32",
+            route=self.route_address,
             padding = 0,
-            controls = [main_container]
+            controls = [self.main_container]
         )
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
@@ -242,3 +216,44 @@ class ForgotPasswordPage():
     def allow_password_change(self, allow: bool):
         self.change_password_btn.disabled = (allow == False)
         self.page.update()
+    
+    def update_colors(self, colors):
+        self.fg_pass_indicator_text.color = colors["black"]
+        self.fg_pass_reminder_text.color = colors["black"]
+        
+        self.email_textfield.border_color = colors["d6d6d6"]
+        self.email_textfield.cursor_color = colors["black"]
+        self.email_textfield.bgcolor = colors["d6d6d6"]
+        self.email_textfield.color = colors["black"]
+        self.email_textfield.label_style.color = colors["black"]
+        
+        self.new_password_textfield.border_color = colors["d6d6d6"]
+        self.new_password_textfield.cursor_color = colors["black"]
+        self.new_password_textfield.bgcolor = colors["d6d6d6"]
+        self.new_password_textfield.color = colors["black"]
+        self.new_password_textfield.label_style.color = colors["black"]
+        
+        self.confirm_new_password_textfield.border_color = colors["d6d6d6"]
+        self.confirm_new_password_textfield.cursor_color = colors["black"]
+        self.confirm_new_password_textfield.bgcolor = colors["d6d6d6"]
+        self.confirm_new_password_textfield.color = colors["black"]
+        self.confirm_new_password_textfield.label_style.color = colors["black"]
+        
+        self.change_password_btn.bgcolor = colors["d6d6d6"]
+        self.change_password_btn.content.color = colors["ae8948"]
+        
+        self.signup_indicator_text.color = colors["black"]
+        
+        self.signup_button.bgcolor = colors["d6d6d6"]
+        self.signup_button.content.color = colors["ae8948"]
+        
+        self.sidebar_container.bgcolor = colors["fafafa"]
+        
+        self.main_container.gradient.colors = [
+            colors["9a6e32"],
+            colors["c7ac65"],
+            colors["c7ac65"],
+            colors["c7ac65"]
+        ]
+        
+        self.view.bgcolor = colors["9a6e32"]

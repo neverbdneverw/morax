@@ -169,14 +169,16 @@ class EditGcashDialog(ft.AlertDialog):
             alignment=ft.MainAxisAlignment.CENTER
         )
         
-        content_container = ft.Container(
+        self.content_container = ft.Container(
             content = ft.Row(
                 controls = [qr_column, number_column]
             ),
-            bgcolor="#f6f8f8",
             width=500,
             height=200,
             padding=20
         )
         
-        self.content = content_container
+        self.content = self.content_container
+    
+    def update_colors(self, colors):
+        self.content_container.bgcolor = colors["f6f7f8"]

@@ -23,3 +23,9 @@ accepted_months = [
     
     "Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ]
+
+currency_symbols = {
+    "PHP": "₱",
+    "USD": "$",
+    "EU" : "€"
+}

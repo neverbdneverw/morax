@@ -14,11 +14,11 @@ class OnboardingPage():
             controls=[logo]
         )
         
-        help_button = SupportButton(ft.icons.HELP_OUTLINED, "Get Help...")
-        contribute_button = SupportButton(ft.icons.SETTINGS_ACCESSIBILITY, "Contribute to the Project...")
+        self.help_button = SupportButton(ft.icons.HELP_OUTLINED, "Get Help...")
+        self.contribute_button = SupportButton(ft.icons.SETTINGS_ACCESSIBILITY, "Contribute to the Project...")
         
         options_column = ft.Column(
-            controls=[help_button, contribute_button],
+            controls=[self.help_button, self.contribute_button],
             horizontal_alignment=ft.CrossAxisAlignment.START
         )
         
@@ -54,12 +54,10 @@ class OnboardingPage():
         )
         
         self.qr_upload_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             width = 200,
             height = 44,
             content=ft.Text(
                 value="Upload QR Code",
-                color = "#ae8948",
                 size=12
             )
         )
@@ -77,15 +75,9 @@ class OnboardingPage():
         
         self.number_textfield = ft.TextField(
             label="Enter your number here",
-            color = ft.colors.BLACK,
             border_radius = 25,
-            border_color = "#d6d6d6",
-            cursor_color="black",
             content_padding=10,
-            bgcolor="#d6d6d6",
-            label_style = ft.TextStyle(
-                color = ft.colors.BLACK
-            )
+            label_style = ft.TextStyle()
         )
         
         number_column = ft.Column(
@@ -132,12 +124,10 @@ class OnboardingPage():
         )
         
         self.profile_upload_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
             width = 150,
             height = 32,
             content=ft.Text(
                 value="Upload Photo",
-                color = "#ae8948",
                 size=12
             )
         )
@@ -167,9 +157,7 @@ class OnboardingPage():
         
         self.next_button = ft.ElevatedButton(
             "Next",
-            width=150,
-            bgcolor="#ae8948",
-            color="white"
+            width=150
         )
         
         navigation_row = ft.Row(
@@ -178,9 +166,9 @@ class OnboardingPage():
             vertical_alignment=ft.CrossAxisAlignment.END
         )
         
+        self.route_address = "/onboarding"
         self.view = ft.View(
-            route = "/onboarding",
-            bgcolor = "#fafafa",
+            route = self.route_address,
             controls = [switcher, navigation_row],
             vertical_alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             padding=30
@@ -190,14 +178,38 @@ class OnboardingPage():
         self.basket = basket
         self.page = page
         return self.view
+    
+    def update_colors(self, colors):
+        self.main_column.controls[1].color = colors["4d4d4d"]
+        self.profile_column.controls[1].color = colors["4d4d4d"]
+        self.profile_upload_button.bgcolor = colors["d6d6d6"]
+        self.profile_upload_button.content.color = colors["ae8948"]
+        self.qr_upload_button.bgcolor = colors["d6d6d6"]
+        self.qr_upload_button.content.color = colors["ae8948"]
+        self.next_button.bgcolor = colors["d6d6d6"]
+        self.next_button.color = colors["ae8948"]
+        self.view.bgcolor = colors["fafafa"]
+        
+        self.number_textfield.border_color = colors["d6d6d6"]
+        self.number_textfield.cursor_color = colors["black"]
+        self.number_textfield.bgcolor = colors["d6d6d6"]
+        self.number_textfield.color = colors["black"]
+        self.number_textfield.label_style.color = colors["black"]
+        
+        self.help_button.update_colors(colors)
+        self.contribute_button.update_colors(colors)
 
 class SupportButton(ft.Container):
     def __init__(self, icon_name: ft.icons, button_name: str):
         super().__init__()
-        icon = ft.Icon(icon_name, color="#ae8948", size=32)
-        text = ft.Text(button_name, color="#ae8948", weight=ft.FontWeight.W_400, size=16, width=200)
+        self.icon = ft.Icon(icon_name, color="#ae8948", size=32)
+        self.text = ft.Text(button_name, color="#ae8948", weight=ft.FontWeight.W_400, size=16, width=200)
         
         self.content = ft.Row(
-            controls = [icon, text],
+            controls = [self.icon, self.text],
             alignment=ft.MainAxisAlignment.CENTER
         )
+    
+    def update_colors(self, colors):
+        self.icon.color = colors["ae8948"]
+        self.text.color = colors["ae8948"]
