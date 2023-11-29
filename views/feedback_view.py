@@ -72,7 +72,7 @@ class FeedbackView(ft.Column):
 
         describe_issue_container = ft.Container(
             content=contact_describeissue_row,
-            bgcolor="#F6F8F8",
+            bgcolor="#F6F7F8",
             border = ft.border.all(width=1, color="#D6D6D6"),
             width=275,
             padding=8
@@ -89,7 +89,7 @@ class FeedbackView(ft.Column):
 
         send_report_container = ft.Container(
             content=contact_send_report_row,
-            bgcolor="#F6F8F8",
+            bgcolor="#F6F7F8",
             border=ft.border.all(width=1, color="#D6D6D6"),
             width = 275,
             padding=8
@@ -106,7 +106,7 @@ class FeedbackView(ft.Column):
 
         get_help_container = ft.Container(
             content=contact_get_help_row,
-            bgcolor="#F6F8F8",
+            bgcolor="#F6F7F8",
             border=ft.border.all(width=1, color="#D6D6D6"),
             width=275,
             padding=8
@@ -114,7 +114,7 @@ class FeedbackView(ft.Column):
 
         self.button_contact_us = ft.ElevatedButton(
             text="Contact Us",
-            color="#FFFFFF",
+            color="white",
             bgcolor="#AE8948",
         )
 
@@ -132,7 +132,7 @@ class FeedbackView(ft.Column):
 
         self.background_contact_container = ft.Container(
             content=contact_background_column,
-            bgcolor="#F5F7F8",
+            bgcolor="#F6F7F8",
             padding=ft.padding.only(30, 0, 30, 30),
             margin=40,
             border_radius=15,
@@ -166,7 +166,7 @@ class FeedbackView(ft.Column):
 
         helpproject_container_container = ft.Container(
             content=contribute_helpproject_row,
-            bgcolor="#F6F8F8",
+            bgcolor="#F6F7F8",
             border = ft.border.all(width=1, color="#D6D6D6"),
             width=275,
             padding=8
@@ -182,7 +182,7 @@ class FeedbackView(ft.Column):
 
         contributecode_container_container = ft.Container(
             content=contribute_contributecode_row,
-            bgcolor="#F6F8F8",
+            bgcolor="#F6F7F8",
             border=ft.border.all(width=1, color="#D6D6D6"),
             width=275,
             padding=8
@@ -224,7 +224,7 @@ class FeedbackView(ft.Column):
 
         self.background_contribute_container = ft.Container(
             content=contribute_background_column,
-            bgcolor="#F5F7F8",
+            bgcolor="#F6F7F8",
             padding=ft.padding.only(30, 0, 30, 30),
             margin=40,
             border_radius=15,

@@ -143,7 +143,7 @@ class ItemInfoDialog(ft.AlertDialog):
         gcash_container = ft.Container(
             content=gcash_info_column,
             padding=5,
-            bgcolor="#f6f8f8"
+            bgcolor="#f6f7f8"
         )
         
         self.payment_row = ft.Row(

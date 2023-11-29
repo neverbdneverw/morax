@@ -1,6 +1,6 @@
 from models import Member, Group, User, Transaction
 from repository import Repository, utils
-from views import HomePage, GroupListView, FeedbackView, AccountView, ItemsView, GroupButton, ItemButton, AddGroupButton
+from views import *
 
 import flet as ft
 import webbrowser
@@ -318,39 +318,12 @@ class HomeController:
         self.home_page.receivable_info_dialog.paid_list.controls = []
         if transaction.paid_by != "None":
             for user in transaction.paid_by:
-                image = ft.Image("/empty_user_image.svg", width=36, height=36)
-                user_label = ft.Text(
-                    user[0]
-                )
+                paid_user_button = PaidUserButton(user[0])
                 
-                reject_button = ft.IconButton(
-                    ft.icons.REMOVE_CIRCLE_OUTLINE,
-                    icon_color="#ae8948"
-                )
+                paid_user_button.show_proof_button.on_click = lambda e: self.home_page.receivable_info_dialog.show_proof(user[1])
+                paid_user_button.reject_button.on_click = lambda e: self.reject_received_payment(paid_user_button, group, transaction, user)
                 
-                show_proof_button = ft.Container(
-                    ft.Row(
-                        [image, user_label]
-                    )
-                )
-                
-                row = ft.Row(
-                    controls=[show_proof_button, reject_button],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN
-                )
-                
-                container = ft.Container(
-                    row,
-                    bgcolor="white",
-                    padding=10,
-                    border_radius=15,
-                    tooltip= "Show proof of payment"
-                )
-                
-                show_proof_button.on_click = lambda e: self.home_page.receivable_info_dialog.show_proof(user[1])
-                reject_button.on_click = lambda e: self.reject_received_payment(container, group, transaction, user)
-                
-                self.home_page.receivable_info_dialog.paid_list.controls.append(container)
+                self.home_page.receivable_info_dialog.paid_list.controls.append(paid_user_button)
 
         if len(transaction.paid_by) == 0 or transaction.paid_by == "None":
             self.home_page.receivable_info_dialog.content = self.home_page.receivable_info_dialog.no_paid_label

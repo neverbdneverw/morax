@@ -234,7 +234,7 @@ class ItemsView(ft.Column):
         
         self.info_sidebar = ft.Container(
             content = self.info_sidebar_column,
-            bgcolor = "#f5f7f8",
+            bgcolor = "#f6f7f8",
             padding = 10
         )
         

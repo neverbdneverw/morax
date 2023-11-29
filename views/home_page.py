@@ -130,7 +130,7 @@ class HomePage():
         sidebar_container = ft.Container(
             content=sidebar,
             padding=0,
-            bgcolor="#ffffff"
+            bgcolor="white"
         )
         
         main_row = ft.Row(

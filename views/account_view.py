@@ -182,7 +182,7 @@ class AccountView(ft.Container):
             spacing=0
         )
         
-        self.bgcolor = "#f5f7f8"
+        self.bgcolor = "#f6f7f8"
     
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
