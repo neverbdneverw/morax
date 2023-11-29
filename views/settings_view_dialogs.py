@@ -13,10 +13,10 @@ class AppearanceDialog(ft.AlertDialog):
         self.title = title_column
         
         dark_mode_text = ft.Text("Dark Mode", weight=ft.FontWeight.W_700)
-        dark_mode_switch = ft.Switch()
+        self.dark_mode_switch = ft.Switch()
         
         dark_mode_row = ft.Row(
-            controls=[dark_mode_text, dark_mode_switch],
+            controls=[dark_mode_text, self.dark_mode_switch],
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
         )
         
@@ -31,6 +31,11 @@ class AppearanceDialog(ft.AlertDialog):
         
         self.actions = [close_button]
         self.actions_alignment = ft.MainAxisAlignment.END
+        
+        self.dark_mode_switch.on_change = lambda e: self.on_change(e)
+    
+    def on_change(self, event):
+        pass
         
 class CurrencyDialog(ft.AlertDialog):
     def __init__(self):
@@ -63,6 +68,10 @@ class CurrencyDialog(ft.AlertDialog):
         
         self.actions = [close_button]
         self.actions_alignment = ft.MainAxisAlignment.END
+        self.currency_choices.on_change = lambda event: self.on_change(self.currency_choices.value)
+    
+    def on_change(self, currency):
+        pass
 
 class ChoiceButton(ft.Column):
     def __init__(self, label: str, source: str):

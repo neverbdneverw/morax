@@ -9,8 +9,12 @@ from repository import Repository
 def main(page: ft.Page):
     page.window_width = 1024
     page.window_height = 768
-    page.theme_mode = ft.ThemeMode.LIGHT
     page.title = "Morax"
+    
+    if bool(page.client_storage.get("dark_mode")):
+        page.theme_mode = ft.ThemeMode.DARK
+    else:
+        page.theme_mode = ft.ThemeMode.LIGHT
     
     confirm_email_page = ConfirmEmailPage()
     opening_page = OpeningPage()
@@ -44,6 +48,8 @@ def main(page: ft.Page):
     AddReceivableDialogController(page, repository, home_page)
     AccountSettingsDialogsController(page, repository, home_page)
     ReceivableInfoDialogController(page, repository, home_page)
+    AppearanceDialogController(page, repository, home_page)
+    CurrencyDialogController(page, repository, home_page)
     OpeningController(page, opening_page)
     OnboardingController(page, repository, onboarding_page)
     LoginController(page, repository, login_page)

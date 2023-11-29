@@ -11,6 +11,7 @@ from views.item_info_dialog import ItemInfoDialog
 from views.add_receivable_dialog import AddReceivableDialog
 from views.show_receivable_info_dialog import ShowReceivableInfoDialog
 from views.account_settings_dialogs import *
+from views.settings_view_dialogs import *
 
 class HomePage():
     def __init__(self):
@@ -157,6 +158,9 @@ class HomePage():
         self.edit_username_dialog = EditUsernameDialog()
         self.edit_password_dialog = EditPasswordDialog()
         self.edit_gcash_dialog = EditGcashDialog()
+        
+        self.appearance_dialog = AppearanceDialog()
+        self.currency_dialog = CurrencyDialog()
     
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
@@ -215,4 +219,14 @@ class HomePage():
     def show_change_gcash_qr_dialog(self):
         self.page.dialog = self.edit_gcash_dialog
         self.edit_gcash_dialog.open = True
+        self.page.update()
+    
+    def show_appearance_dialog(self):
+        self.page.dialog = self.appearance_dialog
+        self.appearance_dialog.open = True
+        self.page.update()
+    
+    def show_currency_dialog(self):
+        self.page.dialog = self.currency_dialog
+        self.currency_dialog.open = True
         self.page.update()

@@ -104,7 +104,7 @@ class ItemButton(ft.ElevatedButton):
             self.item_image.src_base64 = item_image_string
         
         amount = ft.Text(
-            f"₱ {transaction_price}",
+            transaction_price,
             color="#ae8948",
             weight=ft.FontWeight.W_700,
             size=20

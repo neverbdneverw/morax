@@ -10,3 +10,4 @@ from .add_receivable_dialog_controller import AddReceivableDialogController
 from .onboarding_page_controller import OnboardingController
 from .account_settings_dialogs_controller import AccountSettingsDialogsController
 from .receivable_info_dialog_controller import ReceivableInfoDialogController
+from .settings_view_dialog_controller import *

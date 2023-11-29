@@ -166,19 +166,19 @@ class HomeController:
             elif transaction.posted_by == email:
                 receivables += 1
                 total_receivable += float(transaction.price)
-                item  = ItemButton(group, self.items_view.username.value, user_images[transaction.posted_by], transaction.name, transaction.description, transaction.time_created, transaction.price, item_image, True)
+                item  = ItemButton(group, self.items_view.username.value, user_images[transaction.posted_by], transaction.name, transaction.description, transaction.time_created, f"{utils.currency_symbols[self.page.client_storage.get('currency')]} {transaction.price}", item_image, True)
                 item.transaction: Transaction = transaction
                 self.items_view.receivable_list.controls.append(item)
             else:
                 payables += 1
                 total_payable += float(transaction.price)
                 
-                item  = ItemButton(group, usernames[transaction.posted_by], user_images[transaction.posted_by], transaction.name, transaction.description, transaction.time_created, transaction.price, item_image, False)
+                item  = ItemButton(group, usernames[transaction.posted_by], user_images[transaction.posted_by], transaction.name,transaction.description, transaction.time_created, f"{utils.currency_symbols[self.page.client_storage.get('currency')]} {transaction.price}", item_image, False)
                 item.transaction: Transaction = transaction
                 self.items_view.payable_list.controls.append(item)
         
-        self.items_view.total_payable_text.value = f"Total Payable: ₱ {total_payable}"
-        self.items_view.total_receivable_text.value = f"Total Receivable: ₱ {total_receivable}"
+        self.items_view.total_payable_text.value = f"Total Payable: {utils.currency_symbols[self.page.client_storage.get('currency')]} {total_payable}"
+        self.items_view.total_receivable_text.value = f"Total Receivable: {utils.currency_symbols[self.page.client_storage.get('currency')]} {total_receivable}"
         
         if payables == 0:
             self.items_view.cont.content = self.items_view.empty_warning_text_container
@@ -254,7 +254,7 @@ class HomeController:
                 user = username
 
         self.home_page.item_infos_dialog.item_name.value = self.home_page.item_infos_dialog.payment_item_name.spans[0].text = item_name
-        self.home_page.item_infos_dialog.price.value = self.home_page.item_infos_dialog.item_price.spans[0].text = f"₱ {button.transaction.price}"
+        self.home_page.item_infos_dialog.price.value = self.home_page.item_infos_dialog.item_price.spans[0].text = f"{utils.currency_symbols[self.page.client_storage.get('currency')]} {button.transaction.price}"
         self.home_page.item_infos_dialog.item_image.src_base64 = button.item_image.src_base64
         self.home_page.item_infos_dialog.item_post_time.spans[0].text = button.transaction.time_created
         self.home_page.item_infos_dialog.account_name_info.value = self.home_page.item_infos_dialog.account_name_payment.value = user
@@ -269,6 +269,10 @@ class HomeController:
     
     def location_change(self, event: ft.ControlEvent):
         new_button = event.control
+        
+        if new_button == self.home_page.settings_button:
+            self.home_page.settings_view.currency_setting.setting_with_current.value = f"Currently set to: {self.page.client_storage.get('currency')}"
+        
         new_index = 0
         for index, button in enumerate(self.sidebar_buttons):
             if new_button == button:

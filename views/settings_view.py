@@ -26,29 +26,13 @@ class SettingsView(ft.Column):
             content=top_text_row
         )
         
-        def open(event):
-            dialog = AppearanceDialog()
-            self.page.dialog = dialog
-            dialog.open = True
-            self.page.update()
-        
-        appearance_setting = SettingButton("Appearance", "Customize the app's visual style and layout to suit your preferences", False)
-        appearance_setting.on_click = open
-        
-        def open_curr(event):
-            dialog = CurrencyDialog()
-            self.page.dialog = dialog
-            dialog.open = True
-            self.page.update()
-        
-        currency_setting = SettingButton("Currency", "Adjust the currency settings to specify your preferred currency for transactions and display.", False)
-        currency_setting.on_click = open_curr
+        self.appearance_setting = SettingButton("Appearance", "Customize the app's visual style and layout to suit your preferences", "")
+        self.currency_setting = SettingButton("Currency", "Adjust the currency settings to specify your preferred currency for transactions and display.", "Currently set to: P")
         
         setting_list = ft.Column(
             controls=[
-                appearance_setting,
-                currency_setting,
-                SettingButton("Notification", "Notify me about updates within my groups.", True)
+                self.appearance_setting,
+                self.currency_setting,
             ]
         )
         
@@ -68,7 +52,7 @@ class SettingsView(ft.Column):
         self.update()
 
 class SettingButton(ft.Container):
-    def __init__(self, setting_name: str, setting_description: str, stateful: bool):
+    def __init__(self, setting_name: str, setting_description: str, additonal_state: str):
         super().__init__()
         
         self.setting_name = ft.Text(
@@ -76,6 +60,19 @@ class SettingButton(ft.Container):
             size=24,
             weight=ft.FontWeight.W_700
         )
+        
+        self.setting_with_current = ft.Text(
+            additonal_state,
+            italic=True,
+            color="#a6a6a6"
+        )
+        
+        setting_title_row = ft.Row(
+            [self.setting_name]
+        )
+        
+        if additonal_state:
+            setting_title_row.controls.append(self.setting_with_current)
         
         self.setting_description = ft.Text(
             setting_description,
@@ -88,20 +85,15 @@ class SettingButton(ft.Container):
             ft.icons.MORE_HORIZ
         )
         
-        self.setting_switch = ft.Switch(
-            height=24,
-            active_color="#ae8948"
-        )
-        
         bottom_row = ft.Row(
             controls=[self.setting_description]
         )
         
-        bottom_row.controls.append(self.setting_switch if stateful else self.setting_icon)
+        bottom_row.controls.append(self.setting_icon)
         
         main_column = ft.Column(
             controls=[
-                self.setting_name,
+                setting_title_row,
                 bottom_row
             ],
             spacing=10
