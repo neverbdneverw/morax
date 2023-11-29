@@ -4,7 +4,15 @@ from flet_route import Routing, path
 from views import *
 from controllers import *
 from models import *
-from repository import Repository
+from repository import *
+
+class RouteManager(Routing):
+    def change_route(self, route):
+        self.route_changed(route)
+        super().change_route(route)
+    
+    def route_changed(self, route):
+        pass
 
 def main(page: ft.Page):
     page.window_width = 1024
@@ -16,12 +24,16 @@ def main(page: ft.Page):
     else:
         page.theme_mode = ft.ThemeMode.LIGHT
     
+    colors = get_colors(page.client_storage.get("dark_mode"))
+    
     confirm_email_page = ConfirmEmailPage()
     opening_page = OpeningPage()
     signup_page = SignupPage()
     login_page = LoginPage()
     forgot_password_page = ForgotPasswordPage()
     onboarding_page = OnboardingPage()
+    
+    main_pages = [confirm_email_page, opening_page, signup_page, login_page, forgot_password_page, onboarding_page]
     
     home_page = HomePage()
     
@@ -35,8 +47,18 @@ def main(page: ft.Page):
         path(url="/onboarding", clear=False, view=onboarding_page.get_view)
     ]
     
-    Routing(page = page, app_routes = app_routes)
+    routing = RouteManager(page = page, app_routes = app_routes)
     page.go(page.route)
+    
+    def handle_route_changed(event: ft.RouteChangeEvent):
+        for current in main_pages:
+            if current.route_address == event.route:
+                current.update_colors(colors)
+                break
+
+    routing.route_changed = handle_route_changed
+    
+    opening_page.update_colors(colors)
     
     # page.client_storage.clear()
     

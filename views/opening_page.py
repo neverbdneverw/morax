@@ -15,12 +15,12 @@ class OpeningPage():
         )
         
         self.login_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
+            # bgcolor = "#d6d6d6",
             width = 250,
             height = 48,
             content = ft.Text(
                 value = "Log in",
-                color = "#ae8948",
+                # color = "#ae8948",
                 size = 20
             ),
         )
@@ -30,24 +30,24 @@ class OpeningPage():
             controls = [self.login_button]
         )
         
-        account_none_indicator = ft.Text(
+        self.account_none_indicator = ft.Text(
             value = "Don't have an account?",
-            color = "#ae8948",
+            # color = "#ae8948",
             size = 16
         )
         
         account_none_indicator_row = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
-            controls = [account_none_indicator]
+            controls = [self.account_none_indicator]
         )
         
         self.signup_button = ft.ElevatedButton(
-            bgcolor = "#d6d6d6",
+            # bgcolor = "#d6d6d6",
             width = 250,
             height = 48,
             content = ft.Text(
                 value = "Sign up",
-                color = "#ae8948",
+                # color = "#ae8948",
                 size = 20
             ),
         )
@@ -61,9 +61,10 @@ class OpeningPage():
             controls = [logo_row, login_btn_row, account_none_indicator_row, signup_btn_row]
         )
         
+        self.route_address = "/"
         self.view = ft.View(
-            route = "/",
-            bgcolor = "#fafafa",
+            route = self.route_address,
+            # bgcolor = "#fafafa",
             controls = [main_column]
         )
     
@@ -71,3 +72,22 @@ class OpeningPage():
         self.basket = basket
         self.page = page
         return self.view
+    
+    def update_colors(self, colors):
+        self.login_button.bgcolor = colors["d6d6d6"]
+        self.login_button.update()
+        
+        self.login_button.content.color = colors["ae8948"]
+        self.login_button.content.update()
+        
+        self.account_none_indicator.color = colors["ae8948"]
+        self.account_none_indicator.update()
+        
+        self.signup_button.bgcolor = colors["d6d6d6"]
+        self.signup_button.update()
+        
+        self.signup_button.content.color = colors["ae8948"]
+        self.signup_button.content.update()
+        
+        self.view.bgcolor = colors["fafafa"]
+        self.view.update()

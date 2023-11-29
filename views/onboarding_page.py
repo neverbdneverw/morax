@@ -178,8 +178,9 @@ class OnboardingPage():
             vertical_alignment=ft.CrossAxisAlignment.END
         )
         
+        self.route_address = "/onboarding"
         self.view = ft.View(
-            route = "/onboarding",
+            route = self.route_address,
             bgcolor = "#fafafa",
             controls = [switcher, navigation_row],
             vertical_alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
@@ -190,6 +191,9 @@ class OnboardingPage():
         self.basket = basket
         self.page = page
         return self.view
+    
+    def update_colors(self, colors):
+        pass
 
 class SupportButton(ft.Container):
     def __init__(self, icon_name: ft.icons, button_name: str):

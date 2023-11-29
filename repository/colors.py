@@ -1,4 +1,5 @@
 colors = {
+    "black" : "#000000",
     "white" : "#ffffff",
     "fcffff": "#fcffff",
     "fafafa": "#fafafa",
@@ -15,7 +16,8 @@ colors = {
 }
 
 colors_dark = {
-    "white": "#1c1c1c",
+    "black" : "#ffffff",
+    "white" : "#1c1c1c",
     "fcffff": "#0d0d0d",
     "fafafa": "#101010",
     "f6f7f8": "#121212",
@@ -29,3 +31,6 @@ colors_dark = {
     "4d4d4d": "#999999",
     "a6a6a6": "#7a7a7a"
 }
+
+def get_colors(dark_mode: bool):
+    return colors_dark if dark_mode else colors

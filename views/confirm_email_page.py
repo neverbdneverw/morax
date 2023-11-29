@@ -168,8 +168,9 @@ class ConfirmEmailPage():
             )
         )
         
+        self.route_address = "/confirm_email"
         self.view = ft.View(
-            route="/confirm_email",
+            route=self.route_address,
             bgcolor = "#9a6e32",
             padding = 0,
             controls = [main_container]
@@ -205,3 +206,6 @@ class ConfirmEmailPage():
         self.page.dialog = self.warning_dialog
         self.warning_dialog.open = True
         self.page.update()
+    
+    def update_colors(self, colors):
+        pass

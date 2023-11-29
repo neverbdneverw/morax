@@ -218,8 +218,9 @@ class ForgotPasswordPage():
             )
         )
         
+        self.route_address = "/forgot_password"
         self.view = ft.View(
-            route="/forgot_password",
+            route=self.route_address,
             bgcolor = "#9a6e32",
             padding = 0,
             controls = [main_container]

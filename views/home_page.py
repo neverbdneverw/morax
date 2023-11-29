@@ -54,7 +54,9 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(color={"selected": "black", "": "#d6d6d6"}),
+            style=ft.ButtonStyle(
+                # color={"selected": "black", "": "#d6d6d6"}
+            )
         )
         
         home_button_row = ft.Row(
@@ -69,7 +71,9 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(color={"selected": "black", "": "#d6d6d6"}),
+            style=ft.ButtonStyle(
+                # color={"selected": "black", "": "#d6d6d6"}
+            )
         )
         
         settings_button_row = ft.Row(
@@ -84,7 +88,9 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(color={"selected": "black", "": "#d6d6d6"}),
+            style=ft.ButtonStyle(
+                # color={"selected": "black", "": "#d6d6d6"}
+            ),
         )
         
         feedback_button_row = ft.Row(
@@ -99,7 +105,9 @@ class HomePage():
             width = 50,
             height = 50,
             icon_size=36,
-            style=ft.ButtonStyle(color={"selected": "black", "": "#d6d6d6"})
+            style=ft.ButtonStyle(
+                # color={"selected": "black", "": "#d6d6d6"}
+            )
         )
         
         profile_button_row = ft.Row(
@@ -127,24 +135,24 @@ class HomePage():
             controls=[sidebar_top_column, profile_button_container]
         )
         
-        sidebar_container = ft.Container(
+        self.sidebar_container = ft.Container(
             content=sidebar,
             padding=0,
-            bgcolor="white"
+            # bgcolor="white"
         )
         
         main_row = ft.Row(
             expand=True,
             spacing=0,
             controls=[
-                sidebar_container,
+                self.sidebar_container,
                 ft.VerticalDivider(width=1),
                 content_area]
         )
 
         self.view = ft.View(
             route = "/home",
-            bgcolor = "#f8fafc",
+            # bgcolor = "#f8fafc",
             padding=0,
             controls = [main_row]
         )
@@ -230,3 +238,17 @@ class HomePage():
         self.page.dialog = self.currency_dialog
         self.currency_dialog.open = True
         self.page.update()
+    
+    def update_colors(self, colors):
+        self.update_subviews(colors)
+        self.home_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
+        self.settings_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
+        self.feedback_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
+        self.profile_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
+        
+        self.sidebar_container.bgcolor = colors["white"]
+        
+        self.view.bgcolor = colors["f8fafc"]
+    
+    def update_subviews(self, colors):
+        pass

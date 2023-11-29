@@ -34,6 +34,7 @@ class HomeController:
         
         self.home_page.on_email_retrieved = self.fill_groups
         self.home_page.trigger_reload_account_view = self.update_account_view
+        self.home_page.update_subviews = self.update_homepage_views
         
         self.sidebar_buttons = [
             self.home_page.home_button,
@@ -46,6 +47,9 @@ class HomeController:
         self.feedback_view.button_contribute.on_click = lambda e: webbrowser.open_new("https://github.com/neverbdneverw/morax/issues/new")
         
         self.account_view.logout_button.on_click = self.logout_account
+    
+    def update_homepage_views(self, colors):
+        pass
     
     def logout_account(self, event: ft.ControlEvent):
         self.page.client_storage.set("keep_signed_in", False)
