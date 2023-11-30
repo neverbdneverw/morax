@@ -9,6 +9,7 @@ import flet as ft
 import qrcode
 import cv2
 import base64
+import cairosvg
 
 class OnboardingController:
     def __init__(self, page: ft.Page, repository: Repository, onboarding_page: OnboardingPage):
@@ -137,14 +138,15 @@ class OnboardingController:
             self.onboarding_page.next_button.update()
             self.current = 2
         elif self.current == 2:
-            if self.dp_image_path != "":
+            if hasattr(self, "dp_image_path"):
                 id = self.repository.upload_image(f"{current_user.email}|DP.png", self.dp_image_buffer)
                 current_user.picture_link = id
-                
             else:
-                buffer = BytesIO()
-                image = Image.open("assets/empty_user_image.svg")
-                image.save(buffer, format="JPEG")
+                with open("assets/empty_user_image.svg", encoding="utf-8") as f:
+                    svg_image = f.read()
+                    
+                png_info = cairosvg.svg2png(svg_image) 
+                buffer = BytesIO(png_info)
                 id = self.repository.upload_image(f"{current_user.email}|DP.png", buffer)
                 current_user.picture_link = id
             
