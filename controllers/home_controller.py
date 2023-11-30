@@ -248,6 +248,8 @@ class HomeController:
         self.page.snack_bar.open = True
         self.page.update()
         
+        self.repository.update_refs()
+        self.repository.load_groups()
         for group in self.repository.groups:
             if group.group_name == self.items_view.group.group_name:
                 self.open_group(group_name, image_string, group, True)

@@ -50,6 +50,7 @@ class ItemsView(ft.Column):
         
         self.header_container = ft.Container(
             padding = ft.padding.only(10, 10, 10, 10),
+            border_radius=ft.BorderRadius(0, 0, 15, 15),
             content=header_row,
             gradient=ft.LinearGradient(
                 begin=ft.alignment.center_left,
@@ -207,6 +208,7 @@ class ItemsView(ft.Column):
         
         self.personal_info_container = ft.Container(
             content=ft.Row([self.personal_info_column], expand=True),
+            border_radius=ft.BorderRadius(15, 15, 15, 15),
             expand=True,
             padding = 20,
             border=ft.border.all(1, "#d6d6d6")
