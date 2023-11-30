@@ -131,6 +131,8 @@ class OnboardingController:
             current_user.qr_image_id = id
             current_user.gcash_number = self.onboarding_page.number_textfield.value
             
+            self.repository.update_user(current_user)
+            
             self.onboarding_page.next_button.text = "Start Morax"
             self.onboarding_page.next_button.update()
             self.current = 2
@@ -138,7 +140,15 @@ class OnboardingController:
             if self.dp_image_path != "":
                 id = self.repository.upload_image(f"{current_user.email}|DP.png", self.dp_image_buffer)
                 current_user.picture_link = id
-                current_user.first_run = False
-                self.repository.update_user(current_user)
+                
+            else:
+                buffer = BytesIO()
+                image = Image.open("assets/empty_user_image.svg")
+                image.save(buffer, format="JPEG")
+                id = self.repository.upload_image(f"{current_user.email}|DP.png", buffer)
+                current_user.picture_link = id
+            
+            current_user.first_run = False
+            self.repository.update_user(current_user)
             
             self.page.go("/home")
