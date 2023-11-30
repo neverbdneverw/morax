@@ -5,7 +5,7 @@ class ItemButton(ft.ElevatedButton):
     def __init__(self, group_name: str, username: str, image_string: str, transaction_name: str, transaction_description: str, transaction_creation: str, transaction_price: str, item_image_string: str, has_amount_received: bool):
         super().__init__(
             expand=True,
-            style=ft.ButtonStyle(shape = ft.ContinuousRectangleBorder(radius = 0))
+            style=ft.ButtonStyle(shape = ft.RoundedRectangleBorder(radius = 15))
         )
         
         self.group_name = group_name
