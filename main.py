@@ -68,7 +68,7 @@ def main(page: ft.Page):
     if page.client_storage.get("currency") is None:
         page.client_storage.set("currency", "PHP")
     if page.client_storage.get("dark_mode") is None:
-        page.client_storage.set("dark_mode", "False")
+        page.client_storage.set("dark_mode", False)
     
     repository = Repository()
 

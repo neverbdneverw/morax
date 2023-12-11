@@ -68,21 +68,20 @@ class AccountView(ft.Container):
             weight=ft.FontWeight.BOLD
         )
         
-        button_label_contents = ft.Row(
-            controls=[
-                ft.Row(
-                    controls = [
-                        ft.Icon(ft.icons.EDIT, color="#c09451"),
-                        ft.Text("Edit Username", color="black", weight=ft.FontWeight.W_400)
-                    ]
-                ),
-                ft.Icon(ft.icons.NAVIGATE_NEXT, color="#c09451")
-            ],
-            alignment=ft.MainAxisAlignment.SPACE_BETWEEN
-        )
-        
-        self.edit_profile_button = ft.ElevatedButton(
-            content=button_label_contents
+        self.edit_profile_button = ft.Container(
+            content = ft.Row(
+                controls=[
+                    ft.Row(
+                        controls=[
+                            ft.Icon(ft.icons.LOCK, color="#c09451"),
+                            ft.Text("Edit Username", color="black", weight=ft.FontWeight.W_400)
+                        ]
+                    ),
+                    ft.Icon(ft.icons.NAVIGATE_NEXT, color="#c09451")
+                ],
+                alignment=ft.MainAxisAlignment.SPACE_BETWEEN
+            ),
+            margin=ft.margin.only(22, 0, 22, 0)
         )
         
         security_labeler = ft.Text(
@@ -195,7 +194,6 @@ class AccountView(ft.Container):
         self.logout_button.bgcolor = colors["ae8948"]
         self.logout_button.color = colors["fcffff"]
         
-        self.edit_profile_button.bgcolor = colors["d6d6d6"]
         self.edit_profile_button.content.controls[0].controls[0].color = colors["c09451"]
         self.edit_profile_button.content.controls[0].controls[1].color = colors["black"]
         self.edit_profile_button.content.controls[1].color = colors["c09451"]

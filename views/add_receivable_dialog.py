@@ -54,7 +54,8 @@ class AddReceivableDialog(ft.AlertDialog):
             border_radius = 15,
             width=60,
             height=44,
-            label_style = ft.TextStyle()
+            label_style = ft.TextStyle(),
+            input_filter=ft.NumbersOnlyInputFilter()
         )
         
         self.item_year_textfield = ft.TextField(
@@ -62,7 +63,8 @@ class AddReceivableDialog(ft.AlertDialog):
             border_radius = 15,
             width=65,
             height=44,
-            label_style = ft.TextStyle()
+            label_style = ft.TextStyle(),
+            input_filter=ft.NumbersOnlyInputFilter()
         )
         
         item_date_row = ft.Row(
@@ -75,7 +77,8 @@ class AddReceivableDialog(ft.AlertDialog):
             border_radius = 15,
             width=230,
             height=44,
-            label_style = ft.TextStyle()
+            label_style = ft.TextStyle(),
+            input_filter=ft.NumbersOnlyInputFilter()
         )
         
         self.item_description_textfield = ft.TextField(
