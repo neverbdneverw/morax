@@ -18,6 +18,7 @@ class ItemInfoDialogController:
         
         self.file_picker = ft.FilePicker()
         self.file_picker.on_result = self.set_proof_image
+        self.file_picker.on_upload = self.set_profff
         self.page.overlay.append(self.file_picker)
         self.page.update()
         
@@ -81,16 +82,20 @@ class ItemInfoDialogController:
     
     def set_proof_image(self, event: ft.FilePickerResultEvent):
         if event.files is not None:
-            self.image_path = event.files[0].path
-            image = Image.open(self.image_path).convert("RGBA")
-            pil_img = image.resize((200, 200))
-            buff = io.BytesIO()
-            pil_img.save(buff, format="PNG")
-            
-            self.new_image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
-            self.item_info_dialog.payment_preview_image.src_base64 = self.new_image_string
-            self.item_info_dialog.payment_preview_image.update()
-            self.item_info_dialog.pay_button.disabled = False
-            self.item_info_dialog.pay_button.update()
+            self.file = event.files[0]
+            self.file_picker.upload([ft.FilePickerUploadFile(self.file.name, self.page.get_upload_url(self.file.name, 600))])
         else:
             self.image_path = ""
+        
+    def set_profff(self, event: ft.FilePickerUploadEvent):
+        image = Image.open(f"uploads/{event.file_name}").convert("RGBA")
+        self.image_path = f"uploads/{event.file_name}"
+        pil_img = image.resize((200, 200))
+        buff = io.BytesIO()
+        pil_img.save(buff, format="PNG")
+        
+        self.new_image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
+        self.item_info_dialog.payment_preview_image.src_base64 = self.new_image_string
+        self.item_info_dialog.payment_preview_image.update()
+        self.item_info_dialog.pay_button.disabled = False
+        self.item_info_dialog.pay_button.update()
