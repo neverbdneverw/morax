@@ -13,10 +13,12 @@ class ReceivableInfoDialogController:
         self.home_page = home_page
         self.receivable_info_dialog: ShowReceivableInfoDialog = home_page.receivable_info_dialog
         
+        # handle the receivable info dialog events
         self.receivable_info_dialog.completed_button.on_click = self.mark_receivable_completed
         self.receivable_info_dialog.cancel_button.on_click = lambda e: self.home_page.close_dialog(e)
         self.receivable_info_dialog.show_proof = self.show_proof
     
+    # mark the receivable as completed regardless of conditions
     def mark_receivable_completed(self, event: ft.ControlEvent):
         item_name = self.receivable_info_dialog.title.value
         group_name = self.receivable_info_dialog.group_name
@@ -31,6 +33,7 @@ class ReceivableInfoDialogController:
         self.home_page.close_dialog(event)
         self.home_page.group_listview.items_view.on_trigger_reload(event)
     
+    # preview the proof sent of payor
     def show_proof(self, picture_id: str):
         image = self.repository.download_image(picture_id)
         

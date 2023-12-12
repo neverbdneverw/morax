@@ -15,6 +15,10 @@ from views.settings_view_dialogs import *
 
 class HomePage():
     def __init__(self):
+        ########################################################
+        ## Make the Home Page UI containing the different views
+        ########################################################
+        
         self.group_listview = GroupListView(self)
         self.settings_view = SettingsView()
         self.feedback_view = FeedbackView()
@@ -161,28 +165,34 @@ class HomePage():
         self.appearance_dialog = AppearanceDialog()
         self.currency_dialog = CurrencyDialog()
     
+    # get the view for the page
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.page = page
         self.email = self.page.client_storage.get("email")
         self.on_email_retrieved(self.email)
         return self.view
     
+    # make a callback when email is retrieved
     def on_email_retrieved(self, email: str):
         pass
     
+    # make a callback to check autologin
     def check_if_autologin(self):
         pass
     
+    # make a callback to trigger reload
     def trigger_reload_account_view(self):
         pass
     
+    # close the currently opened dialog
+    def close_dialog(self, event: ft.ControlEvent):
+        self.page.dialog.open = False
+        self.page.update()
+    
+    ##################### show dialogs ###############################
     def show_add_group_dialog(self):
         self.page.dialog = self.add_group_dialog
         self.add_group_dialog.open = True
-        self.page.update()
-    
-    def close_dialog(self, event: ft.ControlEvent):
-        self.page.dialog.open = False
         self.page.update()
     
     def show_info_dialog(self):
@@ -229,7 +239,9 @@ class HomePage():
         self.page.dialog = self.currency_dialog
         self.currency_dialog.open = True
         self.page.update()
+    ###########################################################
     
+    # set colors with scheme
     def update_colors(self, colors):
         self.home_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
         self.settings_button.style.color={"selected": colors["black"], "": colors["d6d6d6"]}
@@ -241,8 +253,10 @@ class HomePage():
         self.view.bgcolor = colors["f8fafc"]
         self.update_subviews(colors)
     
+    # create an update subview callback
     def update_subviews(self, colors):
         pass
     
+    # create a reapply theme callback
     def reapply_theme(self):
         pass

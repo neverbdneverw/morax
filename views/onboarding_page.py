@@ -3,6 +3,10 @@ from flet_route import Params, Basket
 
 class OnboardingPage():
     def __init__(self):
+        ###########################################
+        ## MAke the onboarding UI
+        ###########################################
+
         logo = ft.Image(
             src = "/logo_filled.png",
             width = 200,
@@ -118,7 +122,7 @@ class OnboardingPage():
         )
         
         self.user_image = ft.Image(
-            "/empty_user_image.svg",
+            "/empty_user_image.png",
             width=100,
             height=100
         )
@@ -174,11 +178,13 @@ class OnboardingPage():
             padding=30
         )
     
+    # get view for the page
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.basket = basket
         self.page = page
         return self.view
     
+    # update the colors with the scheme
     def update_colors(self, colors):
         self.main_column.controls[1].color = colors["4d4d4d"]
         self.profile_column.controls[1].color = colors["4d4d4d"]

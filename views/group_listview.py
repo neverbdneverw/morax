@@ -13,6 +13,10 @@ class GroupListView(ft.AnimatedSwitcher):
             switch_in_curve = ft.AnimationCurve.EASE_OUT,
             switch_out_curve = ft.AnimationCurve.EASE_IN
         )
+        
+        ############################################################
+        ## Make the UI for the group list
+        ############################################################
 
         self.homepage = homepage
         
@@ -69,13 +73,16 @@ class GroupListView(ft.AnimatedSwitcher):
         
         self.content = self.grid_view
 
+    # dictates whether the show or hide the group list view
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
         self.update()
     
+    # make a callback for triggering reload
     def trigger_reload(self, email: str):
         pass
     
+    # update the colors with scheme
     def update_colors(self, colors):
         self.top_text.color = colors["black"]
         self.empty_warning_text = colors["black"]

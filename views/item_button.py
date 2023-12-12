@@ -7,12 +7,15 @@ class ItemButton(ft.ElevatedButton):
             expand=True,
             style=ft.ButtonStyle(shape = ft.RoundedRectangleBorder(radius = 15))
         )
+        ##############################################################
+        ## Make the UI for the payable/receivable button
+        ##############################################################
         
         self.group_name = group_name
         self.gcash_infos = None
 
         self.account_image = ft.Image(
-            "/empty_user_image.svg",
+            "/empty_user_image.png",
             width = 100,
             height = 100
         )
@@ -129,9 +132,11 @@ class ItemButton(ft.ElevatedButton):
         self.content = column
         self.on_click = lambda event: self.activate(event, transaction_name)
     
+    # make a callback for when this button is clicked
     def activate(self, event: ft.ControlEvent, item_name: str):
         pass
     
+    # update the colors with scheme
     def update_colors(self, colors):
         self.user_name.color = colors["ae8948"]
         self.item_name.color = colors["ae8948"]

@@ -3,6 +3,10 @@ import flet as ft
 class GroupButton(ft.ElevatedButton):
     def __init__(self, group_name: str, image_string: str):
         super().__init__()
+        ####################################################
+        ## Make the UI for the group button
+        ####################################################
+        
         self.group_name = group_name
         self.image_string = image_string
         
@@ -46,7 +50,8 @@ class GroupButton(ft.ElevatedButton):
         self.style=ft.ButtonStyle(
             shape=ft.RoundedRectangleBorder(radius=10)
         )
-        
+    
+    # make a callback for when this button is clicked
     def activate(self, this, group_name: str, image_string: str):
         pass
     
@@ -56,6 +61,8 @@ class GroupButton(ft.ElevatedButton):
 class AddGroupButton(GroupButton):
     def __init__(self):
         super().__init__("Add", "")
+        # create a groupbutton specifically for opening the group addition/creation dialog
+        
         self.image.controls[0].src = "/add_icon.svg"
         self.text_row.visible = False
         

@@ -3,6 +3,9 @@ import flet as ft
 class AppearanceDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
+        ###############################################
+        ## Make the Ui for changing the app appearance
+        ###############################################
         title = ft.Text("Appearance", weight=ft.FontWeight.BOLD)
         self.subtitle = ft.Text("Customize the app's visual style and layout to suit your preferences.", size=12)
         
@@ -34,6 +37,7 @@ class AppearanceDialog(ft.AlertDialog):
         
         self.dark_mode_switch.on_change = lambda e: self.on_change(e)
     
+    # MAke the callback when the settings are changed
     def on_change(self, event):
         pass
     
@@ -43,6 +47,9 @@ class AppearanceDialog(ft.AlertDialog):
 class CurrencyDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
+        #################################
+        ## Make the UI for currency setting
+        #################################
         title = ft.Text("Currency", weight=ft.FontWeight.BOLD)
         self.subtitle = ft.Text("Please be cautious when changing the app's currency, as this action may result in potential pricing and conversion issues for your transactions.", width=400, size=12)
         
@@ -73,15 +80,20 @@ class CurrencyDialog(ft.AlertDialog):
         self.actions_alignment = ft.MainAxisAlignment.END
         self.currency_choices.on_change = lambda event: self.on_change(self.currency_choices.value)
     
+    # Call on_change when settings is changed
     def on_change(self, currency):
         pass
     
+    # update color with scheme
     def update_colors(self, colors):
         self.subtitle.color = colors["a6a6a6"]
 
 class ChoiceButton(ft.Column):
     def __init__(self, label: str, source: str):
         super().__init__()
+        #########################################################
+        # Create the UI for the currency choices
+        ########################################################
         
         supporting_image = ft.Container(
             ft.Image(

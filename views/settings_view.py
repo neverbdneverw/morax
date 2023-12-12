@@ -7,6 +7,9 @@ class SettingsView(ft.Column):
             offset=ft.transform.Offset(0, 1.5),
             animate_offset=ft.animation.Animation(300)
         )
+        ##############################################################
+        ## Make the UI for the Settings view
+        ##############################################################
         
         self.top_text = ft.Text(
             expand=True,
@@ -45,10 +48,12 @@ class SettingsView(ft.Column):
         self.controls.append(self.top_text_container)
         self.controls.append(self.setting_container)
     
+    # dictate whether to show or hide settings
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
         self.update()
     
+    # update the colors with scheme
     def update_colors(self, colors):
         self.top_text.color = colors["black"]
         self.setting_container.bgcolor = colors["ebebeb"]
@@ -57,7 +62,8 @@ class SettingsView(ft.Column):
         
         self.appearance_setting.on_hover = lambda e: self.change_color(e, colors)
         self.currency_setting.on_hover = lambda e: self.change_color(e, colors)
-        
+    
+    # change the colors
     def change_color(self, event: ft.ControlEvent, colors):
         self.bgcolor = colors["d6d6d6"] if event.data == "true" else colors["fcffff"]
         self.update()
@@ -65,6 +71,9 @@ class SettingsView(ft.Column):
 class SettingButton(ft.Container):
     def __init__(self, setting_name: str, setting_description: str, additonal_state: str):
         super().__init__()
+        #########################################
+        ## Make the UI for the buttons in settings
+        #########################################
         
         self.setting_name = ft.Text(
             setting_name,
@@ -113,6 +122,7 @@ class SettingButton(ft.Container):
         self.margin = ft.margin.only(40, 0, 40, 0)
         self.border_radius = 15
     
+    ## update the colors
     def update_colors(self, colors):
         self.colors = colors
         self.setting_with_current.color = colors["a6a6a6"]

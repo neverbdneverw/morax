@@ -3,6 +3,10 @@ from flet_route import Params, Basket
 
 class LoginPage():
     def __init__(self):
+        #####################################
+        ## Make the Login UI
+        #####################################
+
         lock_icon = ft.Image(
             src = "/lock.svg",
             width = 200,
@@ -50,6 +54,7 @@ class LoginPage():
         )
         email_textfield_row.controls.append(self.email_textfield)
         
+        # Make sure the password field is hidden
         self.password_textfield = ft.TextField(
             label = "Password",
             border_radius = 25,
@@ -220,25 +225,31 @@ class LoginPage():
         self.page = page
         return self.view
     
+    # Returns the state of keep_logged_in
     def get_keep_signed_in(self):
         return self.keep_logged_check.value
     
+    # Returns the entered email
     def get_email_entry(self):
         return self.email_textfield.value
     
+    # Returns the entered password
     def get_password_entry(self):
         return self.password_textfield.value
     
+    # Sets whether the login button can be clicked
     def allow_login(self, allow: bool):
         self.login_btn.disabled = (allow == False)
         self.page.update()
     
+    # Display dialog depending on the message
     def display_on_dialog(self, message: str):
         self.dialog_text.value = message
         self.page.dialog = self.warning_dialog
         self.warning_dialog.open = True
         self.page.update()
     
+    # Update colors when color scheme changes
     def update_colors(self, colors):
         self.login_indicator_text.color = colors["black"]
         

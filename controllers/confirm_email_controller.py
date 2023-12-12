@@ -9,27 +9,31 @@ class ConfirmEmailController:
         self.repository = repository
         self.confirm_email_page = confirm_email_page
         
+        # handle the events in confirm email page
         self.confirm_email_page.code_sent_textfield.on_change = self.validate
         self.confirm_email_page.login_button.on_click = self.go_to_login
         self.confirm_email_page.confirm_email_button.on_click = self.confirm_email
     
+    # validate whether the fields are filled
     def validate(self, event):
         if self.confirm_email_page.get_code_input() != "":
             self.confirm_email_page.allow_confirm(True)
         else:
             self.confirm_email_page.allow_confirm(False)
     
+    # go to login page
     def go_to_login(self, event):
         self.page.go("/login")
     
+    # confirm the email
     def confirm_email(self, event):
         argument_list = list(self.confirm_email_page.basket.command)
         command_type = argument_list[0]
         code = argument_list[1]
-        if code == int(self.confirm_email_page.code_sent_textfield.value):
+        if code == int(self.confirm_email_page.code_sent_textfield.value): # if the confirmation is requested by register
             if command_type == "COMMAND_REGISTER":
                 self.register(argument_list)
-            elif command_type == "COMMAND_CHANGE_PASSWORD":
+            elif command_type == "COMMAND_CHANGE_PASSWORD": # if the confirmation is requested by password change
                 self.change_password(argument_list)
             else:
                 self.confirm_email_page.display_on_dialog("Can't Do operation", "The process to be done is not expected.")
@@ -39,6 +43,7 @@ class ConfirmEmailController:
             elif command_type == "COMMAND_CHANGE_PASSWORD":
                 self.confirm_email_page.display_on_dialog("Can't Change Password", "The code sent must match the entered code.")
     
+    # register
     def register(self, argument_list: list):
         for user in self.repository.users:
             if user.email == str(argument_list[2]).replace(".", ","):
@@ -58,6 +63,7 @@ class ConfirmEmailController:
         self.repository.update_user(new_user)
         self.confirm_email_page.display_on_dialog("Success!", "Your account has been created. You may now log in.")
     
+    # change the password
     def change_password(self, argument_list: list):
         for user in self.repository.users:
             if user.email == str(argument_list[2]).replace(".", ","):

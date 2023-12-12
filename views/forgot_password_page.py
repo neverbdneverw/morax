@@ -3,6 +3,10 @@ from flet_route import Params, Basket
 
 class ForgotPasswordPage():
     def __init__(self):
+        #######################################
+        ## MAke the forgot password UI
+        #######################################
+
         query_icon = ft.Image(
             src = "/question_mark.svg",
             width = 200,
@@ -199,24 +203,30 @@ class ForgotPasswordPage():
             controls = [self.main_container]
         )
     
+    # Make the view for the page
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.basket = basket
         self.page = page
         return self.view
     
+    # get entered email
     def get_email_to_send_entry(self):
         return self.email_textfield.value
 
+    # get entered password
     def get_new_password_entry(self):
         return self.new_password_textfield.value
     
+    # get the entered password confirmation
     def get_confirm_new_password_entry(self):
         return self.confirm_new_password_textfield.value
     
+    # allow changing of password
     def allow_password_change(self, allow: bool):
         self.change_password_btn.disabled = (allow == False)
         self.page.update()
     
+    # update the app colors
     def update_colors(self, colors):
         self.fg_pass_indicator_text.color = colors["black"]
         self.fg_pass_reminder_text.color = colors["black"]

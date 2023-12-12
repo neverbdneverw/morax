@@ -8,6 +8,9 @@ class ItemsView(ft.Column):
             expand=True,
             spacing=0
         )
+        ########################################################
+        ## Make the view for individual groups
+        #######################################################
         
         self.group_image = ft.Image(
             "/default_image.png",
@@ -159,7 +162,7 @@ class ItemsView(ft.Column):
         )
         
         self.user_image = ft.Image(
-            "/empty_user_image.svg",
+            "/empty_user_image.png",
             width=75,
             height=75
         )
@@ -236,16 +239,20 @@ class ItemsView(ft.Column):
         
         self.controls = [self.header_container, list_view_row]
     
+    # Set the creator
     def set_creator(self, creator):
         self.created_by_text.spans[0].text = creator
     
+    # Set the user image
     def set_user_image(self, user_image: str):
         if user_image != "":
             self.user_image.src_base64 = user_image
     
+    # make a callback to trigger reload
     def on_trigger_reload(self, event: ft.ControlEvent):
         pass
     
+    # update color with scheme
     def update_colors(self, colors):
         self.group_name.color = colors["white"]
         self.header_container.gradient.colors=[

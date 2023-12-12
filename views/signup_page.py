@@ -3,6 +3,10 @@ from flet_route import Params, Basket
 
 class SignupPage():
     def __init__(self):
+        #####################################
+        ## Make the Signup UI
+        #####################################
+
         query_icon = ft.Image(
             src = "/question_mark.svg",
             width = 200,
@@ -231,30 +235,38 @@ class SignupPage():
             controls = [self.main_container]
         )
     
+    # Get the email entered
     def get_email_entry(self):
         return self.email_textfield.value
     
+    # get the username entered
     def get_username_entry(self):
         return self.username_textfield.value
     
+    # get the password entered
     def get_password_entry(self):
         return self.password_textfield.value
     
+    # get the password confirmation entered
     def get_confirm_password_entry(self):
         return self.confirm_password_textfield.value
     
+    # get the state of agreeing on EULA
     def get_agree_eula_entry(self):
         return self.agree_eula_check.value
     
+    # get the view for the page
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.basket = basket
         self.page = page
         return self.view
     
+    # sets whether registration is allowed
     def allow_register(self, allow: bool):
         self.register_btn.disabled = (allow == False)
         self.page.update()
     
+    # update colors with color scheme
     def update_colors(self, colors):
         self.signup_indicator_text.color = colors["black"]
         

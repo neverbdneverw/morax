@@ -3,6 +3,10 @@ from flet_route import Params, Basket
 
 class ConfirmEmailPage():
     def __init__(self):
+        #################################
+        ## Make the email confirmation page
+        ################################
+
         lock_icon = ft.Image(
             src = "/lock.svg",
             width = 200,
@@ -173,18 +177,22 @@ class ConfirmEmailPage():
             content=self.dialog_text
         )
     
+    # get the view for the page
     def get_view(self, page: ft.Page, params: Params, basket: Basket):
         self.basket = basket
         self.page = page
         return self.view
     
+    # get the code entered
     def get_code_input(self):
         return self.code_sent_textfield.value
     
+    # sets whether the confirmation can proceed
     def allow_confirm(self, allow: bool):
         self.confirm_email_button.disabled = (allow == False)
         self.page.update()
     
+    # DIsplays the verdict based on the matching of codes
     def display_on_dialog(self, title: str, message: str):
         self.warning_dialog.title.value = title
         self.dialog_text.value = message
@@ -192,6 +200,7 @@ class ConfirmEmailPage():
         self.warning_dialog.open = True
         self.page.update()
     
+    # update the app colors
     def update_colors(self, colors):
         self.confirm_email_indicator_text.color = colors["black"]
         self.code_sent_indicator_text.color = colors["black"]
