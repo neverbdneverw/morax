@@ -3,6 +3,9 @@ import flet as ft
 class AddReceivableDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
+        ####################################################
+        ## Make the Add receivable dialog
+        ####################################################
         self.group = ""
         
         self.add_item_button = ft.TextButton("Add Item", disabled=True)
@@ -105,24 +108,31 @@ class AddReceivableDialog(ft.AlertDialog):
         self.content = main_row
         self.modal = False
     
+    # get entered item name
     def get_item_name(self):
         return self.item_name_textfield.value
     
+    # get entered creation month
     def get_item_creation_month(self):
         return self.item_month_textfield.value
     
+    # get entered creation day
     def get_item_creation_day(self):
         return self.item_day_textfield.value
     
+    # get entered creation year
     def get_item_creation_year(self):
         return self.item_year_textfield.value
     
+    # get the entered item amount
     def get_item_amount(self):
         return self.item_amount_textfield.value
     
+    # get the item description
     def get_item_description(self):
         return self.item_description_textfield.value
     
+    # update the colors with scheme
     def update_colors(self, colors):
         self.choose_button.bgcolor = colors["d6d6d6"]
         self.choose_button.content.color = colors["black"]

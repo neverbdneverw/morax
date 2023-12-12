@@ -8,6 +8,7 @@ import flet as ft
 import io
 import base64
 
+# Initialize the Payable Info Dialog
 class ItemInfoDialogController:
     image_path = ""
     def __init__(self, page: ft.Page, repository: Repository, home_page: HomePage):
@@ -16,35 +17,43 @@ class ItemInfoDialogController:
         self.home_page = home_page
         self.item_info_dialog = home_page.item_infos_dialog
         
+        # Initialize the file picker
         self.file_picker = ft.FilePicker()
         self.file_picker.on_result = self.set_proof_image
         self.page.overlay.append(self.file_picker)
         self.page.update()
         
+        # handle events
         self.item_info_dialog.upload_proof_button.on_click = self.open_chooser
         
         self.item_info_dialog.cancel_button.on_click = self.reset_button_states
         self.item_info_dialog.pay_button.on_click = self.show_payment_details
     
+    # reset the buttons after reopening
     def reset_button_states(self, event: ft.ControlEvent):
         self.item_info_dialog.pay_button.disabled = False
         self.item_info_dialog.pay_button.update()
         self.home_page.close_dialog(event)
     
+    # opent the file chooser
     def open_chooser(self, event: ft.ControlEvent):
         self.file_picker.pick_files("Choose Image proof", allowed_extensions = ["png", "jpg", "jpeg", "PNG", "JPG"], file_type = ft.FilePickerFileType.CUSTOM)
     
+    # show the payment details 
     def show_payment_details(self, event: ft.ControlEvent):
         if self.item_info_dialog.switcher.content == self.item_info_dialog.main_row:
+            # show the infos of the payable
             self.item_info_dialog.show_payment_details()
             self.item_info_dialog.pay_button.text = "Mark as paid"
             self.item_info_dialog.pay_button.update()
         elif self.item_info_dialog.switcher.content == self.item_info_dialog.payment_row:
+            # show the infos of the payment details
             self.item_info_dialog.switcher.content = self.item_info_dialog.proof_column
             self.item_info_dialog.switcher.update()
             self.item_info_dialog.pay_button.disabled = True
             self.item_info_dialog.pay_button.update()
         else:
+            # show the payment request page
             group_name = self.item_info_dialog.group_name
             current_email = self.page.client_storage.get("email")
             item_name = self.item_info_dialog.item_name.value
@@ -79,6 +88,7 @@ class ItemInfoDialogController:
                             
                             return
     
+    # upload the proof
     def set_proof_image(self, event: ft.FilePickerResultEvent):
         if event.files is not None:
             self.image_path = event.files[0].path

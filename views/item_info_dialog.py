@@ -4,6 +4,9 @@ from views.item_button import ItemButton
 class ItemInfoDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
+        #################################################
+        ## Make the UI when payable/receivable is clicked
+        #################################################
         self.item_name = ft.Text(
             "Gatas",
             weight=ft.FontWeight.W_700,
@@ -26,7 +29,7 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         self.account_image = ft.Image(
-            "/empty_user_image.svg",
+            "/empty_user_image.png",
             width = 36,
             height = 36
         )
@@ -87,7 +90,7 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         self.account_image = ft.Image(
-            "/empty_user_image.svg",
+            "/empty_user_image.png",
             width = 30,
             height = 30
         )
@@ -186,10 +189,12 @@ class ItemInfoDialog(ft.AlertDialog):
         ]
         self.actions_alignment=ft.MainAxisAlignment.SPACE_BETWEEN
     
+    # shwo the payment details
     def show_payment_details(self):
         self.switcher.content = self.payment_row
         self.switcher.update()
     
+    # update color with scheme
     def update_colors(self, colors):
         self.item_name.color = colors["ae8948"]
         self.price.color = colors["ae8948"]

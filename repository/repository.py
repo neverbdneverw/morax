@@ -17,6 +17,10 @@ from .secrets import *
 
 from typing import List
 
+###########################################################################
+## Repository connects to the online database to get and upload user data
+###########################################################################
+
 class Repository:
     users: List[User] = []
     groups: List[Group] = []
@@ -31,12 +35,14 @@ class Repository:
         self.load_users()
         self.load_groups()
     
+    # update the references so that when the groups and users are retrieved all changes are reflected
     def update_refs(self):
         ref = db.reference("/")
         self.dictionary = dict(ref.get())
         results = self.service.files().list(pageSize=1000, fields="nextPageToken, files(id, name, mimeType)", q='name contains "de"').execute()
         self.drive_files = results.get('files', [])
         
+    # load the list of users
     def load_users(self):
         self.users = []
         repo_users = self.dictionary["Users"]
@@ -54,6 +60,7 @@ class Repository:
                 )
             )
     
+    # load the list of groups
     def load_groups(self):
         self.groups = []
         repo_groups = self.dictionary["Groups"]
@@ -112,6 +119,7 @@ class Repository:
                 )
             )
     
+    # update the groups with the changes
     def update_group(self, group: Group):
         members = dict()
         transactions = dict()
@@ -159,6 +167,7 @@ class Repository:
         self.update_refs()
         self.load_groups()
     
+    # update the user with the changes
     def update_user(self, user: User):
         db.reference('/Users/').update({
             user.email: {
@@ -174,6 +183,7 @@ class Repository:
         self.update_refs()
         self.load_users()
     
+    # function to upload image to the database
     def upload_image(self, file_name: str, buffer: io.BytesIO) -> str:
         try:
             media = MediaIoBaseUpload(buffer, mimetype='image/png')
@@ -187,6 +197,7 @@ class Repository:
             
             return
     
+    # function to download image
     def download_image(self, image_id: str) -> io.BytesIO:
         if image_id == "":
             return
@@ -204,12 +215,14 @@ class Repository:
             print(F'An error occurred: {error}')
             return
     
+    # deletes a transaction from the database
     def delete_transaction(self, group_name: str, transaction: Transaction):
         db.reference(f"/Groups/{group_name}/Transactions/{transaction.name}").delete()
         
         self.update_refs()
         self.load_groups()
     
+    # send an email confirmation code and returns what is sent
     def get_email_confirmation_code(self, email):
         code = random.randrange(100000, 999999)
         subject = "Do you want to reset your password with Morax? "

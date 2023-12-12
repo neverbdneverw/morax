@@ -4,6 +4,9 @@ class ShowReceivableInfoDialog(ft.AlertDialog):
     group_name = ""
     def __init__(self):
         super().__init__()
+        ###########################################################
+        ## Make the UI for when receivable button is clicked
+        ###########################################################
         self.completed_button = ft.TextButton("Mark as completed")
         self.cancel_button = ft.TextButton("Cancel")
         
@@ -21,5 +24,6 @@ class ShowReceivableInfoDialog(ft.AlertDialog):
         
         self.title = ft.Text("HAHA", weight = ft.FontWeight.W_700)
     
+    # make a callback to show proof
     def show_proof(self, id: str):
         pass

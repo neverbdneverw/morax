@@ -14,6 +14,7 @@ class AccountSettingsDialogsController:
         self.repository = repository
         self.home_page = home_page
         
+        # connect the dialogs
         self.change_dp_dialog: ProfilePictureChangeDialog = home_page.change_profile_picture_dialog
         self.change_gcash_dialog: EditGcashDialog = home_page.edit_gcash_dialog
         self.change_username_dialog: EditUsernameDialog = home_page.edit_username_dialog
@@ -21,8 +22,10 @@ class AccountSettingsDialogsController:
         
         self.account_view: AccountView = home_page.account_view
         
+        # retrieve the saved email
         self.email: str = self.page.client_storage.get("email")
         
+        #################### set the file pickers ##################################
         self.qr_picker = ft.FilePicker()
         self.qr_picker.on_result = self.set_qr_image
         self.page.overlay.append(self.qr_picker)
@@ -32,32 +35,40 @@ class AccountSettingsDialogsController:
         self.dp_picker.on_result = self.set_dp_image
         self.page.overlay.append(self.dp_picker)
         self.page.update()
+        ############################################################################
         
         self.gcash_changed = self.handle_save_changes_button
         
+        # handle account view setting changes
         self.account_view.change_user_picture_button.on_click = self.show_dp_change_dialog
         self.account_view.edit_profile_button.on_click = lambda e: self.home_page.show_edit_username_dialog()
         self.account_view.change_password_button.on_click = lambda e: self.home_page.show_edit_password_dialog()
         self.account_view.gcash_button.on_click = self.show_change_gcash_dialog
         
+        # close the account view dialogs
         self.change_dp_dialog.cancel_button.on_click = lambda e: self.home_page.close_dialog(e)
         self.change_username_dialog.cancel_button.on_click = lambda e: self.home_page.close_dialog(e)
         self.change_password_dialog.cancel_button.on_click = lambda e: self.home_page.close_dialog(e)
         self.change_gcash_dialog.cancel_button.on_click = lambda e: self.home_page.close_dialog(e)
         
+        # set the change dp dialog
         self.change_dp_dialog.upload_profile.on_click = self.open_profile_image_chooser
         self.change_dp_dialog.save_changes_button.on_click = self.save_changed_dp
         
+        # set the change username dialog
         self.change_username_dialog.new_username_textfield.on_change = self.handle_username_change
         self.change_username_dialog.save_changes_button.on_click = self.save_changed_username
         
+        # set the change password dialog
         self.change_password_dialog.new_password_textfield.on_change = self.handle_password_change
         self.change_password_dialog.reenter_password_textfield.on_change = self.handle_password_change
         self.change_password_dialog.save_changes_button.on_click = self.save_changed_password
         
+        # set the change gcash dialog
         self.change_gcash_dialog.upload_qr_button.on_click = self.open_qr_chooser
         self.change_gcash_dialog.save_changes_button.on_click = self.save_changed_gcash_infos
     
+    # shows the gcash dialog with preliminary settings
     def show_change_gcash_dialog(self, event: ft.ControlEvent):
         colors = get_colors(self.page.client_storage.get("dark_mode"))
         self.change_gcash_dialog.update_colors(colors)
@@ -70,6 +81,7 @@ class AccountSettingsDialogsController:
 
         self.home_page.show_change_gcash_qr_dialog()
     
+    # handle when username entry changes
     def handle_username_change(self, event: ft.ControlEvent):
         if self.change_username_dialog.new_username_textfield.value != "":
             self.change_username_dialog.save_changes_button.disabled = False
@@ -78,6 +90,7 @@ class AccountSettingsDialogsController:
             self.change_username_dialog.save_changes_button.disabled = True
             self.change_username_dialog.save_changes_button.update()
     
+    # handle when apssword changes
     def handle_password_change(self, event: ft.ControlEvent):
         password = self.change_password_dialog.new_password_textfield.value
         confirm = self.change_password_dialog.reenter_password_textfield.value
@@ -89,17 +102,21 @@ class AccountSettingsDialogsController:
             self.change_password_dialog.save_changes_button.disabled = True
             self.change_password_dialog.save_changes_button.update()
     
+    # handle when dp change happens
     def show_dp_change_dialog(self, event: ft.ControlEvent):
         image_string = self.account_view.user_picture.src_base64
         self.change_dp_dialog.user_image.src_base64 = image_string
         self.home_page.show_profile_picture_change_dialog()
     
+    # open the profile image chooser
     def open_profile_image_chooser(self, event):
         self.dp_picker.pick_files("Choose a User Image", allowed_extensions = ["png", "jpg", "jpeg", "PNG", "JPG"], file_type = ft.FilePickerFileType.CUSTOM)
     
+    # open the qr code chooser
     def open_qr_chooser(self, event):
         self.qr_picker.pick_files("Choose GCash QR Code Image", allowed_extensions = ["png", "jpg", "jpeg", "PNG", "JPG"], file_type = ft.FilePickerFileType.CUSTOM)
 
+    # handle the output of choosing dp image
     def set_dp_image(self, event: ft.FilePickerResultEvent):
         if event.files is not None:
             self.dp_image_path = event.files[0].path
@@ -118,6 +135,7 @@ class AccountSettingsDialogsController:
             self.change_dp_dialog.save_changes_button.disabled = True
             self.change_dp_dialog.save_changes_button.update()
     
+    # save the changed dp
     def save_changed_dp(self, event: ft.ControlEvent):
         if self.dp_image_path != "":
             for user in self.repository.users:
@@ -140,6 +158,7 @@ class AccountSettingsDialogsController:
                     
                     return
     
+    # save the changed username
     def save_changed_username(self, event: ft.ControlEvent):
         replacement = self.change_username_dialog.new_username_textfield.value
         for user in self.repository.users:
@@ -157,6 +176,7 @@ class AccountSettingsDialogsController:
                 
                 return
     
+    # save the changed password
     def save_changed_password(self, event: ft.ControlEvent):
         password = self.change_password_dialog.new_password_textfield.value
         
@@ -174,6 +194,7 @@ class AccountSettingsDialogsController:
                 
                 return
     
+    # handle when qr code is set
     def set_qr_image(self, event: ft.FilePickerResultEvent):
         if event.files is not None:
             self.qr_image_path = event.files[0].path
@@ -207,9 +228,11 @@ class AccountSettingsDialogsController:
         else:
             self.qr_image_path = ""
     
+    # make a callback when gcash is changed
     def gcash_changed(self):
         pass
 
+    # handle the save changes button
     def handle_save_changes_button(self):
         if self.gcash_qr_base64 != "" and len(self.change_gcash_dialog.number_textfield.value) == 11 and (self.change_gcash_dialog.number_textfield.value[:2] == "09" or self.change_gcash_dialog.number_textfield.value[:3] == "639"):
             self.change_gcash_dialog.save_changes_button.disabled = False
@@ -218,6 +241,7 @@ class AccountSettingsDialogsController:
             self.change_gcash_dialog.save_changes_button.disabled = True
             self.change_gcash_dialog.save_changes_button.update()
     
+    # save the changed gcash infos
     def save_changed_gcash_infos(self, event: ft.ControlEvent):
         for user in self.repository.users:
             if user.email == self.email.replace(".", ","):

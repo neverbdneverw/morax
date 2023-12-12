@@ -2,13 +2,16 @@ import flet as ft
 
 class AccountView(ft.Container):
     def __init__(self):
+        ####################################################
+        ## Make the UI for the AccountView
+        ####################################################
         super().__init__(
             offset=ft.transform.Offset(0, 4.5),
             animate_offset=ft.animation.Animation(300)
         )
         
         self.user_picture = ft.Image(
-            src = "/empty_user_image.svg",
+            src = "/empty_user_image.png",
             width=100,
             height=100
         )
@@ -172,10 +175,12 @@ class AccountView(ft.Container):
             spacing=0
         )
     
+    # Dictates whether the page will show or hide
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
         self.update()
     
+    # Update colors with the scheme
     def update_colors(self, colors):
         self.change_user_picture_button.bgcolor = colors["f8fafc"]
         self.change_user_picture_button.color = colors["c09451"]

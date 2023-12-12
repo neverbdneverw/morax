@@ -7,6 +7,9 @@ class FeedbackView(ft.Column):
             offset=ft.transform.Offset(0, 3),
             animate_offset=ft.animation.Animation(300)
         )
+        ######################################################
+        ## Make the Feedback UI
+        ######################################################
         
         self.top_text = ft.Text(
             expand=True,
@@ -228,10 +231,12 @@ class FeedbackView(ft.Column):
         self.controls.append(self.subtitle_text_container)
         self.controls.append(contact_row)
 
+    # dictates whether to show or hide the feedbackview
     def show(self, delta):
         self.offset = ft.transform.Offset(0, delta)
         self.update()
     
+    # update the colors with scheme
     def update_colors(self, colors):
         self.top_text.color = colors["black"]
         self.subtitle_text.color = colors["black"]

@@ -11,16 +11,19 @@ import base64
 class AddDialogController:
     code_validated = False
     def __init__(self, page: ft.Page, repository: Repository, home_page: HomePage):
+        ############ Controller for adding/joining groups#######################
         self.page = page
         self.repository = repository
         self.home_page = home_page
         self.add_group_dialog: AddDialog = home_page.add_group_dialog
         
+        # Initialize file picker
         self.file_picker = ft.FilePicker()
         self.file_picker.on_result = self.set_image
         self.page.overlay.append(self.file_picker)
         self.page.update()
-    
+
+        # handle events
         self.add_group_dialog.group_code_textfield.on_change = self.validate_group_code
         self.add_group_dialog.create_new_button.on_click = self.create_new
         self.add_group_dialog.join_button.on_click = self.join_group
@@ -30,6 +33,7 @@ class AddDialogController:
         self.add_group_dialog.check_if_exists_button.on_click = self.check_if_code_exists
         self.add_group_dialog.image_upload_button.on_click = self.open_chooser
     
+    # check if group code entered is 8 chars long
     def validate_group_code(self, event: ft.ControlEvent):
         if len(self.add_group_dialog.get_group_code_entry()) == 8:
             self.add_group_dialog.check_if_exists_button.disabled = False
@@ -37,7 +41,9 @@ class AddDialogController:
             self.add_group_dialog.check_if_exists_button.disabled = True
         self.add_group_dialog.update()
     
+    # create a new group
     def create_new(self, event):
+        # if the current shown is joining, switch to creation
         if self.add_group_dialog.switcher.content == self.add_group_dialog.join_column:
             self.add_group_dialog.switch_to_creation()
             self.add_group_dialog.join_button.disabled = False
@@ -46,7 +52,7 @@ class AddDialogController:
                 self.add_group_dialog.create_new_button.disabled = True
             
             self.page.update()
-        else:
+        else: # if the current shown is creation, then proceed with creation
             if self.add_group_dialog.get_created_group_name() != "" and self.add_group_dialog.get_created_group_desc() != "":
                 email: str = self.page.client_storage.get("email")
                 
@@ -84,7 +90,9 @@ class AddDialogController:
                 
                 self.page.update()
     
+    # join a group
     def join_group(self, event):
+        # if the current shown is creation, switch to joining
         if self.add_group_dialog.switcher.content == self.add_group_dialog.creation_row:
             self.add_group_dialog.switch_to_joining()
             self.add_group_dialog.create_new_button.disabled = False
@@ -96,7 +104,7 @@ class AddDialogController:
             
             self.page.update()
         
-        else:
+        else: # if the current shown is joining, then proceed with joining
             if self.code_validated:
                 email = str(self.page.client_storage.get("email")).replace(".", ",")
                 
@@ -116,6 +124,7 @@ class AddDialogController:
                         self.home_page.close_dialog(None)
                         self.page.update()
     
+    # validate whether the creation fields are filled
     def validate_creation_params(self, event):
         if self.add_group_dialog.get_created_group_desc() != "" and self.add_group_dialog.get_created_group_name() != "":
             self.add_group_dialog.create_new_button.disabled = False
@@ -124,6 +133,7 @@ class AddDialogController:
 
         self.page.update()
     
+    # check if the entered group code exists
     def check_if_code_exists(self, event):
         code = self.add_group_dialog.get_group_code_entry()
         if code != "":
@@ -148,9 +158,11 @@ class AddDialogController:
             
             self.page.update()
     
+    # open the file chooser for group images
     def open_chooser(self, event):
         self.file_picker.pick_files("Choose Group Image", allowed_extensions = ["png", "jpg", "jpeg", "PNG", "JPG"], file_type = ft.FilePickerFileType.CUSTOM)
     
+    # preview the set image
     def set_image(self, event: ft.FilePickerResultEvent):
         if event.files is not None:
             self.image_path = event.files[0].path

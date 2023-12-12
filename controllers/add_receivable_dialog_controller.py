@@ -15,13 +15,14 @@ class AddReceivableDialogController:
         self.home_page = home_page
         self.add_receivable_dialog: AddReceivableDialog = home_page.add_receivable_dialog
         
+        # Set the file picker
         self.file_picker = ft.FilePicker()
         self.file_picker.on_result = self.set_item_image
         self.page.overlay.append(self.file_picker)
         self.page.update()
         
+        # Handle the add receivable dialog events
         self.add_receivable_dialog.choose_button.on_click = self.open_chooser
-        
         self.add_receivable_dialog.cancel_button.on_click = self.home_page.close_dialog
         
         self.add_receivable_dialog.item_name_textfield.on_change = self.item_info_change
@@ -33,9 +34,11 @@ class AddReceivableDialogController:
         
         self.add_receivable_dialog.add_item_button.on_click = self.add_receivable
     
+    # open the chooser for the receivable item
     def open_chooser(self, event: ft.ControlEvent):
         self.file_picker.pick_files("Choose Item Image", allowed_extensions = ["png", "jpg", "jpeg", "PNG", "JPG"], file_type = ft.FilePickerFileType.CUSTOM)
     
+    # preview the item image
     def set_item_image(self, event: ft.FilePickerResultEvent):
         if event.files is not None:
             self.image_path = event.files[0].path
@@ -50,6 +53,7 @@ class AddReceivableDialogController:
         else:
             self.image_path = ""
 
+    # add the receivable
     def add_receivable(self, event: ft.ControlEvent):
         email: str = self.page.client_storage.get("email")
         group_name = self.add_receivable_dialog.group
@@ -61,13 +65,16 @@ class AddReceivableDialogController:
         item_amount = self.add_receivable_dialog.get_item_amount()
         item_description = self.add_receivable_dialog.get_item_description()
         
+        # convert the image to bytes
         image_bytes = io.BytesIO()
         image = Image.open(self.image_path).convert("RGBA")
         image = image.resize((200, 200))
         image.save(image_bytes, format="PNG")
         
+        # upload the receivable image
         receivable_image_id = self.repository.upload_image(f"{group_name}|{item_name}.png", image_bytes)
         
+        # create a new transaction object for the receivable
         new_transaction = Transaction(
             name=item_name,
             description=item_description,
@@ -89,6 +96,7 @@ class AddReceivableDialogController:
                 
                 break
     
+    # handle when fields change
     def item_info_change(self, event: ft.ControlEvent):
         try:
             if all([self.add_receivable_dialog.get_item_name() != "",

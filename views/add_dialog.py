@@ -3,6 +3,9 @@ import flet as ft
 class AddDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
+        ###################################################
+        ## Make the UI for group adding and joining dialog
+        ###################################################
         self.title = ft.Text("Join a group")
         
         self.group_code_textfield = ft.TextField(
@@ -135,15 +138,19 @@ class AddDialog(ft.AlertDialog):
         self.actions_alignment=ft.MainAxisAlignment.SPACE_BETWEEN
         self.on_dismiss=lambda e: print("Modal dialog dismissed!")
     
+    # get the entered group code
     def get_group_code_entry(self):
         return self.group_code_textfield.value
     
+    # get the entered group name
     def get_created_group_name(self):
         return self.group_name_textfield.value
     
+    # get the entered group description
     def get_created_group_desc(self):
         return self.group_desc_textfield.value
 
+    ################## set whether to join or create group ############################
     def switch_to_creation(self):
         self.switcher.content = self.creation_row
         self.title.value = "Create new group"
@@ -151,7 +158,9 @@ class AddDialog(ft.AlertDialog):
     def switch_to_joining(self):
         self.switcher.content = self.join_column
         self.title.value = "Join a group"
+    ###################################################################################
     
+    # update the colors with scheme
     def update_colors(self, colors):
         self.group_code_textfield.border_color = colors["d6d6d6"]
         self.group_code_textfield.cursor_color = colors["black"]

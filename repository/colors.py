@@ -1,3 +1,4 @@
+# colors for light mode
 colors = {
     "black" : "#000000",
     "white" : "#ffffff",
@@ -15,6 +16,7 @@ colors = {
     "a6a6a6": "#a6a6a6"
 }
 
+# colors for dark mode
 colors_dark = {
     "black" : "#ffffff",
     "white" : "#1c1c1c",
@@ -32,5 +34,6 @@ colors_dark = {
     "a6a6a6": "#7a7a7a"
 }
 
+# get colors for the selected theme
 def get_colors(dark_mode: bool):
     return colors_dark if dark_mode else colors

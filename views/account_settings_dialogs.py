@@ -1,8 +1,16 @@
 import flet as ft
 
+##################################################
+## Culmination of dialogs inside the Account View
+##################################################
+
 class ProfilePictureChangeDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
+        ####################################################
+        ## Make the ui for the profile picture changing
+        ####################################################
+
         self.save_changes_button = ft.TextButton(
             "Save Changes",
             disabled=True
@@ -15,7 +23,7 @@ class ProfilePictureChangeDialog(ft.AlertDialog):
         self.actions = [self.save_changes_button, self.cancel_button]
         
         self.user_image = ft.Image(
-            src = "/empty_user_image.svg",
+            src = "/empty_user_image.png",
             width=200,
             height = 200
         )
@@ -36,6 +44,10 @@ class ProfilePictureChangeDialog(ft.AlertDialog):
 class EditUsernameDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
+        ######################################################
+        ## Make ui for changing the username
+        ######################################################
+
         self.save_changes_button = ft.TextButton(
             "Save Changes",
             disabled=True
@@ -73,6 +85,10 @@ class EditUsernameDialog(ft.AlertDialog):
 class EditPasswordDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
+        ##########################################################
+        ## Make the UI for editing the password
+        ##########################################################
+
         self.save_changes_button = ft.TextButton(
             "Save Changes",
             disabled=True
@@ -127,6 +143,10 @@ class EditPasswordDialog(ft.AlertDialog):
 class EditGcashDialog(ft.AlertDialog):
     def __init__(self):
         super().__init__()
+        ####################################################
+        ## Make the UI for editing the GCash Credentials
+        ####################################################
+
         self.save_changes_button = ft.TextButton(
             "Save Changes",
             disabled=True

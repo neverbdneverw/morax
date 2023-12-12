@@ -3,6 +3,10 @@ from flet_route import Params, Basket
 
 class OpeningPage():
     def __init__(self):
+        ############################################
+        ## Initialize the Opening Page
+        ############################################
+
         logo = ft.Image(
             src = "/logo.png",
             width = 400,
@@ -68,6 +72,7 @@ class OpeningPage():
         return self.view
     
     def update_colors(self, colors):
+        # Update the colors when update_colors is called
         self.login_button.bgcolor = colors["d6d6d6"]
         
         self.login_button.content.color = colors["ae8948"]

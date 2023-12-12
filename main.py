@@ -6,6 +6,7 @@ from controllers import *
 from models import *
 from repository import *
 
+# Set up Route Manager
 class RouteManager(Routing):
     def route_changed(self, route):
         pass
@@ -15,17 +16,21 @@ class RouteManager(Routing):
         super().change_route(route)
 
 def main(page: ft.Page):
+    # Set window parameters
     page.window_width = 1024
     page.window_height = 768
     page.title = "Morax"
     
+    # Set dark mode from prefs
     if bool(page.client_storage.get("dark_mode")):
         page.theme_mode = ft.ThemeMode.DARK
     else:
         page.theme_mode = ft.ThemeMode.LIGHT
     
+    # Initialize colors
     colors = get_colors(page.client_storage.get("dark_mode"))
     
+    # Initialize Pages
     confirm_email_page = ConfirmEmailPage()
     opening_page = OpeningPage()
     signup_page = SignupPage()
@@ -49,6 +54,7 @@ def main(page: ft.Page):
     routing = RouteManager(page = page, app_routes = app_routes)
     page.go(page.route)
     
+    # Upload colors when page changes
     def handle_route_changed(event: ft.RouteChangeEvent):
         for current in main_pages:
             if current.route_address == event.route:
@@ -70,8 +76,10 @@ def main(page: ft.Page):
     if page.client_storage.get("dark_mode") is None:
         page.client_storage.set("dark_mode", False)
     
+    # Initialize the Repository
     repository = Repository()
 
+    #Initialize the controllers
     HomeController(page, repository, home_page)
     AddDialogController(page, repository, home_page)
     ItemInfoDialogController(page, repository, home_page)
@@ -88,6 +96,7 @@ def main(page: ft.Page):
     ConfirmEmailController(page, repository, confirm_email_page)
 
 if __name__ == "__main__":
+    # Run the app with flet's method
     ft.app(
         target=main,
         assets_dir="assets"
