@@ -10,9 +10,8 @@ class GroupButton(ft.ElevatedButton):
             content=ft.Text(
                 group_name,
                 weight=ft.FontWeight.W_700,
-                size=20
-            ),
-            padding=ft.padding.only(10, 10, 10, 0)
+                size=18
+            )
         )
         
         self.text_row = ft.Row(
@@ -22,8 +21,8 @@ class GroupButton(ft.ElevatedButton):
             
         group_image = ft.Image(
             "/default_image.png",
-            width=130,
-            height=130
+            width=84,
+            height=84
         )
         
         if image_string != "":
@@ -38,6 +37,7 @@ class GroupButton(ft.ElevatedButton):
         column = ft.Column(
             controls=[self.text_row, ft.Container(content=self.image, padding=10)],
             alignment=ft.MainAxisAlignment.CENTER,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             spacing=0
         )
         

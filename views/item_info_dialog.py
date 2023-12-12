@@ -21,14 +21,14 @@ class ItemInfoDialog(ft.AlertDialog):
         
         self.item_image = ft.Image(
             "/default_image.png",
-            width=120,
-            height=120
+            width=60,
+            height=60
         )
         
         self.account_image = ft.Image(
             "/empty_user_image.svg",
-            width = 36,
-            height = 36
+            width = 18,
+            height = 18
         )
         
         self.account_name_info = ft.Text(
@@ -47,7 +47,7 @@ class ItemInfoDialog(ft.AlertDialog):
         
         description_column = ft.Column(
             controls=[self.description],
-            height=100,
+            height=50,
             scroll=ft.ScrollMode.ALWAYS
         )
         
@@ -63,8 +63,8 @@ class ItemInfoDialog(ft.AlertDialog):
         
         info_column = ft.Column(
             controls=[account_row, description_column, self.item_post_time],
-            width = 350,
-            height = 150
+            width = 100,
+            height = 32
         )
         
         self.main_row = ft.Row(
@@ -72,29 +72,31 @@ class ItemInfoDialog(ft.AlertDialog):
         )
         
         qr_indicator = ft.Text(
-            "Pay with QR Code"
+            "Pay with QR Code",
+            size=10
         )
         
         self.qr_code = ft.Image(
             "/sample_qr.png",
-            width = 120,
-            height = 120
+            width = 48,
+            height = 48
         )
         
         qr_column = ft.Column(
             controls=[qr_indicator, self.qr_code],
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            width=48
         )
         
         self.account_image = ft.Image(
             "/empty_user_image.svg",
-            width = 30,
-            height = 30
+            width = 18,
+            height = 18
         )
         
         self.account_name_payment = ft.Text(
             "Owen David",
-            size=12
+            size=10
         )
         
         gcash_acct_user = ft.Column(
@@ -105,7 +107,7 @@ class ItemInfoDialog(ft.AlertDialog):
         
         self.gcash_number = ft.Text(
             value = "Gcash number: ",
-            size=14,
+            size=12,
             spans = [ft.TextSpan(
                 f"09999999999",
             )],
@@ -132,8 +134,8 @@ class ItemInfoDialog(ft.AlertDialog):
         
         gcash_info_column = ft.Column(
             controls=[gcash_info_row, self.payment_item_name, self.item_price],
-            width = 300,
-            spacing=30
+            width = 100,
+            spacing=15
         )
         
         self.gcash_container = ft.Container(
@@ -143,26 +145,28 @@ class ItemInfoDialog(ft.AlertDialog):
         
         self.payment_row = ft.Row(
             controls=[qr_column, self.gcash_container],
-            spacing = 50,
-            width = 480,
-            height = 150
+            spacing = 10,
+            width = 100,
+            height = 100,
+            alignment=ft.MainAxisAlignment.START
         )
         
         self.payment_preview_image = ft.Image(
             src="/default_image.png",
-            width=120,
-            height=120
+            width=48,
+            height=48
         )
         
         self.upload_proof_button = ft.ElevatedButton(
             content=ft.Text(
-                value="Upload proof of payment"
+                value="Upload proof of payment",
+                size=10
             )
         )
         
         self.proof_column = ft.Column(
-            width = 480,
-            height = 150,
+            width = 100,
+            height = 100,
             controls=[self.payment_preview_image, self.upload_proof_button],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER
         )

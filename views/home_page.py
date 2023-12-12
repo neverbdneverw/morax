@@ -38,8 +38,8 @@ class HomePage():
         
         logo = ft.Image(
             src = "/logo_filled.png",
-            width=50,
-            height=50
+            width=36,
+            height=36
         )
         
         logo_row = ft.Row(
@@ -51,9 +51,9 @@ class HomePage():
             selected=True,
             icon=ft.icons.HOME_OUTLINED,
             selected_icon=ft.icons.HOME_FILLED,
-            width = 50,
-            height = 50,
-            icon_size=36,
+            width = 36,
+            height = 36,
+            icon_size=24,
             style=ft.ButtonStyle()
         )
         
@@ -66,9 +66,9 @@ class HomePage():
             selected=False,
             icon=ft.icons.SETTINGS_OUTLINED,
             selected_icon=ft.icons.SETTINGS,
-            width = 50,
-            height = 50,
-            icon_size=36,
+            width = 36,
+            height = 36,
+            icon_size=24,
             style=ft.ButtonStyle()
         )
         
@@ -81,9 +81,9 @@ class HomePage():
             selected=False,
             icon=ft.icons.FEEDBACK_OUTLINED,
             selected_icon=ft.icons.FEEDBACK,
-            width = 50,
-            height = 50,
-            icon_size=36,
+            width = 36,
+            height = 36,
+            icon_size=24,
             style=ft.ButtonStyle(),
         )
         
@@ -96,9 +96,9 @@ class HomePage():
             selected=False,
             icon=ft.icons.ACCOUNT_CIRCLE_OUTLINED,
             selected_icon=ft.icons.ACCOUNT_CIRCLE,
-            width = 50,
-            height = 50,
-            icon_size=36,
+            width = 36,
+            height = 36,
+            icon_size=24,
             style=ft.ButtonStyle()
         )
         
@@ -112,18 +112,18 @@ class HomePage():
             padding=12.5
         )
         
-        sidebar_top_column = ft.Column(
+        sidebar_top_column = ft.Row(
             expand=True,
             spacing=20,
-            alignment=ft.MainAxisAlignment.START,
+            alignment=ft.MainAxisAlignment.SPACE_EVENLY,
             controls=[logo_row, home_button_row, settings_button_row, feedback_button_row]
         )
     
-        sidebar = ft.Column(
+        sidebar = ft.Row(
             expand = True,
-            width = 75,
-            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-            horizontal_alignment=ft.MainAxisAlignment.CENTER,
+            height = 54,
+            alignment=ft.MainAxisAlignment.SPACE_EVENLY,
+            vertical_alignment=ft.MainAxisAlignment.CENTER,
             controls=[sidebar_top_column, profile_button_container]
         )
         
@@ -132,13 +132,14 @@ class HomePage():
             padding=0
         )
         
-        main_row = ft.Row(
+        main_row = ft.Column(
             expand=True,
             spacing=0,
             controls=[
-                self.sidebar_container,
+                content_area,
                 ft.VerticalDivider(width=1),
-                content_area]
+                self.sidebar_container
+            ]
         )
 
         self.route_address = "/home"

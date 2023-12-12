@@ -4,14 +4,14 @@ from flet_route import Params, Basket
 class LoginPage():
     def __init__(self):
         lock_icon = ft.Image(
-            src = "/lock.svg",
-            width = 200,
-            height = 200
+            src = "/logo_filled.png",
+            width = 96,
+            height = 96
         )
         
         image_container = ft.Container(
-            expand=True,
-            content=lock_icon
+            content=lock_icon,
+            padding=ft.padding.only(20, 20, 20, 0)
         )
         
         self.login_indicator_text = ft.Text(
@@ -153,7 +153,7 @@ class LoginPage():
         )
         
         sidebar_column_bottom = ft.Column(
-            spacing=20,
+            spacing=10,
             alignment=ft.alignment.bottom_center,
             controls = [
                 signup_indicator_text_row,
@@ -169,11 +169,12 @@ class LoginPage():
         self.sidebar_container = ft.Container(
             expand = True,
             content = sidebar_main_column,
-            padding = 40
+            padding = 15
         )
         
-        main_row = ft.Row(
+        main_row = ft.Column(
             expand=True,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls = [
                 image_container,
                 self.sidebar_container
@@ -183,16 +184,16 @@ class LoginPage():
         self.main_container = ft.Container(
             expand=True,
             content=main_row,
-            gradient=ft.LinearGradient(
-                begin=ft.alignment.center_left,
-                end=ft.alignment.center_right,
-                colors=[
-                    "#9a6e32",
-                    "#c7ac65",
-                    "#c7ac65",
-                    "#c7ac65"
-                ]
-            )
+            # gradient=ft.LinearGradient(
+            #     begin=ft.alignment.center_left,
+            #     end=ft.alignment.center_right,
+            #     colors=[
+            #         "#9a6e32",
+            #         "#c7ac65",
+            #         "#c7ac65",
+            #         "#c7ac65"
+            #     ]
+            # )
         )
         
         self.route_address = "/login"
@@ -271,11 +272,11 @@ class LoginPage():
         
         self.sidebar_container.bgcolor = colors["fafafa"]
         
-        self.main_container.gradient.colors = [
-            colors["9a6e32"],
-            colors["c7ac65"],
-            colors["c7ac65"],
-            colors["c7ac65"]
-        ]
+        # self.main_container.gradient.colors = [
+        #     colors["9a6e32"],
+        #     colors["c7ac65"],
+        #     colors["c7ac65"],
+        #     colors["c7ac65"]
+        # ]
         
-        self.view.bgcolor = colors["9a6e32"]
+        # self.view.bgcolor = colors["9a6e32"]

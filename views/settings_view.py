@@ -4,7 +4,7 @@ from views.settings_view_dialogs import *
 class SettingsView(ft.Column):
     def __init__(self):
         super().__init__(
-            offset=ft.transform.Offset(0, 1.5),
+            offset=ft.transform.Offset(1.5, 0),
             animate_offset=ft.animation.Animation(300)
         )
         
@@ -12,7 +12,7 @@ class SettingsView(ft.Column):
             expand=True,
             value="Settings",
             weight=ft.FontWeight.W_600,
-            size=54
+            size=36
         )
         
         top_text_row = ft.Row(
@@ -46,7 +46,7 @@ class SettingsView(ft.Column):
         self.controls.append(self.setting_container)
     
     def show(self, delta):
-        self.offset = ft.transform.Offset(0, delta)
+        self.offset = ft.transform.Offset(delta, 0)
         self.update()
     
     def update_colors(self, colors):
@@ -68,7 +68,7 @@ class SettingButton(ft.Container):
         
         self.setting_name = ft.Text(
             setting_name,
-            size=24,
+            size=18,
             weight=ft.FontWeight.W_700
         )
         
@@ -86,7 +86,7 @@ class SettingButton(ft.Container):
         
         self.setting_description = ft.Text(
             setting_description,
-            size=14,
+            size=11,
             expand=True
         )
         
@@ -109,8 +109,8 @@ class SettingButton(ft.Container):
         )
         
         self.content = main_column
-        self.padding = 20
-        self.margin = ft.margin.only(40, 0, 40, 0)
+        self.padding = 10
+        self.margin = ft.margin.only(20, 0, 20, 0)
         self.border_radius = 15
     
     def update_colors(self, colors):

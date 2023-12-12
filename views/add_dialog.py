@@ -43,8 +43,8 @@ class AddDialog(ft.AlertDialog):
         
         self.image_preview = ft.Image(
             "/default_image.png",
-            width=160,
-            height=160
+            width=80,
+            height=80
         )
         
         image_preview_row = ft.Row(
@@ -54,9 +54,10 @@ class AddDialog(ft.AlertDialog):
         
         self.image_upload_button = ft.ElevatedButton(
             height=30,
-            width=160,
+            width=80,
             content=ft.Text(
                 value="Upload image",
+                size=10
             )
         )
         
@@ -67,14 +68,15 @@ class AddDialog(ft.AlertDialog):
         
         image_upload_column = ft.Column(
             controls=[image_preview_row, image_upload_button_row],
-            spacing=20
+            spacing=10
         )
         
         self.group_name_textfield = ft.TextField(
             label = "Group Name",
             border_radius = 15,
-            width=220,
-            height=44,
+            # width=220,
+            height=32,
+            text_size=12,
             label_style = ft.TextStyle()
         )
         
@@ -86,8 +88,9 @@ class AddDialog(ft.AlertDialog):
         self.group_desc_textfield = ft.TextField(
             label = "Group Description",
             border_radius = 15,
-            width = 220,
-            height = 300,
+            width = 50,
+            # height = 100,
+            text_style=10,
             multiline=True,
             min_lines=5,
             max_lines=5,

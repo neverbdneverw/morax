@@ -4,14 +4,14 @@ from flet_route import Params, Basket
 class ForgotPasswordPage():
     def __init__(self):
         query_icon = ft.Image(
-            src = "/question_mark.svg",
-            width = 200,
-            height = 200
+            src = "/logo_filled.png",
+            width = 96,
+            height = 96
         )
         
         image_container = ft.Container(
-            expand=True,
-            content=query_icon
+            content=query_icon,
+            padding=ft.padding.only(20, 20, 20, 0)
         )
         
         self.fg_pass_indicator_text = ft.Text(
@@ -28,7 +28,7 @@ class ForgotPasswordPage():
         
         self.fg_pass_reminder_text = ft.Text(
             "Create a memorable password next time.",
-            size = 24
+            size = 16
         )
         
         fg_pass_reminder_row = ft.Row(
@@ -139,7 +139,7 @@ class ForgotPasswordPage():
         
         sidebar_top_column = ft.Column(
             expand=True,
-            spacing=20,
+            spacing=10,
             controls = [
                 fg_pass_indicator_row,
                 fg_pass_reminder_row,
@@ -151,7 +151,7 @@ class ForgotPasswordPage():
         )
         
         sidebar_bottom_column = ft.Column(
-            spacing=20,
+            spacing=10,
             controls= [
                 signup_indicator_text_row,
                 signup_btn_container
@@ -165,12 +165,13 @@ class ForgotPasswordPage():
         
         self.sidebar_container = ft.Container(
             expand = True,
-            padding = 40,
+            padding = 20,
             content = sidebar_main_column,
         )
         
-        main_row = ft.Row(
+        main_row = ft.Column(
             expand=True,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls = [
                 image_container,
                 self.sidebar_container
@@ -180,16 +181,16 @@ class ForgotPasswordPage():
         self.main_container = ft.Container(
             expand=True,
             content=main_row,
-            gradient=ft.LinearGradient(
-                begin=ft.alignment.center_left,
-                end=ft.alignment.center_right,
-                colors=[
-                    "#9a6e32",
-                    "#c7ac65",
-                    "#c7ac65",
-                    "#c7ac65"
-                ]
-            )
+            # gradient=ft.LinearGradient(
+            #     begin=ft.alignment.center_left,
+            #     end=ft.alignment.center_right,
+            #     colors=[
+            #         "#9a6e32",
+            #         "#c7ac65",
+            #         "#c7ac65",
+            #         "#c7ac65"
+            #     ]
+            # )
         )
         
         self.route_address = "/forgot_password"
@@ -249,11 +250,11 @@ class ForgotPasswordPage():
         
         self.sidebar_container.bgcolor = colors["fafafa"]
         
-        self.main_container.gradient.colors = [
-            colors["9a6e32"],
-            colors["c7ac65"],
-            colors["c7ac65"],
-            colors["c7ac65"]
-        ]
+        # self.main_container.gradient.colors = [
+        #     colors["9a6e32"],
+        #     colors["c7ac65"],
+        #     colors["c7ac65"],
+        #     colors["c7ac65"]
+        # ]
         
-        self.view.bgcolor = colors["9a6e32"]
+        # self.view.bgcolor = colors["9a6e32"]

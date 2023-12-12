@@ -15,8 +15,8 @@ class RouteManager(Routing):
         super().change_route(route)
 
 def main(page: ft.Page):
-    page.window_width = 1024
-    page.window_height = 768
+    page.window_width = 400
+    page.window_height = 720
     page.title = "Morax"
     
     if bool(page.client_storage.get("dark_mode")):

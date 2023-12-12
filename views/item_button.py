@@ -13,8 +13,8 @@ class ItemButton(ft.ElevatedButton):
 
         self.account_image = ft.Image(
             "/empty_user_image.svg",
-            width = 100,
-            height = 100
+            width = 48,
+            height = 48
         )
         
         if image_string != "":
@@ -23,8 +23,8 @@ class ItemButton(ft.ElevatedButton):
         self.user_name = ft.Text(
             username,
             weight=ft.FontWeight.W_600,
-            size=16,
-            width=100,
+            size=12,
+            # width=100,
             text_align=ft.TextAlign.CENTER
         )
         
@@ -47,12 +47,12 @@ class ItemButton(ft.ElevatedButton):
         self.item_name = ft.Text(
             transaction_name,
             weight=ft.FontWeight.W_700,
-            size=20
+            size=14
         )
         
         self.item_description = ft.Text(
             max_lines=3,
-            size = 12,
+            size = 10,
             value = transaction_description
         )
         
@@ -60,10 +60,11 @@ class ItemButton(ft.ElevatedButton):
             value = "Date Posted: ",
             spans = [ft.TextSpan(
                 transaction_creation,
-                style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300)
+                style=ft.TextStyle(italic=True, weight=ft.FontWeight.W_300, size=10)
             )],
             weight=ft.FontWeight.W_500,
             italic=True,
+            size=10
         )
         
         self.amount_received = ft.Text(
@@ -91,8 +92,8 @@ class ItemButton(ft.ElevatedButton):
         
         self.item_image = ft.Image(
             "/default_image.png",
-            width = 100,
-            height = 100
+            width = 48,
+            height = 48
         )
         
         if item_image_string != "":
@@ -101,7 +102,7 @@ class ItemButton(ft.ElevatedButton):
         self.amount = ft.Text(
             transaction_price,
             weight=ft.FontWeight.W_700,
-            size=20
+            size=12
         )
         
         payment_column = ft.Column(
@@ -112,7 +113,7 @@ class ItemButton(ft.ElevatedButton):
         
         payment_container = ft.Container(
             content=payment_column,
-            padding=ft.padding.only(20, 20, 20, 20)
+            padding=ft.padding.only(10, 10, 10, 10)
         )
         
         payment_row = ft.Row(
@@ -122,11 +123,13 @@ class ItemButton(ft.ElevatedButton):
         column = ft.Row(
             controls=[self.account_container_row, item_info_row, payment_row],
             alignment=ft.MainAxisAlignment.START,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
             expand=True,
             spacing=0
         )
         
         self.content = column
+        self.height = 120
         self.on_click = lambda event: self.activate(event, transaction_name)
     
     def activate(self, event: ft.ControlEvent, item_name: str):

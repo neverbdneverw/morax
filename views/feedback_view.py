@@ -4,7 +4,7 @@ from views.group_button import GroupButton
 class FeedbackView(ft.Column):
     def __init__(self):
         super().__init__(
-            offset=ft.transform.Offset(0, 3),
+            offset=ft.transform.Offset(3, 0),
             animate_offset=ft.animation.Animation(300)
         )
         
@@ -12,7 +12,7 @@ class FeedbackView(ft.Column):
             expand=True,
             value="Help and Support",
             weight=ft.FontWeight.W_600,
-            size=54
+            size=36
         )
         
         top_text_row = ft.Row(
@@ -29,7 +29,7 @@ class FeedbackView(ft.Column):
             expand=True,
             value="Having problems with the app? Please refer to the options below on how we can help you.",
             weight=ft.FontWeight.W_400,
-            size=20
+            size=13
         )
 
         subtitle_text_row = ft.Row(
@@ -61,7 +61,7 @@ class FeedbackView(ft.Column):
 
         contact_describeissue_text = ft.Text(
             value="Describe Issue",
-            size=15
+            size=13
         )
 
         contact_describeissue_row = ft.Row(
@@ -77,7 +77,7 @@ class FeedbackView(ft.Column):
 
         contact_send_report_text = ft.Text(
             value="Send Report",
-            size = 15
+            size = 13
         )
 
         contact_send_report_row = ft.Row(
@@ -93,7 +93,7 @@ class FeedbackView(ft.Column):
 
         contact_get_help_text = ft.Text(
             value="Get Help",
-            size=15
+            size=13
         )
 
         contact_get_help_row = ft.Row(
@@ -149,7 +149,8 @@ class FeedbackView(ft.Column):
         )
 
         contribute_helpproject_text = ft.Text(
-            value="Help  this project become better"
+            value="Help  this project become better",
+            size=13
         )
 
         contribute_helpproject_row = ft.Row(
@@ -164,7 +165,8 @@ class FeedbackView(ft.Column):
         )
 
         contribute_contributecode_text = ft.Text(
-            value="Contribute Code"
+            value="Contribute Code",
+            size=13
         )
 
         contribute_contributecode_row = ft.Row(
@@ -179,7 +181,8 @@ class FeedbackView(ft.Column):
         )
 
         contribute_involve_text = ft.Text(
-            value="Get involved with the project"
+            value="Get involved with the project",
+            size=13
         )
 
         contribute_involved_row = ft.Row(
@@ -217,11 +220,12 @@ class FeedbackView(ft.Column):
             border=ft.border.all(width=1, color="#D6D6D6")
         )
 
-        contact_row = ft.Row(
+        contact_row = ft.Column(
+            scroll=True,
             expand=True,
             controls=[self.background_contact_container, self.background_contribute_container],
             alignment=ft.MainAxisAlignment.CENTER,
-            vertical_alignment=ft.CrossAxisAlignment.CENTER
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER
         )
 
         self.controls.append(self.top_text_container)
@@ -229,7 +233,7 @@ class FeedbackView(ft.Column):
         self.controls.append(contact_row)
 
     def show(self, delta):
-        self.offset = ft.transform.Offset(0, delta)
+        self.offset = ft.transform.Offset(delta, 0)
         self.update()
     
     def update_colors(self, colors):

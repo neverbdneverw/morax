@@ -3,7 +3,7 @@ import flet as ft
 class AccountView(ft.Container):
     def __init__(self):
         super().__init__(
-            offset=ft.transform.Offset(0, 4.5),
+            offset=ft.transform.Offset(4.5, 0),
             animate_offset=ft.animation.Animation(300)
         )
         
@@ -52,8 +52,8 @@ class AccountView(ft.Container):
         
         self.profile_info_container = ft.Container(
             profile_info_column,
-            padding=ft.padding.all(20),
-            margin=ft.margin.only(150, 0, 150, 0),
+            padding=ft.padding.all(10),
+            # margin=ft.margin.only(150, 0, 150, 0),
             gradient=ft.LinearGradient(
                 colors=[
                     "#9a6e32",
@@ -137,8 +137,8 @@ class AccountView(ft.Container):
         
         self.account_settings_container = ft.Container(
             account_settings_column,
-            padding=ft.padding.all(50),
-            margin=ft.margin.only(150, 0, 150, 0),
+            padding=ft.padding.all(10),
+            # margin=ft.margin.only(150, 0, 150, 0),
             expand=True
         )
         
@@ -161,8 +161,8 @@ class AccountView(ft.Container):
         
         self.logout_button_container = ft.Container(
             logout_column,
-            padding=ft.padding.all(20),
-            margin=ft.margin.only(150, 0, 150, 0),
+            padding=ft.padding.all(10),
+            # margin=ft.margin.only(150, 0, 150, 0),
             expand=True
         )
         
@@ -173,7 +173,7 @@ class AccountView(ft.Container):
         )
     
     def show(self, delta):
-        self.offset = ft.transform.Offset(0, delta)
+        self.offset = ft.transform.Offset(delta, 0)
         self.update()
     
     def update_colors(self, colors):

@@ -4,14 +4,14 @@ from flet_route import Params, Basket
 class SignupPage():
     def __init__(self):
         query_icon = ft.Image(
-            src = "/question_mark.svg",
-            width = 200,
-            height = 200
+            src = "/logo_filled.png",
+            width = 96,
+            height = 96
         )
         
         image_container = ft.Container(
-            expand=True,
-            content=query_icon
+            content=query_icon,
+            padding=ft.padding.only(20, 20, 20, 0)
         )
         
         self.signup_indicator_text = ft.Text(
@@ -169,7 +169,7 @@ class SignupPage():
         
         sidebar_top_column = ft.Column(
             expand=True,
-            spacing=20,
+            spacing=10,
             controls = [
                 signup_indicator_row,
                 welcome_back_row,
@@ -183,7 +183,7 @@ class SignupPage():
         )
         
         sidebar_bottom_column = ft.Column(
-            spacing=20,
+            spacing=10,
             controls= [
                 login_indicator_text_row,
                 login_btn_container
@@ -197,12 +197,13 @@ class SignupPage():
         
         self.sidebar_container = ft.Container(
             expand = True,
-            padding = 40,
-            content = sidebar_main_column,
+            padding = 15,
+            content = sidebar_main_column
         )
         
-        main_row = ft.Row(
+        main_row = ft.Column(
             expand=True,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls = [
                 image_container,
                 self.sidebar_container
@@ -212,16 +213,16 @@ class SignupPage():
         self.main_container = ft.Container(
             expand=True,
             content=main_row,
-            gradient=ft.LinearGradient(
-                begin=ft.alignment.center_left,
-                end=ft.alignment.center_right,
-                colors=[
-                    "#9a6e32",
-                    "#c7ac65",
-                    "#c7ac65",
-                    "#c7ac65"
-                ]
-            )
+            # gradient=ft.LinearGradient(
+            #     begin=ft.alignment.center_left,
+            #     end=ft.alignment.center_right,
+            #     colors=[
+            #         "#9a6e32",
+            #         "#c7ac65",
+            #         "#c7ac65",
+            #         "#c7ac65"
+            #     ]
+            # )
         )
         
         self.route_address = "/signup"
@@ -297,11 +298,11 @@ class SignupPage():
         
         self.sidebar_container.bgcolor = colors["fafafa"]
         
-        self.main_container.gradient.colors = [
-            colors["9a6e32"],
-            colors["c7ac65"],
-            colors["c7ac65"],
-            colors["c7ac65"]
-        ]
+        # self.main_container.gradient.colors = [
+        #     colors["9a6e32"],
+        #     colors["c7ac65"],
+        #     colors["c7ac65"],
+        #     colors["c7ac65"]
+        # ]
         
-        self.view.bgcolor = colors["9a6e32"]
+        # self.view.bgcolor = colors["9a6e32"]

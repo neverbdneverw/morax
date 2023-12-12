@@ -20,7 +20,7 @@ class GroupListView(ft.AnimatedSwitcher):
             expand=True,
             value="Hello User",
             weight=ft.FontWeight.W_600,
-            size=54
+            size=36
         )
         
         top_text_row = ft.Row(
@@ -37,7 +37,7 @@ class GroupListView(ft.AnimatedSwitcher):
             expand=True,
             value="You have not joined a group as of yet. Click the box to create one.",
             weight=ft.FontWeight.W_400,
-            size=20
+            size=16
         )
         
         empty_warning_text_row = ft.Row(
@@ -70,7 +70,7 @@ class GroupListView(ft.AnimatedSwitcher):
         self.content = self.grid_view
 
     def show(self, delta):
-        self.offset = ft.transform.Offset(0, delta)
+        self.offset = ft.transform.Offset(delta, 0)
         self.update()
     
     def trigger_reload(self, email: str):

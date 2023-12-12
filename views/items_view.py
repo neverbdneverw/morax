@@ -11,15 +11,15 @@ class ItemsView(ft.Column):
         
         self.group_image = ft.Image(
             "/default_image.png",
-            height=80,
-            width=80
+            height=48,
+            width=48
         )
         
         self.group_name = ft.Text(
             expand=True,
             value="School",
             weight=ft.FontWeight.W_600,
-            size=44
+            size=24
         )
         
         header_left = ft.Row(
@@ -30,13 +30,13 @@ class ItemsView(ft.Column):
         )
         
         self.reload_button = ft.Container(
-            content=ft.Image("/refresh.svg", width=48, height=48),
-            padding=ft.padding.only(15, 15, 0, 15)
+            content=ft.Image("/refresh.svg", width=32, height=32),
+            # padding=ft.padding.only(15, 15, 0, 15)
         )
         
         self.return_button = ft.Container(
-            content=ft.Image("/return.svg", width=48, height=48),
-            padding=15
+            content=ft.Image("/return.svg", width=32, height=32),
+            # padding=15
         )
         
         end_row = ft.Row(
@@ -52,16 +52,16 @@ class ItemsView(ft.Column):
             padding = ft.padding.only(10, 10, 10, 10),
             border_radius=ft.BorderRadius(0, 0, 15, 15),
             content=header_row,
-            gradient=ft.LinearGradient(
-                begin=ft.alignment.center_left,
-                end=ft.alignment.center_right,
-                colors=[
-                    "#9a6e32",
-                    "#c7ac65",
-                    "#c7ac65",
-                    "#c7ac65"
-                ]
-            )
+            # gradient=ft.LinearGradient(
+            #     begin=ft.alignment.center_left,
+            #     end=ft.alignment.center_right,
+            #     colors=[
+            #         "#9a6e32",
+            #         "#c7ac65",
+            #         "#c7ac65",
+            #         "#c7ac65"
+            #     ]
+            # )
         )
         
         self.payable_list = ft.ListView(
@@ -92,7 +92,7 @@ class ItemsView(ft.Column):
             reverse_duration = 300,
             switch_in_curve = ft.AnimationCurve.EASE_OUT,
             switch_out_curve = ft.AnimationCurve.EASE_IN,
-            expand=True,
+            # expand=True,
             content = self.payable_list
         )
         
@@ -122,7 +122,7 @@ class ItemsView(ft.Column):
             reverse_duration = 300,
             switch_in_curve = ft.AnimationCurve.EASE_OUT,
             switch_out_curve = ft.AnimationCurve.EASE_IN,
-            expand=True,
+            # expand=True,
             content = self.payable_column
         )
         
@@ -196,21 +196,22 @@ class ItemsView(ft.Column):
         
         recap_column = ft.Column(
             controls=[self.financial_recap_text, self.total_payable_text, self.total_receivable_text],
-            horizontal_alignment=ft.CrossAxisAlignment.STRETCH,
+            # expand=True,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         )
         
         self.personal_info_column = ft.Column(
             controls=[info_column, recap_column],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-            expand=True
+            # expand=True
         )
         
         self.personal_info_container = ft.Container(
-            content=ft.Row([self.personal_info_column], expand=True),
+            content=ft.Row([self.personal_info_column], expand=True, alignment=ft.MainAxisAlignment.CENTER),
             border_radius=ft.BorderRadius(15, 15, 15, 15),
-            expand=True,
-            padding = 20,
+            # expand=True,
+            padding = 15,
             border=ft.border.all(1, "#d6d6d6")
         )
         
@@ -219,19 +220,20 @@ class ItemsView(ft.Column):
         )
         
         self.info_sidebar_column = ft.Column(
-            width=250,
-            expand=True,
+            # width=250,
+            # expand=True,
             controls=[self.group_info_column, self.personal_info_container]
         )
         
         self.info_sidebar = ft.Container(
             content = self.info_sidebar_column,
-            padding = 10
+            padding = 15
         )
         
-        list_view_row = ft.Row(
-            controls=[self.list_switcher, self.info_sidebar],
-            expand=True
+        list_view_row = ft.Column(
+            controls=[self.info_sidebar, self.list_switcher],
+            expand=True,
+            scroll=True
         )
         
         self.controls = [self.header_container, list_view_row]
@@ -247,13 +249,13 @@ class ItemsView(ft.Column):
         pass
     
     def update_colors(self, colors):
-        self.group_name.color = colors["white"]
-        self.header_container.gradient.colors=[
-            colors["9a6e32"],
-            colors["c7ac65"],
-            colors["c7ac65"],
-            colors["c7ac65"]
-        ]
+        self.group_name.color = colors["black"]
+        # self.header_container.gradient.colors=[
+        #     colors["9a6e32"],
+        #     colors["c7ac65"],
+        #     colors["c7ac65"],
+        #     colors["c7ac65"]
+        # ]
         
         self.empty_warning_text.color = colors["black"]
         self.group_name_text.color = colors["ae8948"]
